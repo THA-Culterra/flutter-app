@@ -8,7 +8,7 @@
 PRODUCT_NAME = culterra
 
 // The application's bundle identifier
-PRODUCT_BUNDLE_IDENTIFIER = com.example.culterra
+PRODUCT_BUNDLE_IDENTIFIER = com.tha.culterra
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2025 com.example. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2025 com.tha. All rights reserved.
