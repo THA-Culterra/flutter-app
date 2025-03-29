@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../Widgets/GradientBackground.dart';
+import '../../Widgets/gradient_background.dart';
 import '../domain/provider.dart';
 import 'login_prov_builder.dart';
 

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import '../../Login/presentation/login_screen.dart';
-import '../../Widgets/GradientBackground.dart';
+import '../../Widgets/gradient_background.dart';
 import 'onboarding_icon.dart';
 import 'onboarding_viewmodel.dart';
 
