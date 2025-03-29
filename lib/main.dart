@@ -1,9 +1,15 @@
-import 'package:culterra/screens/splash.dart';
+import 'package:culterra/screens/Onboarding/presentation/onboarding_screen.dart';
+import 'package:culterra/screens/Onboarding/presentation/onboarding_viewmodel.dart';
+import 'package:culterra/screens/Splash/splash.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+    create: (context) => OnboardingViewModel(),
+    child: MaterialApp(home: OnboardingScreen()),
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -18,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const SplashScreen(),
+      home: const OnboardingScreen(),
     );
   }
 }
