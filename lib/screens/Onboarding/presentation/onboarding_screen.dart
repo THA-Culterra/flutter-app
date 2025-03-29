@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
+import '../../Login/presentation/login_screen.dart';
+import '../../Widgets/GradientBackground.dart';
 import 'onboarding_icon.dart';
 import 'onboarding_viewmodel.dart';
 
@@ -12,16 +14,7 @@ class OnboardingScreen extends StatelessWidget {
     final viewModel = Provider.of<OnboardingViewModel>(context);
 
     return Scaffold(
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment(0.50, -0.00),
-            end: Alignment(0.50, 1.00),
-            colors: [Color(0xFF54C2F8), Color(0xFF0D278F)],
-          ),
-        ),
+      body: GradientBackground(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -88,7 +81,13 @@ class OnboardingScreen extends StatelessWidget {
 
             viewModel.currentPage == 2
                 ? GestureDetector(
-              onTap: () {},
+              onTap: () {
+                // Navigate to the LoginScreen
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const LoginScreen()),
+                );
+              },
               child: Container(
                 width: 256,
                 height: 48,
