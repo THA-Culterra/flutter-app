@@ -1,3 +1,4 @@
+import 'package:culterra/screens/Country/presentation/country_screen.dart';
 import 'package:culterra/screens/Onboarding/presentation/onboarding_viewmodel.dart';
 import 'package:culterra/screens/Widgets/world_map.dart';
 import 'package:flutter/material.dart';
@@ -20,7 +21,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Culterra',
       debugShowCheckedModeBanner: false,
-      home: const WorldMap(),
+      home: CountryScreen()
+      // WorldMap(
+      //   onCountryTap: (id, name) {
+      //     print("Tapped on country: $name (ID: $id)");
+      //   },
+      // ),
     );
   }
 }
