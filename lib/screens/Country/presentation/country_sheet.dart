@@ -61,6 +61,7 @@ class _CountrySheetState extends State<CountrySheet> {
                                       Text(
                                         category.displayName,
                                         style: TextStyle(
+                                          decoration: TextDecoration.none,
                                           fontSize: 16,
                                           fontWeight:
                                               selectedCategory == category
@@ -80,9 +81,7 @@ class _CountrySheetState extends State<CountrySheet> {
                       ),
                     ),
 
-                    Divider(),
-                    // Content Area
-                    Flexible(child: selectedCategory.content),
+                    Flexible(child: selectedCategory.content)
                   ],
               ),
           );
