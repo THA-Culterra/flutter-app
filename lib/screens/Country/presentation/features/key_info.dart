@@ -14,7 +14,7 @@ class KeyInfoScreen extends StatelessWidget {
           spacing: 16,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            description(),
+            description("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et..."),
 
             capitalItem("Algiers"),
 
@@ -149,7 +149,7 @@ class KeyInfoScreen extends StatelessWidget {
           );
   }
 
-  Column description() {
+  Column description(description) {
     return Column(
       spacing: 8,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -162,7 +162,7 @@ class KeyInfoScreen extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea ...",
+              description,
               style: TextStyle(
                 fontSize: 14,
                 color: Colors.black,
