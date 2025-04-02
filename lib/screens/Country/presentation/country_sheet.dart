@@ -80,9 +80,10 @@ class _CountrySheetState extends State<CountrySheet> {
                             }).toList(),
                       ),
                     ),
-
-                    Flexible(child: selectedCategory.content)
-                  ],
+                Container(
+                  color: Colors.grey[200],
+                  child: Flexible(child: selectedCategory.content)
+                )],
               ),
           );
         },

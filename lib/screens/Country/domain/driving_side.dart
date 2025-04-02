@@ -1,0 +1,4 @@
+enum DrivingSide {
+  left,
+  right
+}

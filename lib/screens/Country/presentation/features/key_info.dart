@@ -6,9 +6,7 @@ class KeyInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.grey[200],
-      child: Padding(
+    return Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           spacing: 16,
@@ -33,7 +31,6 @@ class KeyInfoScreen extends StatelessWidget {
             labelResponse("Dial Code", "+213")
           ],
         ),
-      ),
     );
   }
 
