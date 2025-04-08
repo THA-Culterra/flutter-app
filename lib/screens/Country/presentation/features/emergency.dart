@@ -1,3 +1,4 @@
+import 'package:culterra/screens/Widgets/report_suggestion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -6,27 +7,33 @@ class EmergencyScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        spacing: 8,
-        children: [
-          Text(
-            "Emergency Services",
-            style: TextStyle(
-              color: Colors.grey,
-              decoration: TextDecoration.none,
-              fontSize: 15,
-              fontWeight: FontWeight.w800,
-            ),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 8,
+            children: [
+              Text(
+                "Emergency Services",
+                style: TextStyle(
+                  color: Colors.grey,
+                  decoration: TextDecoration.none,
+                  fontSize: 15,
+                  fontWeight: FontWeight.w800,
+                ),
+              ),
+              emergencyRow("police", "Police", 1548),
+              emergencyRow("ambulance", "Ambulance", 14),
+              emergencyRow("fire", "Fire", 14)
+            ]
           ),
-          emergencyRow("police", "Police", 1548),
-          emergencyRow("ambulance", "Ambulance", 14),
-          emergencyRow("fire", "Fire", 14)
-        ]
 
-      ),
+        ),
+
+        ReportSuggestion()
+      ],
     );
   }
 
@@ -38,10 +45,11 @@ class EmergencyScreen extends StatelessWidget {
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
+        spacing: 12,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         SvgPicture.asset(
-                '/lib/core/assets/$icon.svg',
+                'lib/core/assets/$icon.svg',
                 width: 24,
                 height: 24,
               ),
@@ -50,7 +58,7 @@ class EmergencyScreen extends StatelessWidget {
           style: TextStyle(
             color: Colors.black,
             decoration: TextDecoration.none,
-            fontSize: 24,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
