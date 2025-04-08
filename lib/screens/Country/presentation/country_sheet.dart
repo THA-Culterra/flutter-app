@@ -81,7 +81,7 @@ class _CountrySheetState extends State<CountrySheet> {
                       ),
                     ),
                 Container(
-                  color: Colors.grey[200],
+                  color: Colors.grey[100],
                   child: Flexible(child: selectedCategory.content)
                 )],
               ),
