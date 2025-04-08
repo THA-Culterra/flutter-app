@@ -1,3 +1,4 @@
+import 'package:culterra/screens/Widgets/report_suggestion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -9,71 +10,77 @@ class FoodScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        spacing: 16,
-        children: [
-          rowBuilder("Top Dishes"),
-
-          Column(
-            spacing: 8,
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            spacing: 16,
             children: [
-              Text("TasteAtlas Rewards",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[800],
-                    fontWeight: FontWeight.w700,
-                    decoration: TextDecoration.none,
+              rowBuilder("Top Dishes"),
+
+              Column(
+                spacing: 8,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("TasteAtlas Rewards",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[800],
+                        fontWeight: FontWeight.w700,
+                        decoration: TextDecoration.none,
+                      )
+                  ),
+                  rankedImageWidget(
+                    imagePath: "lib/core/assets/atlas_sample.png",
+                    ranking: 1,
                   )
+                ],
               ),
-              rankedImageWidget(
-                imagePath: "lib/core/assets/atlas_sample.png",
-                ranking: 1,
-              )
+
+              Column(
+                spacing: 8,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Iconic Traditional Restaurants",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[800],
+                        fontWeight: FontWeight.w700,
+                        decoration: TextDecoration.none,
+                      )
+                  ),
+                  LabeledLink(
+                      link: '',
+                      primLabel: 'Yulmaz',
+                      secLabel: 'Algiers',
+                      icon: 'pin',
+                      imagePath: 'lib/core/assets/restau_placeholder.png'
+                  ),
+
+                  LabeledLink(
+                      link: '',
+                      primLabel: 'Yacine',
+                      secLabel: 'Oran',
+                      icon: 'pin',
+                      imagePath: 'lib/core/assets/restau_placeholder.png'
+                  ),
+
+                  LabeledLink(
+                      link: '',
+                      primLabel: 'El Maida',
+                      secLabel: 'Algiers',
+                      icon: 'pin',
+                      imagePath: 'lib/core/assets/restau_placeholder.png'
+                  ),
+                ],
+              ),
             ],
           ),
+        ),
 
-          Column(
-            spacing: 8,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Iconic Traditional Restaurants",
-                  style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey[800],
-                    fontWeight: FontWeight.w700,
-                    decoration: TextDecoration.none,
-                  )
-              ),
-              LabeledLink(
-                  link: '',
-                  primLabel: 'Yulmaz',
-                  secLabel: 'Algiers',
-                  icon: 'pin',
-                  imagePath: 'lib/core/assets/restau_placeholder.png'
-              ),
-
-              LabeledLink(
-                  link: '',
-                  primLabel: 'Yacine',
-                  secLabel: 'Oran',
-                  icon: 'pin',
-                  imagePath: 'lib/core/assets/restau_placeholder.png'
-              ),
-
-              LabeledLink(
-                  link: '',
-                  primLabel: 'El Maida',
-                  secLabel: 'Algiers',
-                  icon: 'pin',
-                  imagePath: 'lib/core/assets/restau_placeholder.png'
-              ),
-            ],
-          ),
-        ],
-      ),
+        ReportSuggestion()
+      ],
     );
 
   }

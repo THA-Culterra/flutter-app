@@ -1,3 +1,4 @@
+import 'package:culterra/screens/Widgets/report_suggestion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -6,31 +7,37 @@ class KeyInfoScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          spacing: 16,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            description("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et..."),
+    return Column(
+      children: [
+        Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              spacing: 16,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                description("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et..."),
 
-            capitalItem("Algiers"),
+                capitalItem("Algiers"),
 
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              children: List.generate(10, (index) => city("City$index${index+1}")),
+                Wrap(
+                  spacing: 8,
+                  runSpacing: 8,
+                  children: List.generate(10, (index) => city("City$index${index+1}")),
+                ),
+
+                labelResponse("Official Language(s)", "Arabic, Amazigh"),
+
+                labelResponse("Currency", "Algerian dinar"),
+
+                labelResponse("Major Religions", "Islam"),
+
+                labelResponse("Dial Code", "+213")
+              ],
             ),
-
-            labelResponse("Official Language(s)", "Arabic, Amazigh"),
-
-            labelResponse("Currency", "Algerian dinar"),
-
-            labelResponse("Major Religions", "Islam"),
-
-            labelResponse("Dial Code", "+213")
-          ],
         ),
+
+        ReportSuggestion()
+      ],
     );
   }
 
