@@ -1,3 +1,5 @@
+import '../data/models/athlete.dart';
+import '../data/models/athletics.dart';
 import '../data/models/cuisine.dart';
 import '../data/models/restaurant.dart';
 import '../data/models/actor.dart';
@@ -18,6 +20,7 @@ import '../data/models/singer.dart';
 import '../data/models/song.dart';
 import '../data/models/sport.dart';
 import '../data/models/transport.dart';
+import '../data/models/trophy.dart';
 import '../data/models/tv_show.dart';
 
 class CountryViewModel {
@@ -119,7 +122,39 @@ class CountryViewModel {
           "Independence Day": DateTime(1962, 3, 19),
         },
       ),
-      sport: Sport(),
+      athletics: Athletics(
+        popularSports: [
+          Sport(
+            name: "Football",
+            nationalTeamYear: 1962,
+            trophies: [
+              Trophy(name: "AFCON", count: 2),
+              Trophy(name: "FIFA Arab Cup", count: 1),
+            ],
+            teamLogo: "assets/algeria_football.png",
+          ),
+          Sport(
+            name: "Handball",
+            nationalTeamYear: 1964,
+            trophies: [
+              Trophy(name: "African Championship", count: 7),
+            ],
+            teamLogo: "assets/algeria_handball.png",
+          ),
+        ],
+        athletes: [
+          Athlete(
+            name: "Riyad Mahrez",
+            age: 33,
+            sportName: "Football",
+          ),
+          Athlete(
+            name: "Hassiba Boulmerka",
+            age: 56,
+            sportName: "Athletics",
+          ),
+        ],
+      ),
       transport: Transport(
         airports: [
           'Houari Boumediene International Airport',

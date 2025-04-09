@@ -1,3 +1,4 @@
+import 'package:culterra/screens/Country/data/models/athletics.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'cinema.dart';
@@ -26,7 +27,7 @@ class Country{
     required this.music,
     required this.cinema,
     required this.history,
-    required this.sport,
+    required this.athletics,
     required this.transport,
     required this.emergency});
 
@@ -44,7 +45,7 @@ class Country{
   Music  music ;
   Cinema  cinema ;
   History  history ;
-  Sport  sport ;
+  Athletics  athletics ;
   Transport  transport ;
   Emergency  emergency;
 }

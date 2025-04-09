@@ -1,36 +1,211 @@
 {
-  "countries": {
-    "algeria": {
-      "id": "algeria",
-      "name": "Algeria",
-      "imageUrl": "https://example.com/algeria.jpg",
-      "description": "A country in North Africa...",
-      "capital": "Algiers",
-      "majorCities": ["Algiers", "Oran", "Constantine"],
-      "language": "Arabic",
-      "currency": "DZD",
-      "religion": "islam",
-      "dialCode": "+213",
-      "cuisine": {
-        "dishes": [
+  "id": "DZ",
+  "name": "Algeria",
+  "imageUrl": "assets/algeria.jpg",
+  "description": "Algeria is a country in North Africa...",
+  "capital": "Algiers",
+  "majorCities": ["Algiers", "Oran", "Constantine"],
+  "languages": ["Arabic", "Amazigh"],
+  "currency": "DZD",
+  "religion": "islam",
+  "dialCode": "+213",
+  "cuisine": {
+    "dishes": [
+      {
+        "name": "Couscous",
+        "description": "A staple dish made of steamed semolina served with vegetables and meat.",
+        "mealType": "dinner",
+        "imageUrl": "lib/core/assets/Couscous.png"
+      },
+      {
+        "name": "Chakchouka",
+        "description": "A spicy tomato and pepper stew with poached eggs.",
+        "mealType": "breakfast",
+        "imageUrl": "lib/core/assets/Couscous.png"
+      },
+      {
+        "name": "Makroud",
+        "description": "A sweet pastry filled with dates and nuts, often served with tea.",
+        "mealType": "dessert",
+        "imageUrl": "lib/core/assets/Couscous.png"
+      }
+    ],
+    "restaurants": [
+      {
+        "name": "Le Tajine",
+        "city": "Algiers",
+        "latitude": 36.7538,
+        "longitude": 3.0588
+      },
+      {
+        "name": "Dar El Djazair",
+        "city": "Oran",
+        "latitude": 35.6977,
+        "longitude": -0.6331
+      },
+      {
+        "name": "El Bahdja",
+        "city": "Constantine",
+        "latitude": 36.365,
+        "longitude": 6.6147
+      }
+    ]
+  },
+  "music": {
+    "genres": [
+      {
+        "name": "Raï",
+        "image": "raï_image.jpg"
+      },
+      {
+        "name": "Chaabi",
+        "image": "chaabi_image.jpg"
+      }
+    ],
+    "topSongs": [
+      {
+        "name": "Didi",
+        "views": 1000
+      },
+      {
+        "name": "Abdel Kader",
+        "views": 2000
+      }
+    ],
+    "notableSingers": [
+      {
+        "name": "Cheb Khaled",
+        "age": 60,
+        "songs": []
+      },
+      {
+        "name": "Warda",
+        "age": 65,
+        "songs": []
+      }
+    ]
+  },
+  "cinema": {
+    "topMovies": [
+      {
+        "name": "The Battle of Algiers",
+        "image": "battle.jpg"
+      },
+      {
+        "name": "Outside the Law",
+        "image": "outside.jpg"
+      }
+    ],
+    "topTvShows": [
+      {
+        "name": "Algerian Comedy",
+        "image": "comedy.jpg"
+      },
+      {
+        "name": "Algerian Talk Show",
+        "image": "talkshow.jpg"
+      }
+    ],
+    "famousActors": [
+      {
+        "name": "Sami Bouajila",
+        "age": 50
+      },
+      {
+        "name": "Leila Bekhti",
+        "age": 38
+      }
+    ],
+    "directors": [
+      {
+        "name": "Rachid Bouchareb",
+        "age": 60
+      },
+      {
+        "name": "Merzak Allouache",
+        "age": 72
+      }
+    ]
+  },
+  "history": {
+    "nationalDay": "1962-07-05T00:00:00.000Z",
+    "publicHolidays": {
+      "New Year's Day": "2025-01-01T00:00:00.000Z",
+      "Labor Day": "2025-05-01T00:00:00.000Z"
+    },
+    "keyEvents": {
+      "Start of the Algerian War": "1954-11-01T00:00:00.000Z",
+      "Independence Day": "1962-03-19T00:00:00.000Z"
+    }
+  },
+  "sport": {
+    "popularSports": [
+      {
+        "name": "Football",
+        "nationalTeamYear": 1962,
+        "trophies": [
           {
-            "name": "Couscous",
-            "description": "Traditional dish",
-            "mealType": "dinner",
-            "imageUrl": "lib/core/assets/Couscous.png"
+            "name": "AFCON",
+            "count": 2
           },
           {
-            "name": "Chakhchoukha",
-            "description": "Spicy dish",
-            "mealType": "lunch",
-            "imageUrl": "lib/core/assets/Couscous.png"
+            "name": "FIFA Arab Cup",
+            "count": 1
           }
         ],
-        "restaurants": [
-          {"name": "Yulmaz", "city": "Algiers", "latitude": 36.75, "longitude": 3.06},
-          {"name": "El Maida", "city": "Oran", "latitude": 35.69, "longitude": -0.63}
-        ]
+        "teamLogo": "assets/algeria_football.png"
+      },
+      {
+        "name": "Handball",
+        "nationalTeamYear": 1964,
+        "trophies": [
+          {
+            "name": "African Championship",
+            "count": 7
+          }
+        ],
+        "teamLogo": "assets/algeria_handball.png"
       }
-    }
+    ],
+    "athletes": [
+      {
+        "name": "Riyad Mahrez",
+        "age": 33,
+        "sport": "Football",
+        "achievements": ["Premier League Winner", "AFCON Winner"]
+      },
+      {
+        "name": "Hassiba Boulmerka",
+        "age": 56,
+        "sport": "Athletics",
+        "achievements": ["Olympic Gold Medalist (1500m)"]
+      }
+    ]
+  },
+  "transport": {
+    "airports": [
+      "Houari Boumediene International Airport",
+      "Oran Ahmed Ben Bella Airport"
+    ],
+    "drivingSide": "right",
+    "taxiApps": [
+      "Uber",
+      "Yassir"
+    ],
+    "metroSystems": [
+      {
+        "city": "Algiers",
+        "image": "algiers_metro.jpg"
+      },
+      {
+        "city": "Oran",
+        "image": "oran_metro.jpg"
+      }
+    ]
+  },
+  "emergency": {
+    "police": "17",
+    "ambulance": "14",
+    "fire": "19"
   }
 }

@@ -4,7 +4,7 @@ import 'package:culterra/screens/Country/presentation/features/cuisine.dart';
 import 'package:culterra/screens/Country/presentation/features/history.dart';
 import 'package:culterra/screens/Country/presentation/features/key_info.dart';
 import 'package:culterra/screens/Country/presentation/features/music.dart';
-import 'package:culterra/screens/Country/presentation/features/sports.dart';
+import 'package:culterra/screens/Country/presentation/features/athletic.dart';
 import 'package:culterra/screens/Country/presentation/features/transport.dart';
 import 'package:flutter/material.dart';
 
@@ -33,7 +33,7 @@ enum CountryCategory {
       case CountryCategory.history:
         return HistoryScreen(history: country.history);
       case CountryCategory.sports:
-        return SportScreen(sport: country.sport);
+        return AthleticScreen(athletics: country.athletics);
       case CountryCategory.transport:
         return TransportScreen(transport: country.transport);
       case CountryCategory.emergencies:
