@@ -51,7 +51,7 @@ class _CountrySheetState extends State<CountrySheet> {
                   pinned: true,
                   floating: false,
                   expandedHeight: 0, // No expanded height, it's dynamic
-                  backgroundColor: _showAppBar ? Colors.white : Colors.transparent,
+                  backgroundColor: _showAppBar ? Color(0xFF0E288F) : Colors.transparent,
                   elevation: _showAppBar ? 4 : 0,
                   title: AnimatedOpacity(
                     duration: Duration(milliseconds: 1000), // Duration for fade effect
@@ -60,7 +60,7 @@ class _CountrySheetState extends State<CountrySheet> {
                         ? Text(
                       "Algeria",
                       style: TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                       ),
