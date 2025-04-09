@@ -6,9 +6,11 @@ import 'singer.dart';
 
 @JsonSerializable()
 class Music {
-  Music(this.genres,
-      this.topSongs,
-      this.notableSingers,);
+  Music({
+    required this.genres,
+    required this.topSongs,
+    required this.notableSingers
+  });
 
   List<Genre> genres;
 

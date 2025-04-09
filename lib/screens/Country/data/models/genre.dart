@@ -2,10 +2,10 @@ import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable()
 class Genre{
-  Genre(
-      this.name,
-      this.image,
-      );
+  Genre({
+    required this.name,
+    required this.image,
+  });
 
   String  name ;
   String  image ;

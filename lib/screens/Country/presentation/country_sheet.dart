@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 
-import '../domain/categories.dart';
+import '../domain/entities/categories.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../data/models/country.dart';
+
 class CountrySheet extends StatefulWidget {
-  const CountrySheet({super.key});
+  const CountrySheet({super.key, required this.country});
+
+  final Country country;
 
   @override
   _CountrySheetState createState() => _CountrySheetState();

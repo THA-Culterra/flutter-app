@@ -4,11 +4,11 @@ import 'meal_type.dart';
 
 @JsonSerializable()
 class Food{
-  Food(
-      this.name,
-      this.description,
-      this.mealType,
-      );
+  Food({
+    required this.name,
+    required this.description,
+    required this.mealType,
+  });
 
   String  name ;
   String  description ;

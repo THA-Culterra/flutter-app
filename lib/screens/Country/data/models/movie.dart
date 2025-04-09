@@ -5,7 +5,7 @@ import 'tv_program.dart';
 @JsonSerializable()
 class Movie implements TvProgram {
 
-  Movie(this.name, this.image);
+  Movie({required this.name, required this.image});
 
   @override
   final String name;

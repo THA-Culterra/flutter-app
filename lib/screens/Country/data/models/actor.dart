@@ -1,15 +1,14 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'tv_program.dart';
+import 'person.dart';
 
 @JsonSerializable()
-class TvShow implements TvProgram {
-
-  TvShow(this.name, this.image);
+class Actor implements Person {
+  Actor({required this.name, required this.age});
 
   @override
   final String name;
 
   @override
-  final String image;
+  final int age;
 }

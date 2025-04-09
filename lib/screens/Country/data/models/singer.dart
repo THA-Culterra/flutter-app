@@ -5,7 +5,11 @@ import 'song.dart';
 
 @JsonSerializable()
 class Singer implements Person {
-  Singer(this.name, this.age, this.songs);
+  Singer({
+    required this.name,
+    required this.age,
+    required this.songs
+  });
 
   @override
   final String name;

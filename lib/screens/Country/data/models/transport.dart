@@ -5,12 +5,12 @@ import 'metro.dart';
 
 @JsonSerializable()
 class Transport {
-  Transport(
-      this.airports,
-      this.drivingSide,
-      this.taxiApps,
-      this.metroSystems,
-      );
+  Transport({
+    required this.airports,
+    required this.drivingSide,
+    required this.taxiApps,
+    required this.metroSystems,
+  });
 
   List<String>  airports ;
   DrivingSide  drivingSide ;

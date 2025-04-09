@@ -7,12 +7,12 @@ import 'tv_show.dart';
 
 @JsonSerializable()
 class Cinema{
-  Cinema(
-      this.topMovies,
-      this.topTvShows,
-      this.famousActors,
-      this.directors,
-      );
+  Cinema({
+    required this.topMovies,
+    required this.topTvShows,
+    required this.famousActors,
+    required this.directors,
+  });
 
   List<Movie>  topMovies ;
   List<TvShow>  topTvShows ;

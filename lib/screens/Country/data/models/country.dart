@@ -11,29 +11,29 @@ import 'transport.dart';
 
 @JsonSerializable()
 class Country{
-  Country(
-      this.id,
-      this.name,
-      this.description,
-      this.capitale,
-      this.majorCities,
-      this.language,
-      this.currency,
-      this.religion,
-      this.dialCode,
-      this.food,
-      this.music,
-      this.cinema,
-      this.history,
-      this.sport,
-      this.transport,
-      this.emergency,
-      );
+  Country({required this.id,
+    required this.name,
+    required this.imageUrl,
+    required this.description,
+    required this.capital,
+    required this.majorCities,
+    required this.language,
+    required this.currency,
+    required this.religion,
+    required this.dialCode,
+    required this.food,
+    required this.music,
+    required this.cinema,
+    required this.history,
+    required this.sport,
+    required this.transport,
+    required this.emergency});
 
   String  id ;
   String  name ;
+  String imageUrl;
   String  description ;
-  String  capitale ;
+  String  capital ;
   List<String>  majorCities ;
   String  language ;
   String  currency ;
