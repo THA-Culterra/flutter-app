@@ -8,8 +8,8 @@ class Emergency{
     required this.fire,
   });
 
-  String  police ;
-  String  ambulance ;
-  String  fire ;
+  int  police ;
+  int  ambulance ;
+  int  fire ;
 
 }

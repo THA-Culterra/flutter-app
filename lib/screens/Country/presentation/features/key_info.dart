@@ -19,23 +19,26 @@ class KeyInfoScreen extends StatelessWidget {
               spacing: 16,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                description("Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et..."),
+                description(country.description),
 
-                capitalItem("Algiers"),
+                capitalItem(country.capital),
 
                 Wrap(
                   spacing: 8,
                   runSpacing: 8,
-                  children: List.generate(10, (index) => city("City$index${index+1}")),
+                  children: List.generate(
+                      country.majorCities.length,
+                          (index) => city(country.majorCities[index])
+                  ),
                 ),
 
-                labelResponse("Official Language(s)", "Arabic, Amazigh"),
+                labelResponse("Official Language(s)", country.languages),
 
-                labelResponse("Currency", "Algerian dinar"),
+                labelResponse("Currency", ["Algerian dinar"]),
 
-                labelResponse("Major Religions", "Islam"),
+                labelResponse("Major Religions", ["Islam"]),
 
-                labelResponse("Dial Code", "+213")
+                labelResponse("Dial Code", ["+213"])
               ],
             ),
         ),
@@ -45,7 +48,7 @@ class KeyInfoScreen extends StatelessWidget {
     );
   }
 
-  Column labelResponse(String label, String response) {
+  Column labelResponse(String label, List<String> response) {
     return Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -59,7 +62,7 @@ class KeyInfoScreen extends StatelessWidget {
                 ),
               ),
               Text(
-                response,
+                response.join(", "),
                 style: TextStyle(
                   fontSize: 16,
                   color: Colors.black,

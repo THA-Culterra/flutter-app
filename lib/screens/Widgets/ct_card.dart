@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+
+import '../Country/data/models/dish.dart';
 class CTCard extends StatelessWidget {
   const CTCard({
     super.key,
-    required this.name,
+    required this.dish,
   });
 
-  final String name;
+  final Dish dish;
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class CTCard extends StatelessWidget {
             Image.asset(
               width: 120,
               height: 150,
-              'lib/core/assets/Couscous.png',
+              dish.imageUrl,
               fit: BoxFit.cover,
               opacity: const AlwaysStoppedAnimation(0.8), // Adjust opacity if needed
             ),
@@ -43,7 +45,7 @@ class CTCard extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(4.0),
           child: Text(
-              "Couscous",
+              dish.name,
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.white,

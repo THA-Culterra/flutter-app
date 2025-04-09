@@ -30,7 +30,7 @@ class CountryViewModel {
       description: 'Algeria is a country in North Africa...',
       capital: 'Algiers',
       majorCities: ['Algiers', 'Oran', 'Constantine'],
-      language: 'Arabic',
+      languages: ['Arabic', "Amazigh"],
       currency: 'DZD',
       religion: Religion.islam,
       dialCode: '+213',
@@ -38,18 +38,23 @@ class CountryViewModel {
         dishes: [
           Dish(
             name: "Couscous",
-            description: "A staple dish made of steamed semolina served with vegetables and meat.",
+            description:
+                "A staple dish made of steamed semolina served with vegetables and meat.",
             mealType: MealType.dinner,
+            imageUrl: 'lib/core/assets/Couscous.png',
           ),
           Dish(
             name: "Chakchouka",
             description: "A spicy tomato and pepper stew with poached eggs.",
             mealType: MealType.breakfast,
+            imageUrl: 'lib/core/assets/Couscous.png',
           ),
           Dish(
             name: "Makroud",
-            description: "A sweet pastry filled with dates and nuts, often served with tea.",
+            description:
+                "A sweet pastry filled with dates and nuts, often served with tea.",
             mealType: MealType.dessert,
+            imageUrl: 'lib/core/assets/Couscous.png',
           ),
         ],
         restaurants: [
@@ -76,33 +81,33 @@ class CountryViewModel {
       music: Music(
         genres: [
           Genre(name: 'Raï', image: 'raï_image.jpg'),
-          Genre(name: 'Chaabi', image: 'chaabi_image.jpg')
+          Genre(name: 'Chaabi', image: 'chaabi_image.jpg'),
         ],
         topSongs: [
           Song(name: 'Didi', views: 1000),
-          Song(name: 'Abdel Kader', views: 2000)
+          Song(name: 'Abdel Kader', views: 2000),
         ],
         notableSingers: [
           Singer(name: 'Cheb Khaled', age: 60, songs: []),
-          Singer(name: 'Warda', age: 65, songs: [])
+          Singer(name: 'Warda', age: 65, songs: []),
         ],
       ),
       cinema: Cinema(
         topMovies: [
           Movie(name: 'The Battle of Algiers', image: 'battle.jpg'),
-          Movie(name: 'Outside the Law', image: 'outside.jpg')
+          Movie(name: 'Outside the Law', image: 'outside.jpg'),
         ],
         topTvShows: [
           TvShow(name: 'Algerian Comedy', image: 'comedy.jpg'),
-          TvShow(name: 'Algerian Talk Show', image: 'talkshow.jpg')
+          TvShow(name: 'Algerian Talk Show', image: 'talkshow.jpg'),
         ],
         famousActors: [
           Actor(name: 'Sami Bouajila', age: 50),
-          Actor(name: 'Leila Bekhti', age: 38)
+          Actor(name: 'Leila Bekhti', age: 38),
         ],
         directors: [
           Director(name: 'Rachid Bouchareb', age: 60),
-          Director(name: 'Merzak Allouache', age: 72)
+          Director(name: 'Merzak Allouache', age: 72),
         ],
       ),
       history: History(
@@ -112,19 +117,18 @@ class CountryViewModel {
       ),
       sport: Sport(),
       transport: Transport(
-        airports: ['Houari Boumediene International Airport', 'Oran Ahmed Ben Bella Airport'],
+        airports: [
+          'Houari Boumediene International Airport',
+          'Oran Ahmed Ben Bella Airport',
+        ],
         drivingSide: DrivingSide.right,
         taxiApps: ['Uber', 'Yassir'],
         metroSystems: [
           Metro(city: 'Algiers', image: 'algiers_metro.jpg'),
-          Metro(city: 'Oran', image: 'oran_metro.jpg')
+          Metro(city: 'Oran', image: 'oran_metro.jpg'),
         ],
       ),
-      emergency: Emergency(
-        police: '17',
-        ambulance: '14',
-        fire: '19',
-      ),
+      emergency: Emergency(police: 17, ambulance: 14, fire: 19),
     );
   }
 }

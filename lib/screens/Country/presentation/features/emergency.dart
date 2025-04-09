@@ -28,9 +28,9 @@ class EmergencyScreen extends StatelessWidget {
                   fontWeight: FontWeight.w800,
                 ),
               ),
-              emergencyRow("police", "Police", 1548),
-              emergencyRow("ambulance", "Ambulance", 14),
-              emergencyRow("fire", "Fire", 14)
+              emergencyRow("police", "Police", emergency.police),
+              emergencyRow("ambulance", "Ambulance", emergency.ambulance),
+              emergencyRow("fire", "Fire", emergency.fire)
             ]
           ),
 

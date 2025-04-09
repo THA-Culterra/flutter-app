@@ -18,7 +18,7 @@ class Country{
     required this.description,
     required this.capital,
     required this.majorCities,
-    required this.language,
+    required this.languages,
     required this.currency,
     required this.religion,
     required this.dialCode,
@@ -36,7 +36,7 @@ class Country{
   String  description ;
   String  capital ;
   List<String>  majorCities ;
-  String  language ;
+  List<String>  languages ;
   String  currency ;
   Religion  religion ;
   String  dialCode ;

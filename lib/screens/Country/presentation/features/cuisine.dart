@@ -53,28 +53,17 @@ class CuisineScreen extends StatelessWidget {
                         decoration: TextDecoration.none,
                       )
                   ),
-                  LabeledLink(
-                      link: '',
-                      primLabel: 'Yulmaz',
-                      secLabel: 'Algiers',
-                      icon: 'pin',
-                      imagePath: 'lib/core/assets/restau_placeholder.png'
-                  ),
-
-                  LabeledLink(
-                      link: '',
-                      primLabel: 'Yacine',
-                      secLabel: 'Oran',
-                      icon: 'pin',
-                      imagePath: 'lib/core/assets/restau_placeholder.png'
-                  ),
-
-                  LabeledLink(
-                      link: '',
-                      primLabel: 'El Maida',
-                      secLabel: 'Algiers',
-                      icon: 'pin',
-                      imagePath: 'lib/core/assets/restau_placeholder.png'
+                  Column(
+                    spacing: 16,
+                    children: cuisine.restaurants.map((restaurant) {
+                      return LabeledLink(
+                        link: '',
+                        primLabel: restaurant.name,
+                        secLabel: restaurant.city,
+                        icon: 'pin',
+                        imagePath: 'lib/core/assets/restau_placeholder.png',
+                      );
+                    }).toList(),
                   ),
                 ],
               ),
@@ -161,21 +150,16 @@ class CuisineScreen extends StatelessWidget {
             decoration: TextDecoration.none,
           )
           ),
-        SizedBox(
-          height: 150,
-          child: ListView(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            children: [
-              CTCard(name: "Couscous"),
-              SizedBox(width: 16),
-              CTCard(name: "Couscous"),
-              SizedBox(width: 16),
-              CTCard(name: "Couscous"),
-            ],
-          ),
-        )
-
+          SizedBox(
+            height: 150,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemCount: cuisine.dishes.length,
+              separatorBuilder: (context, _) => SizedBox(width: 16),
+              itemBuilder: (context, index) => CTCard(dish: cuisine.dishes[index]),
+            ),
+          )
       ]);
   }
 }
