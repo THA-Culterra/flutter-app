@@ -1,8 +1,9 @@
 import 'package:json_annotation/json_annotation.dart';
 
 import 'cinema.dart';
+import 'cuisine.dart';
 import 'emergency.dart';
-import 'food.dart';
+import 'dish.dart';
 import 'history.dart';
 import 'music.dart';
 import 'religion.dart';
@@ -21,7 +22,7 @@ class Country{
     required this.currency,
     required this.religion,
     required this.dialCode,
-    required this.food,
+    required this.cuisine,
     required this.music,
     required this.cinema,
     required this.history,
@@ -39,12 +40,11 @@ class Country{
   String  currency ;
   Religion  religion ;
   String  dialCode ;
-  List<Food>  food ;
+  Cuisine cuisine ;
   Music  music ;
   Cinema  cinema ;
   History  history ;
   Sport  sport ;
   Transport  transport ;
-  Emergency  emergency ;
-
+  Emergency  emergency;
 }

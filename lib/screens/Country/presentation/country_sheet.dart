@@ -117,7 +117,7 @@ class _CountrySheetState extends State<CountrySheet> {
                   delegate: SliverChildListDelegate([
                     Container(
                       color: Colors.grey[100],
-                      child: selectedCategory.content,
+                      child: selectedCategory.buildContent(widget.country),
                     ),
                   ]),
                 ),
