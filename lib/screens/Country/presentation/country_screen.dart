@@ -6,10 +6,17 @@ class CountryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        SizedBox(height: 50),
-        CountrySheet()
+          Image.asset(
+            "lib/core/assets/country_placeholder.jpg",
+            width: 440,
+            height: 500,
+            fit: BoxFit.cover,
+          ),
+        Positioned(
+          child: CountrySheet(),
+        ),
       ],
     );
   }

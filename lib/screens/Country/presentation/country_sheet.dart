@@ -18,7 +18,7 @@ class _CountrySheetState extends State<CountrySheet> {
     return Expanded(
       child: DraggableScrollableSheet(
         initialChildSize: 0.5,
-        minChildSize: 0.2,
+        minChildSize: 0.45,
         maxChildSize: 1,
         builder: (context, scrollController) {
           return
