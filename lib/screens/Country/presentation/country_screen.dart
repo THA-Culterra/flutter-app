@@ -8,15 +8,33 @@ class CountryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-          Image.asset(
-            "lib/core/assets/country_placeholder.jpg",
-            width: 440,
-            height: 500,
-            fit: BoxFit.cover,
-          ),
+        Stack(
+          children: [
+            Image.asset(
+              "lib/core/assets/country_placeholder.jpg",
+              width: 440,
+              height: 500,
+              fit: BoxFit.cover,
+            ),
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    begin: Alignment.bottomCenter,
+                    end: Alignment.topCenter,
+                    colors: [
+                      Colors.black.withOpacity(0.7), // Dark at bottom
+                      Colors.transparent, // Fully transparent at top
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ]
+        ),
         Positioned(
           child: CountrySheet(),
-        ),
+        )
       ],
     );
   }
