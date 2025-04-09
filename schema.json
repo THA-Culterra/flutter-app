@@ -1,0 +1,36 @@
+{
+  "countries": {
+    "algeria": {
+      "id": "algeria",
+      "name": "Algeria",
+      "imageUrl": "https://example.com/algeria.jpg",
+      "description": "A country in North Africa...",
+      "capital": "Algiers",
+      "majorCities": ["Algiers", "Oran", "Constantine"],
+      "language": "Arabic",
+      "currency": "DZD",
+      "religion": "islam",
+      "dialCode": "+213",
+      "cuisine": {
+        "dishes": [
+          {
+            "name": "Couscous",
+            "description": "Traditional dish",
+            "mealType": "dinner",
+            "imageUrl": "lib/core/assets/Couscous.png"
+          },
+          {
+            "name": "Chakhchoukha",
+            "description": "Spicy dish",
+            "mealType": "lunch",
+            "imageUrl": "lib/core/assets/Couscous.png"
+          }
+        ],
+        "restaurants": [
+          {"name": "Yulmaz", "city": "Algiers", "latitude": 36.75, "longitude": 3.06},
+          {"name": "El Maida", "city": "Oran", "latitude": 35.69, "longitude": -0.63}
+        ]
+      }
+    }
+  }
+}

@@ -34,11 +34,11 @@ class KeyInfoScreen extends StatelessWidget {
 
                 labelResponse("Official Language(s)", country.languages),
 
-                labelResponse("Currency", [country.currency]),
+                labelResponse("Currency", country.currency),
 
-                labelResponse("Major Religions", [country.religion.name]),
+                labelResponse("Major Religions", country.religion.name),
 
-                labelResponse("Dial Code", [country.dialCode])
+                labelResponse("Dial Code", country.dialCode)
               ],
             ),
         ),
@@ -48,30 +48,33 @@ class KeyInfoScreen extends StatelessWidget {
     );
   }
 
-  Column labelResponse(String label, List<String> response) {
+  Column labelResponse(String label, dynamic response) {
+    // Check if the response is a List or a String, and convert to a list if necessary
+    List<String> responseList = response is List<String> ? response : [response];
+
     return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                label,
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.grey[700],
-                  fontWeight: FontWeight.w700,
-                  decoration: TextDecoration.none,
-                ),
-              ),
-              Text(
-                response.join(", "),
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w500,
-                  decoration: TextDecoration.none,
-                ),
-              ),
-              ]
-          );
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 15,
+            color: Colors.grey[700],
+            fontWeight: FontWeight.w700,
+            decoration: TextDecoration.none,
+          ),
+        ),
+        Text(
+          responseList.join(", "), // Join the list into a single string
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.black,
+            fontWeight: FontWeight.w500,
+            decoration: TextDecoration.none,
+          ),
+        ),
+      ],
+    );
   }
 
   Container city(String name) {

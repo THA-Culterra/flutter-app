@@ -10,7 +10,6 @@ class History{
   });
 
   DateTime nationalDay ;
-  List<DateTime>  publicHolidays ;
-  List<DateTime>  keyEvents ;
-
+  Map<String, DateTime> publicHolidays;
+  Map<String, DateTime> keyEvents;
 }

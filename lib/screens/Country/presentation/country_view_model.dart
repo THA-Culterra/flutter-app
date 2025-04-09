@@ -38,8 +38,7 @@ class CountryViewModel {
         dishes: [
           Dish(
             name: "Couscous",
-            description:
-                "A staple dish made of steamed semolina served with vegetables and meat.",
+            description: "A staple dish made of steamed semolina served with vegetables and meat.",
             mealType: MealType.dinner,
             imageUrl: 'lib/core/assets/Couscous.png',
           ),
@@ -51,8 +50,7 @@ class CountryViewModel {
           ),
           Dish(
             name: "Makroud",
-            description:
-                "A sweet pastry filled with dates and nuts, often served with tea.",
+            description: "A sweet pastry filled with dates and nuts, often served with tea.",
             mealType: MealType.dessert,
             imageUrl: 'lib/core/assets/Couscous.png',
           ),
@@ -112,8 +110,14 @@ class CountryViewModel {
       ),
       history: History(
         nationalDay: DateTime(1962, 7, 5),
-        publicHolidays: [DateTime(2025, 1, 1), DateTime(2025, 5, 1)],
-        keyEvents: [DateTime(1954, 11, 1), DateTime(1962, 3, 19)],
+        publicHolidays: {
+          "New Year's Day": DateTime(2025, 1, 1),
+          "Labor Day": DateTime(2025, 5, 1),
+        },
+        keyEvents: {
+          "Start of the Algerian War": DateTime(1954, 11, 1),
+          "Independence Day": DateTime(1962, 3, 19),
+        },
       ),
       sport: Sport(),
       transport: Transport(
