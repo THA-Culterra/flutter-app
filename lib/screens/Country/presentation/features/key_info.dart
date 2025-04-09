@@ -34,11 +34,11 @@ class KeyInfoScreen extends StatelessWidget {
 
                 labelResponse("Official Language(s)", country.languages),
 
-                labelResponse("Currency", ["Algerian dinar"]),
+                labelResponse("Currency", [country.currency]),
 
-                labelResponse("Major Religions", ["Islam"]),
+                labelResponse("Major Religions", [country.religion.name]),
 
-                labelResponse("Dial Code", ["+213"])
+                labelResponse("Dial Code", [country.dialCode])
               ],
             ),
         ),
@@ -77,7 +77,7 @@ class KeyInfoScreen extends StatelessWidget {
   Container city(String name) {
     return Container(
             decoration: BoxDecoration(
-              color: Colors.grey[350],
+              color: Colors.grey[300],
               borderRadius: BorderRadius.all(Radius.circular(8)),
             ),
             child: Padding(
@@ -117,7 +117,7 @@ class KeyInfoScreen extends StatelessWidget {
                     child: Container(
                       height: 70,
                       decoration: BoxDecoration(
-                        color: Colors.grey[350],
+                        color: Colors.grey[300],
                         borderRadius: BorderRadius.horizontal(left: Radius.circular(8)),
                       ),
                       alignment: Alignment.centerLeft, // Center vertically, align left
