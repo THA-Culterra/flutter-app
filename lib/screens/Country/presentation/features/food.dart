@@ -4,9 +4,12 @@ import 'package:flutter_svg/svg.dart';
 
 import '../../../Widgets/ct_card.dart';
 import '../../../Widgets/labeled_link.dart';
+import '../../data/models/food.dart';
 
 class FoodScreen extends StatelessWidget {
-  const FoodScreen({super.key});
+  const FoodScreen({super.key, required this.food});
+
+  final Food food;
 
   @override
   Widget build(BuildContext context) {

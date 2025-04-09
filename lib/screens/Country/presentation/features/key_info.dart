@@ -2,8 +2,12 @@ import 'package:culterra/screens/Widgets/report_suggestion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../../data/models/country.dart';
+
 class KeyInfoScreen extends StatelessWidget {
-  const KeyInfoScreen({super.key});
+  const KeyInfoScreen({super.key, required this.country});
+
+  final Country country;
 
   @override
   Widget build(BuildContext context) {

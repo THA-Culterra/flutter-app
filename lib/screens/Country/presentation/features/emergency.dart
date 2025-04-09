@@ -2,8 +2,12 @@ import 'package:culterra/screens/Widgets/report_suggestion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../data/models/emergency.dart';
+
 class EmergencyScreen extends StatelessWidget {
-  const EmergencyScreen({super.key});
+  const EmergencyScreen({super.key, required this.emergency});
+
+  final Emergency emergency;
 
   @override
   Widget build(BuildContext context) {
