@@ -11,4 +11,8 @@ class Director implements Person {
 
   @override
   final int age;
+
+  Director.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        age = json['age'];
 }

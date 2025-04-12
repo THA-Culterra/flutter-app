@@ -4,7 +4,6 @@ import 'tv_program.dart';
 
 @JsonSerializable()
 class Movie implements TvProgram {
-
   Movie({required this.name, required this.image});
 
   @override
@@ -12,4 +11,8 @@ class Movie implements TvProgram {
 
   @override
   final String image;
+
+  Movie.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        image = json['image'];
 }

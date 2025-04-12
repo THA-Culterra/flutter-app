@@ -48,4 +48,26 @@ class Country{
   Athletics  athletics ;
   Transport  transport ;
   Emergency  emergency;
+
+  Country.fromJson(Map<String, dynamic> json)
+      : id = json['id'],
+        name = json['name'],
+        imageUrl = json['imageUrl'],
+        description = json['description'],
+        capital = json['capital'],
+        majorCities = List<String>.from(json['majorCities']),
+        languages = List<String>.from(json['languages']),
+        currency = json['currency'],
+        religion = Religion.values.firstWhere(
+              (e) => e.toString().split('.').last == json['religion'],
+          orElse: () => Religion.islam, // default if not matched
+        ),
+        dialCode = json['dialCode'],
+        cuisine = Cuisine.fromJson(json['cuisine']),
+        music = Music.fromJson(json['music']),
+        cinema = Cinema.fromJson(json['cinema']),
+        history = History.fromJson(json['history']),
+        athletics = Athletics.fromJson(json['athletics']),
+        transport = Transport.fromJson(json['transport']),
+        emergency = Emergency.fromJson(json['emergency']);
 }

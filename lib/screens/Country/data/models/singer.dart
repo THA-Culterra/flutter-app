@@ -8,7 +8,7 @@ class Singer implements Person {
   Singer({
     required this.name,
     required this.age,
-    required this.songs
+    required this.songs,
   });
 
   @override
@@ -18,4 +18,11 @@ class Singer implements Person {
   final int age;
 
   List<Song> songs;
+
+  Singer.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        age = json['age'],
+        songs = (json['songs'] as List<dynamic>)
+            .map((songJson) => Song.fromJson(songJson))
+            .toList();
 }

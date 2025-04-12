@@ -12,8 +12,17 @@ class Transport {
     required this.metroSystems,
   });
 
-  List<String>  airports ;
-  DrivingSide  drivingSide ;
-  List<String>  taxiApps ;
-  List<Metro>  metroSystems;
+  List<String> airports;
+  DrivingSide drivingSide;
+  List<String> taxiApps;
+  List<Metro> metroSystems;
+
+  Transport.fromJson(Map<String, dynamic> json)
+      : airports = List<String>.from(json['airports']),
+        drivingSide = DrivingSide.values
+            .firstWhere((e) => e.toString() == 'DrivingSide.' + json['drivingSide']),
+        taxiApps = List<String>.from(json['taxiApps']),
+        metroSystems = (json['metroSystems'] as List)
+            .map((metroJson) => Metro.fromJson(metroJson))
+            .toList();
 }

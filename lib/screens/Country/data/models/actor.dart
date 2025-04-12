@@ -11,4 +11,8 @@ class Actor implements Person {
 
   @override
   final int age;
+
+  Actor.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        age = json['age'];
 }

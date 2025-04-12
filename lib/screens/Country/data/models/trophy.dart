@@ -6,4 +6,8 @@ class Trophy {
 
   String name;
   int count;
+
+  Trophy.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        count = json['count'];
 }

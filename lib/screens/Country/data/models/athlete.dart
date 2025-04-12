@@ -16,4 +16,9 @@ class Athlete implements Person {
   int age;
 
   String sportName;
+
+  Athlete.fromJson(Map<String, dynamic> json)
+      : name = json['name'],
+        age = json['age'],
+        sportName = json['sportName'];
 }
