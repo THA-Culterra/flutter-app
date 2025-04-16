@@ -1,6 +1,7 @@
+
 enum Religion {
-  islam,
-  christianity,
-  judaism,
-  hinduism
+  Islam,
+  Christianity,
+  Judaism,
+  Hinduism
 }

@@ -1,3 +1,5 @@
+import 'package:culterra/screens/Country/data/repositories/country_repo.dart';
+
 import '../data/models/athlete.dart';
 import '../data/models/athletics.dart';
 import '../data/models/cuisine.dart';
@@ -25,7 +27,8 @@ import '../data/models/tv_show.dart';
 
 class CountryViewModel {
   // Function to get a country (example: Algeria)
-  Country getCountry() {
+  Future<Country?> getCountry(String id) async {
+    return await CountryRepository.shared.getCountry(id);
     return Country(
       id: 'DZ',
       name: 'Algeria',
@@ -35,7 +38,7 @@ class CountryViewModel {
       majorCities: ['Algiers', 'Oran', 'Constantine'],
       languages: ['Arabic', "Amazigh"],
       currency: 'DZD',
-      religion: Religion.islam,
+      religion: Religion.Islam,
       dialCode: '+213',
       cuisine: Cuisine(
         dishes: [

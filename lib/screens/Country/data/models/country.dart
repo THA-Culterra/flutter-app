@@ -60,7 +60,7 @@ class Country{
         currency = json['currency'],
         religion = Religion.values.firstWhere(
               (e) => e.toString().split('.').last == json['religion'],
-          orElse: () => Religion.islam, // default if not matched
+          orElse: () => Religion.Islam, // default if not matched
         ),
         dialCode = json['dialCode'],
         cuisine = Cuisine.fromJson(json['cuisine']),

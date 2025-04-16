@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 
@@ -14,9 +15,13 @@ class History {
   Map<String, DateTime> keyEvents;
 
   History.fromJson(Map<String, dynamic> json)
-      : nationalDay = DateTime.parse(json['nationalDay']),
-        publicHolidays = (json['publicHolidays'] as Map<String, dynamic>)
-            .map((key, value) => MapEntry(key, DateTime.parse(value))),
-        keyEvents = (json['keyEvents'] as Map<String, dynamic>)
-            .map((key, value) => MapEntry(key, DateTime.parse(value)));
+      : nationalDay = (json['nationalDay'] as Timestamp).toDate(),
+        publicHolidays = {
+          for (var key in json['publicHolidays'].keys)
+            key: (json['publicHolidays'][key] as Timestamp).toDate()
+        },
+        keyEvents = {
+          for (var key in json['keyEvents'].keys)
+            key: (json['keyEvents'][key] as Timestamp).toDate()
+        };
 }
