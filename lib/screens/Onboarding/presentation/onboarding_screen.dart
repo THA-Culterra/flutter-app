@@ -93,7 +93,7 @@ class OnboardingScreen extends StatelessWidget {
                 height: 48,
                 decoration: BoxDecoration(
                   color: Color(0xFFFF0350),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(16),
                 ),
                 child: Center(
                   child: Text(
