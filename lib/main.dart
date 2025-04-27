@@ -33,9 +33,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Culterra',
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: // LoginScreen(),
 
-      // CountryScreen()
+      CountryScreen()
 
       // WorldMap(
       //   onCountryTap: (id, name) {
