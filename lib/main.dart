@@ -21,7 +21,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => LoginViewModel()),
+        // ChangeNotifierProvider(create: (_) => LoginViewModel()),
         ChangeNotifierProvider(create: (context) => OnboardingViewModel())
       ],
       child: MyApp(),
@@ -39,9 +39,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Culterra',
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      // home: LoginScreen(),
 
-      // CountryScreen()
+      home: CountryScreen()
 
       // WorldMap(
       //   onCountryTap: (id, name) {

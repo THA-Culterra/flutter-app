@@ -1,12 +1,18 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../domain/entities/CTCardData.dart';
+
 @JsonSerializable()
-class Genre{
+class Genre implements CTCardData {
   Genre({
     required this.name,
-    required this.image,
+    required this.imageUrl,
   });
 
+  @override
   String  name ;
-  String  image ;
+
+  @override
+  String  imageUrl ;
+
   }

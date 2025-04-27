@@ -81,8 +81,8 @@ class CountryViewModel {
       ),
       music: Music(
         genres: [
-          Genre(name: 'Raï', image: 'raï_image.jpg'),
-          Genre(name: 'Chaabi', image: 'chaabi_image.jpg'),
+          Genre(name: 'Raï', imageUrl: 'raï_image.jpg'),
+          Genre(name: 'Chaabi', imageUrl: 'chaabi_image.jpg'),
         ],
         topSongs: [
           Song(name: 'Didi', views: 1000),
