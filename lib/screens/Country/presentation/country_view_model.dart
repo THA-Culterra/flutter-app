@@ -112,7 +112,7 @@ class CountryViewModel {
         ],
       ),
       history: History(
-        nationalDay: DateTime(1962, 7, 5),
+        nationalDay: {"Independence Day": DateTime(1962, 7, 5) },
         publicHolidays: {
           "New Year's Day": DateTime(2025, 1, 1),
           "Labor Day": DateTime(2025, 5, 1),
