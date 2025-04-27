@@ -12,15 +12,54 @@ class HistoryScreen extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(16),
       child: Column(
+        spacing: 12,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          holidaysBuilder(history.nationalDay.entries.first)
+          nationalDayBuilder(history.nationalDay.entries.first),
+
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            spacing: 16,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Public Holidays',
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black45,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.none
+                    ),
+                  ),
+                  ...holidayBuilder(history),
+                ],
+              ),
+
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Key Events',
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.black45,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.none
+                    ),
+                  ),
+                  ...eventBuilder(history),
+                ],
+              )
+            ],
+          )
         ],
       ),
     );
   }
 
-  Widget holidaysBuilder(MapEntry<String, DateTime> nationalDayEntry) {
+  Widget nationalDayBuilder(MapEntry<String, DateTime> nationalDayEntry) {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -56,5 +95,49 @@ class HistoryScreen extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  List<Widget> holidayBuilder(History history) {
+    return history.publicHolidays.entries.map((entry) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(child: Text(entry.key, style: const TextStyle(fontSize: 16, decoration: TextDecoration.none, color: Colors.black,))),
+            Text(
+              '${entry.value.day}/${entry.value.month}/${entry.value.year}',
+              style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                  decoration: TextDecoration.none
+              ),
+            ),
+          ],
+        ),
+      );
+    }).toList();
+  }
+
+  List<Widget> eventBuilder(History history) {
+    return history.keyEvents.entries.map((entry) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(child: Text(entry.key, style: const TextStyle(fontSize: 16, decoration: TextDecoration.none, color: Colors.black))),
+            Text(
+              '${entry.value.day}/${entry.value.month}/${entry.value.year}',
+              style: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                  decoration: TextDecoration.none
+              ),
+            ),
+          ],
+        ),
+      );
+    }).toList();
   }
 }
