@@ -9,6 +9,11 @@ class HistoryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Column(
+      children: [
+        Text("National Day"),
+        Text(history.nationalDay.toString())
+      ],
+    );
   }
 }

@@ -157,7 +157,7 @@ class CuisineScreen extends StatelessWidget {
               shrinkWrap: true,
               itemCount: cuisine.dishes.length,
               separatorBuilder: (context, _) => SizedBox(width: 16),
-              itemBuilder: (context, index) => CTCard(dish: cuisine.dishes[index]),
+              itemBuilder: (context, index) => CTCard(data: cuisine.dishes[index]),
             ),
           )
       ]);

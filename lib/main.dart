@@ -1,5 +1,6 @@
 import 'package:culterra/screens/Country/presentation/country_screen.dart';
 import 'package:culterra/screens/Login/presentation/login_screen.dart';
+import 'package:culterra/screens/Login/presentation/login_viewmodel.dart';
 import 'package:culterra/screens/Onboarding/presentation/onboarding_screen.dart';
 import 'package:culterra/screens/Onboarding/presentation/onboarding_viewmodel.dart';
 import 'package:culterra/screens/Widgets/world_map.dart';
@@ -17,11 +18,15 @@ void main() async {
   );
 
   await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-  
-  runApp(ChangeNotifierProvider(
-    create: (context) => OnboardingViewModel(),
-    child: MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => LoginViewModel()),
+        ChangeNotifierProvider(create: (context) => OnboardingViewModel())
+      ],
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -30,6 +35,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Culterra',
       debugShowCheckedModeBanner: false,

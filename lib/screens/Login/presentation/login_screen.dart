@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../Widgets/gradient_background.dart';
 import '../domain/provider.dart';
 import 'login_prov_builder.dart';
+import 'login_viewmodel.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,28 +21,36 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool obscurePassword = true;
 
-  void _onProviderPressed(Provider provider) {
-    if (provider == Provider.email) {
-      setState(() => showEmailFields = true);
-    } else {
-      // Handle other providers (Google, Apple, Facebook)
-      print("${provider.title} tapped");
-      // TODO: Implement provider authentication
-    }
+  void _onProviderPressed(LoginProvider provider) {
+      switch (provider) {
+        case LoginProvider.google:
+          context.read<LoginViewModel>().signInWithGoogle();
+          break;
+        case LoginProvider.apple:
+          context.read<LoginViewModel>().signInWithApple();
+        case LoginProvider.facebook:
+          context.read<LoginViewModel>().signInWithFacebook();
+        case LoginProvider.email:
+          setState(() => showEmailFields = true);
+      }
   }
 
   void _onEmailContinuePressed() {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
-    // TODO: Handle email sign in or sign up logic here
-    print("Email: $email, Password: $password");
+    context.read<LoginViewModel>().signInWithEmail(email, password);
   }
 
   @override
   Widget build(BuildContext context) {
     final double verticalPadding = MediaQuery.of(context).padding.top + 16;
+    final viewModel = context.watch<LoginViewModel>();
+    final isLoading = viewModel.isLoading;
+    final error = viewModel.errorMessage;
 
-    return Scaffold(
+    return ChangeNotifierProvider(
+      create: (_) => LoginViewModel(),
+      child: Scaffold(
       body: GradientBackground(
         child: Padding(
           padding: EdgeInsets.symmetric(
@@ -125,9 +135,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const Spacer(),
                     ElevatedButton(
-                      onPressed: () {
-                        // TODO: Add login/signup logic here
-                      },
+                      onPressed: () => _onEmailContinuePressed(),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFFF0350),
                         minimumSize: const Size(256, 48),
@@ -146,12 +154,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ] else ...[
-                    ...Provider.values.map(
-                          (provider) => ProviderButton(
-                        provider: provider,
-                        onPressed: () => _onProviderPressed(provider),
+                    Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ...LoginProvider.values.map(
+                                (provider) => ProviderButton(
+                              provider: provider,
+                              onPressed: () => _onProviderPressed(provider),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
+
+                    // Loading Spinner
+                    if (isLoading)
+                      const Center(
+                        child: CircularProgressIndicator(),
+                      ),
                   ],
                   const Spacer(),
                   SvgPicture.asset(
@@ -186,6 +207,16 @@ class _LoginScreenState extends State<LoginScreen> {
           ),
         ),
       ),
+
+        floatingActionButton: error != null
+            ? FloatingActionButton.extended(
+          onPressed: () => context.read<LoginViewModel>().clearError(),
+          label: Text(error),
+          icon: const Icon(Icons.error),
+          backgroundColor: Colors.red,
+        )
+            : null,
+    ),
     );
   }
 }
