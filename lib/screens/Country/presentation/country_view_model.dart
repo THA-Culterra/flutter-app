@@ -81,8 +81,8 @@ class CountryViewModel {
       ),
       music: Music(
         genres: [
-          Genre(name: 'Raï', image: 'raï_image.jpg'),
-          Genre(name: 'Chaabi', image: 'chaabi_image.jpg'),
+          Genre(name: 'Raï', imageUrl: 'raï_image.jpg'),
+          Genre(name: 'Chaabi', imageUrl: 'chaabi_image.jpg'),
         ],
         topSongs: [
           Song(name: 'Didi', views: 1000),
@@ -112,7 +112,7 @@ class CountryViewModel {
         ],
       ),
       history: History(
-        nationalDay: DateTime(1962, 7, 5),
+        nationalDay: {"Independence Day": DateTime(1962, 7, 5) },
         publicHolidays: {
           "New Year's Day": DateTime(2025, 1, 1),
           "Labor Day": DateTime(2025, 5, 1),

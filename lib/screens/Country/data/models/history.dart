@@ -9,7 +9,7 @@ class History{
     required this.keyEvents,
   });
 
-  DateTime nationalDay ;
+  Map<String, DateTime> nationalDay;
   Map<String, DateTime> publicHolidays;
   Map<String, DateTime> keyEvents;
 }
