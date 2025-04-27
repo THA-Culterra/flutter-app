@@ -13,6 +13,7 @@ class HistoryScreen extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       child: Column(
         spacing: 12,
+
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           nationalDayBuilder(history.nationalDay.entries.first),
