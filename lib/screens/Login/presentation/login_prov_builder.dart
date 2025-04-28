@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../domain/provider.dart';
 
 class ProviderButton extends StatelessWidget {
-  final Provider provider;
+  final LoginProvider provider;
   final VoidCallback onPressed;
 
   const ProviderButton({
