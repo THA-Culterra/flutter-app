@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum Provider {
+enum LoginProvider {
   google(
     title: "Google",
     icon: "google",
@@ -26,7 +26,7 @@ enum Provider {
   final String icon;
   final List<Color> colors;
 
-  const Provider({
+  const LoginProvider({
     required this.title,
     required this.icon,
     required this.colors,
