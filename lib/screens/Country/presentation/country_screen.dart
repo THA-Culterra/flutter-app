@@ -1,10 +1,13 @@
 import 'package:culterra/screens/Country/presentation/country_sheet.dart';
 import 'package:flutter/material.dart';
 
+import '../data/models/country.dart';
 import 'country_view_model.dart';
 
 class CountryScreen extends StatelessWidget {
-  CountryScreen({super.key});
+  CountryScreen({super.key, required this.country});
+
+  final Country country;
 
   final CountryViewModel countryViewModel = CountryViewModel();
 
@@ -37,7 +40,7 @@ class CountryScreen extends StatelessWidget {
           ]
         ),
         Positioned(
-          child: CountrySheet(country: countryViewModel.getCountry()),
+          child: CountrySheet(country: country),
         )
       ],
     );

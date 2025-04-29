@@ -62,7 +62,7 @@ class _CountrySheetState extends State<CountrySheet> {
                     opacity: _showAppBar ? 1.0 : 0.0, // Fade in/out depending on _showAppBar
                     child: _showAppBar
                         ? Text(
-                      "Algeria",
+                      widget.country.name,
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 20,
@@ -84,7 +84,7 @@ class _CountrySheetState extends State<CountrySheet> {
                         padding: EdgeInsets.all(16),
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Algeria",
+                          widget.country.name,
                           style: TextStyle(
                             color: Colors.white,
                             decoration: TextDecoration.none,
