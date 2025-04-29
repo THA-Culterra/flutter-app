@@ -1,9 +1,7 @@
-import 'package:culterra/screens/Country/presentation/country_screen.dart';
+import 'package:culterra/screens/Home/presentation/HomeScreen.dart';
 import 'package:culterra/screens/Login/presentation/login_screen.dart';
 import 'package:culterra/screens/Login/presentation/login_viewmodel.dart';
-import 'package:culterra/screens/Onboarding/presentation/onboarding_screen.dart';
 import 'package:culterra/screens/Onboarding/presentation/onboarding_viewmodel.dart';
-import 'package:culterra/screens/Widgets/world_map.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -39,7 +37,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Culterra',
       debugShowCheckedModeBanner: false,
-      home: (user != null) ? WorldMap() : LoginScreen(),
+      home: (user != null) ? HomeScreen() : LoginScreen(),
     );
   }
 }

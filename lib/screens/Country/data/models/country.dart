@@ -1,15 +1,15 @@
-import 'package:culterra/screens/Country/data/models/athletics.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'cinema.dart';
 import 'cuisine.dart';
 import 'emergency.dart';
-import 'dish.dart';
 import 'history.dart';
 import 'music.dart';
 import 'religion.dart';
-import 'sport.dart';
 import 'transport.dart';
+import 'athletics.dart';
+
+part 'country.g.dart';
 
 @JsonSerializable()
 class Country{
@@ -48,4 +48,10 @@ class Country{
   Athletics  athletics ;
   Transport  transport ;
   Emergency  emergency;
+
+  // A factory constructor to create a Country object from JSON
+  factory Country.fromJson(Map<String, dynamic> json) => _$CountryFromJson(json);
+
+  // A method to convert a Country object into JSON
+  Map<String, dynamic> toJson() => _$CountryToJson(this);
 }
