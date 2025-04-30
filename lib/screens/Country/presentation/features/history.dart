@@ -34,7 +34,7 @@ class HistoryScreen extends StatelessWidget {
                         decoration: TextDecoration.none
                     ),
                   ),
-                  ...holidayBuilder(history),
+                  ...datesBuilder(history.publicHolidays),
                 ],
               ),
 
@@ -50,7 +50,7 @@ class HistoryScreen extends StatelessWidget {
                         decoration: TextDecoration.none
                     ),
                   ),
-                  ...eventBuilder(history),
+                  ...datesBuilder(history.keyEvents),
                 ],
               )
             ],
@@ -61,73 +61,54 @@ class HistoryScreen extends StatelessWidget {
   }
 
   Widget nationalDayBuilder(MapEntry<String, DateTime> nationalDayEntry) {
-
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          "National Day",
-          style: TextStyle(
-              fontSize: 14,
-              color: Colors.black38,
-              fontWeight: FontWeight.bold,
-              decoration: TextDecoration.none
-          ),
-        ),
-        SizedBox(height: 8),
-        Text(
-          nationalDayEntry.key, // Name of the National Day (e.g., Independence Day)
-          style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
-              decoration: TextDecoration.none
-          ),
-        ),
-        SizedBox(height: 4),
-        Text(
-          "${nationalDayEntry.value.day}/${nationalDayEntry.value.month}/${nationalDayEntry.value.year}",
-          style: TextStyle(
-              fontSize: 16,
-              color: Colors.grey,
-              fontWeight: FontWeight.normal,
-              decoration: TextDecoration.none
-          ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "National Day",
+              style: TextStyle(
+                  fontSize: 14,
+                  color: Colors.black38,
+                  fontWeight: FontWeight.bold,
+                  decoration: TextDecoration.none
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              nationalDayEntry.key, // Name of the National Day (e.g., Independence Day)
+              style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  decoration: TextDecoration.none
+              ),
+            ),
+            SizedBox(height: 4),
+            Text(
+              "${nationalDayEntry.value.day}/${nationalDayEntry.value.month}/${nationalDayEntry.value.year}",
+              style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                  fontWeight: FontWeight.normal,
+                  decoration: TextDecoration.none
+              ),
+            ),
+          ],
         ),
       ],
     );
   }
 
-  List<Widget> holidayBuilder(History history) {
-    return history.publicHolidays.entries.map((entry) {
+  List<Widget> datesBuilder(Map<String, DateTime> dates) {
+    return dates.entries.map((entry) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 6),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(child: Text(entry.key, style: const TextStyle(fontSize: 16, decoration: TextDecoration.none, color: Colors.black,))),
-            Text(
-              '${entry.value.day}/${entry.value.month}/${entry.value.year}',
-              style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.grey,
-                  decoration: TextDecoration.none
-              ),
-            ),
-          ],
-        ),
-      );
-    }).toList();
-  }
-
-  List<Widget> eventBuilder(History history) {
-    return history.keyEvents.entries.map((entry) {
-      return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 6),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(child: Text(entry.key, style: const TextStyle(fontSize: 16, decoration: TextDecoration.none, color: Colors.black))),
             Text(
               '${entry.value.day}/${entry.value.month}/${entry.value.year}',
               style: const TextStyle(

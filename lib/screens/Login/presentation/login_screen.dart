@@ -1,9 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
 
 import '../../Widgets/gradient_background.dart';
+import '../../Widgets/world_map.dart';
 import '../domain/provider.dart';
 import 'login_prov_builder.dart';
+import 'login_viewmodel.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -19,25 +23,45 @@ class _LoginScreenState extends State<LoginScreen> {
 
   bool obscurePassword = true;
 
-  void _onProviderPressed(Provider provider) {
-    if (provider == Provider.email) {
-      setState(() => showEmailFields = true);
-    } else {
-      // Handle other providers (Google, Apple, Facebook)
-      print("${provider.title} tapped");
-      // TODO: Implement provider authentication
+  void _onProviderPressed(LoginProvider provider, LoginViewModel viewModel) {
+    switch (provider) {
+      case LoginProvider.google:
+        viewModel.signInWithGoogle();
+        break;
+      case LoginProvider.facebook:
+        viewModel.signInWithFacebook();
+        break;
+      case LoginProvider.apple:
+        viewModel.signInWithApple();
+        break;
+      case LoginProvider.email:
+        setState(() => showEmailFields = true);
+        break;
     }
   }
 
-  void _onEmailContinuePressed() {
+  void _checkUserAndNavigate(BuildContext context, LoginViewModel viewModel) {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      // User is signed in, navigate to CountryScreen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => WorldMap()), // Navigate to the CountryScreen
+      );
+    } else {
+      viewModel.setError('Authentication failed');
+    }
+  }
+
+  void _onEmailContinuePressed(LoginViewModel viewModel) {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
-    // TODO: Handle email sign in or sign up logic here
-    print("Email: $email, Password: $password");
+    viewModel.signInWithEmail(email, password);
   }
 
   @override
   Widget build(BuildContext context) {
+    final viewModel = Provider.of<LoginViewModel>(context);
     final double verticalPadding = MediaQuery.of(context).padding.top + 16;
 
     return Scaffold(
@@ -125,9 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     const Spacer(),
                     ElevatedButton(
-                      onPressed: () {
-                        // TODO: Add login/signup logic here
-                      },
+                      onPressed: () => _onEmailContinuePressed(viewModel),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0xFFFF0350),
                         minimumSize: const Size(256, 48),
@@ -146,10 +168,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ] else ...[
-                    ...Provider.values.map(
+                    ...LoginProvider.values.map(
                           (provider) => ProviderButton(
                         provider: provider,
-                        onPressed: () => _onProviderPressed(provider),
+                        onPressed: () => _onProviderPressed(provider, viewModel),
                       ),
                     ),
                   ],

@@ -9,19 +9,26 @@ PODS:
     - GoogleUtilities/Environment (~> 8.0)
     - GoogleUtilities/UserDefaults (~> 8.0)
     - PromisesObjC (~> 2.4)
-  - FBAEMKit (17.0.3):
-    - FBSDKCoreKit_Basics (= 17.0.3)
-  - FBSDKCoreKit (17.0.3):
-    - FBAEMKit (= 17.0.3)
-    - FBSDKCoreKit_Basics (= 17.0.3)
-  - FBSDKCoreKit_Basics (17.0.3)
-  - FBSDKLoginKit (17.0.3):
-    - FBSDKCoreKit (= 17.0.3)
+  - cloud_firestore (5.6.7):
+    - Firebase/Firestore (= 11.10.0)
+    - firebase_core
+    - Flutter
+  - FBAEMKit (17.1.0):
+    - FBSDKCoreKit_Basics (= 17.1.0)
+  - FBSDKCoreKit (17.1.0):
+    - FBAEMKit (= 17.1.0)
+    - FBSDKCoreKit_Basics (= 17.1.0)
+  - FBSDKCoreKit_Basics (17.1.0)
+  - FBSDKLoginKit (17.1.0):
+    - FBSDKCoreKit (= 17.1.0)
   - Firebase/Auth (11.10.0):
     - Firebase/CoreOnly
     - FirebaseAuth (~> 11.10.0)
   - Firebase/CoreOnly (11.10.0):
     - FirebaseCore (~> 11.10.0)
+  - Firebase/Firestore (11.10.0):
+    - Firebase/CoreOnly
+    - FirebaseFirestore (~> 11.10.0)
   - firebase_auth (5.5.2):
     - Firebase/Auth (= 11.10.0)
     - firebase_core
@@ -71,8 +78,8 @@ PODS:
     - nanopb (~> 3.30910.0)
   - FirebaseSharedSwift (11.10.0)
   - Flutter (1.0.0)
-  - flutter_facebook_auth (6.2.0):
-    - FBSDKLoginKit (~> 17.0.0)
+  - flutter_facebook_auth (7.1.1):
+    - FBSDKLoginKit (~> 17.1.0)
     - Flutter
   - flutter_secure_storage (6.0.0):
     - Flutter
@@ -134,6 +141,7 @@ PODS:
     - Flutter
 
 DEPENDENCIES:
+  - cloud_firestore (from `.symlinks/plugins/cloud_firestore/ios`)
   - firebase_auth (from `.symlinks/plugins/firebase_auth/ios`)
   - firebase_core (from `.symlinks/plugins/firebase_core/ios`)
   - FirebaseFirestore (from `https://github.com/invertase/firestore-ios-sdk-frameworks.git`, tag `11.10.0`)
@@ -176,6 +184,8 @@ SPEC REPOS:
     - RecaptchaInterop
 
 EXTERNAL SOURCES:
+  cloud_firestore:
+    :path: ".symlinks/plugins/cloud_firestore/ios"
   firebase_auth:
     :path: ".symlinks/plugins/firebase_auth/ios"
   firebase_core:
@@ -204,10 +214,11 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   AppAuth: d4f13a8fe0baf391b2108511793e4b479691fb73
   AppCheckCore: cc8fd0a3a230ddd401f326489c99990b013f0c4f
-  FBAEMKit: 9900b2edd99a2d21629a6277e6166f14c6215799
-  FBSDKCoreKit: 0791f8f68a8630931a4c12aa23a56cc021551596
-  FBSDKCoreKit_Basics: 46d6b472c0dd0a5a7e972c025033d1c567f54eb4
-  FBSDKLoginKit: b4a4eba1d62eb452544411824f41689adabd5bd2
+  cloud_firestore: b7b3bfffcd2ea3205f612d5602f959a0ec33c7b0
+  FBAEMKit: cb719c53575a3be86ea873279f30d6a2c4e15881
+  FBSDKCoreKit: ecdb980a24633ccb012700299ceb16d0235e14d2
+  FBSDKCoreKit_Basics: 045101c4a9ef10c845347424d73a29aae02c3e43
+  FBSDKLoginKit: 69eb59b2f839aba635616df6e422acd0ca88030a
   Firebase: 1fe1c0a7d9aaea32efe01fbea5f0ebd8d70e53a2
   firebase_auth: 34c515a8fa76a4ef678ac5ad5cfa3bb3120f5ab5
   firebase_core: 2d4534e7b489907dcede540c835b48981d890943
@@ -226,7 +237,7 @@ SPEC CHECKSUMS:
   FirebaseFirestoreInternalBinary: 96b309279c4efdf00b83ab80e8af4d0a73d30258
   FirebaseSharedSwift: 1baacae75939499b5def867cbe34129464536a38
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_facebook_auth: 2f28c889d5727b4538ed8d25be3367092b2cbef7
+  flutter_facebook_auth: 8a9ad5fbfc25b77e7a53ea8986866950b27edcae
   flutter_secure_storage: 1ed9476fba7e7a782b22888f956cce43e2c62f13
   google_sign_in_ios: b48bb9af78576358a168361173155596c845f0b9
   GoogleSignIn: ce8c89bb9b37fb624b92e7514cc67335d1e277e4

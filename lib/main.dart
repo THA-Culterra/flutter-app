@@ -1,8 +1,7 @@
-import 'package:culterra/screens/Country/presentation/country_screen.dart';
+import 'package:culterra/screens/Home/presentation/HomeScreen.dart';
 import 'package:culterra/screens/Login/presentation/login_screen.dart';
-import 'package:culterra/screens/Onboarding/presentation/onboarding_screen.dart';
+import 'package:culterra/screens/Login/presentation/login_viewmodel.dart';
 import 'package:culterra/screens/Onboarding/presentation/onboarding_viewmodel.dart';
-import 'package:culterra/screens/Widgets/world_map.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,12 +15,15 @@ void main() async {
     options: DefaultFirebaseOptions.currentPlatform,
   );
 
-  await FirebaseAuth.instance.useAuthEmulator('localhost', 9099);
-  
-  runApp(ChangeNotifierProvider(
-    create: (context) => OnboardingViewModel(),
-    child: MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => OnboardingViewModel()),
+        ChangeNotifierProvider(create: (_) => LoginViewModel()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -30,18 +32,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
+
     return MaterialApp(
       title: 'Culterra',
       debugShowCheckedModeBanner: false,
-      home: // LoginScreen(),
-
-      CountryScreen()
-
-      // WorldMap(
-      //   onCountryTap: (id, name) {
-      //     print("Tapped on country: $name (ID: $id)");
-      //   },
-      // ),
+      home: (user != null) ? HomeScreen() : LoginScreen(),
     );
   }
 }
