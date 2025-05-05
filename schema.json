@@ -15,7 +15,7 @@
         "name": "Couscous",
         "description": "A staple dish made of steamed semolina served with vegetables and meat.",
         "mealType": "dinner",
-        "imageUrl": "lib/core/assets/Couscous.png"
+        "imageUrl": "couscous.png"
       },
       {
         "name": "Chakchouka",
@@ -55,11 +55,11 @@
     "genres": [
       {
         "name": "Raï",
-        "image": "raï_image.jpg"
+        "imageUrl": "rai.png"
       },
       {
         "name": "Chaabi",
-        "image": "chaabi_image.jpg"
+        "imageUrl": "chaabi.png"
       }
     ],
     "topSongs": [
