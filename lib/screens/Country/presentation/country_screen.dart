@@ -1,4 +1,5 @@
 import 'package:culterra/screens/Country/presentation/country_sheet.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../data/models/country.dart';
@@ -17,11 +18,13 @@ class CountryScreen extends StatelessWidget {
       children: [
         Stack(
           children: [
-            Image.network(
-              country.imageUrl,
+            CachedNetworkImage(
+              imageUrl: country.imageUrl,
               width: double.infinity,
               height: 700,
               fit: BoxFit.cover,
+              placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
+              errorWidget: (context, url, error) => Icon(Icons.error),
             ),
             Positioned.fill(
               child: Container(

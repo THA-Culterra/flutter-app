@@ -1,6 +1,6 @@
 import 'package:culterra/screens/Widgets/report_suggestion.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../../data/models/taxi_app.dart';
 import '../../data/models/transport.dart';
@@ -87,10 +87,12 @@ class TransportScreen extends StatelessWidget {
       child: Row(
         spacing: 8,
         children: [
-          Image.network(
-            app.imageUrl,
+          CachedNetworkImage(
+            imageUrl: app.imageUrl,
             height: 40,
-            // fit: BoxFit.cover,
+            fit: BoxFit.cover,
+            placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
+            errorWidget: (context, url, error) => Icon(Icons.error),
           ),
           Expanded(
             child: Text(
@@ -127,11 +129,13 @@ class TransportScreen extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.network(
-              image,
+            child: CachedNetworkImage(
+              imageUrl: image,
               width: 80,
               height: 80,
               fit: BoxFit.cover,
+              placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
+              errorWidget: (context, url, error) => Icon(Icons.error),
             )
           ),
         ),

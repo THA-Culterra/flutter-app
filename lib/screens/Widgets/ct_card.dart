@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../Country/data/models/dish.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import '../Country/domain/entities/CTCardData.dart';
 class CTCard extends StatelessWidget {
   const CTCard({
@@ -18,12 +18,13 @@ class CTCard extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Stack(children: [
-            Image.network(
+            CachedNetworkImage(
               width: 120,
               height: 150,
-              data.imageUrl,
+              imageUrl: data.imageUrl,
               fit: BoxFit.cover,
-              opacity: const AlwaysStoppedAnimation(0.8), // Adjust opacity if needed
+              placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
+              errorWidget: (context, url, error) => Icon(Icons.error),// Adjust opacity if needed
             ),
 
             Positioned.fill(
