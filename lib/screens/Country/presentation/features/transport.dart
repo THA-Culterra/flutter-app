@@ -1,6 +1,8 @@
+import 'package:culterra/screens/Widgets/report_suggestion.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../../data/models/taxi_app.dart';
 import '../../data/models/transport.dart';
 
 class TransportScreen extends StatelessWidget {
@@ -10,89 +12,73 @@ class TransportScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<List<String>> rows = [];
-    for (int i = 0; i < transport.taxiApps.length; i += 2) {
-      rows.add(
-        transport.taxiApps.sublist(
-          i,
-          (i + 2 > transport.taxiApps.length)
-              ? transport.taxiApps.length
-              : i + 2,
-        ),
-      );
-    }
-
-    return Padding(
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        spacing: 16,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Column(
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            spacing: 16,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Taxi apps',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w600,
-                  decoration: TextDecoration.none,
-                ),
-              ),
-              const SizedBox(height: 16),
-
-              ...rows.map((row) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 8),
-                  child: Row(
-                    children: [
-                      // First label
-                      Expanded(child: taxiLabel(lowerize(row[0]), row[0])),
-
-                      if (row.length == 2) ...[
-                        const SizedBox(width: 8), // padding between two labels
-                        Expanded(child: taxiLabel(lowerize(row[1]), row[1])),
-                      ],
-                    ],
-                  ),
-                );
-              }),
-            ],
-          ),
-          Column(
-            spacing: 8,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Text(
-                'Metro Systems',
-                style: TextStyle(
-                  fontSize: 15,
-                  color: Colors.grey,
-                  fontWeight: FontWeight.w600,
-                  decoration: TextDecoration.none,
-                ),
-              ),
-
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: transport.metroSystems.map<Widget>((metro) {
-                  return Padding(
-                    padding: const EdgeInsets.only(bottom: 12.0),
-                    child: metroBuilder(metro.image, metro.city, '${metro.city} Metro'),
-                  );
-                }).toList(),
+                children: [
+                  const Text(
+                    'Taxi apps',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w600,
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
+
+                  GridView.count(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                    childAspectRatio: 4,
+                    children: transport.taxiApps.map((app) => taxiLabel(app)).toList(),
+                  )
+                ],
+              ),
+              Column(
+                spacing: 8,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Metro Systems',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w600,
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
+
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: transport.metroSystems.map<Widget>((metro) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0),
+                        child: metroBuilder(metro.image, metro.city, '${metro.city} Metro'),
+                      );
+                    }).toList(),
+                  ),
+                ],
               ),
             ],
           ),
-        ],
-      ),
+        ),
+
+        ReportSuggestion()
+      ],
     );
   }
 
-  String lowerize(String s) => s[0].toLowerCase() + s.substring(1);
-
-  Widget taxiLabel(String icon, String name) {
+  Widget taxiLabel(TaxiApp app) {
     return Container(
       decoration: BoxDecoration(
         color: Color(0xFFE7E7E7),
@@ -101,15 +87,14 @@ class TransportScreen extends StatelessWidget {
       child: Row(
         spacing: 8,
         children: [
-          Image.asset(
-            'lib/core/assets/$icon.png',
-            width: 60,
+          Image.network(
+            app.imageUrl,
             height: 40,
-            fit: BoxFit.cover,
+            // fit: BoxFit.cover,
           ),
           Expanded(
             child: Text(
-              name,
+              app.name,
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w600,
@@ -142,12 +127,12 @@ class TransportScreen extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: Image.asset(
-              'lib/core/assets/$image',
+            child: Image.network(
+              image,
               width: 80,
               height: 80,
               fit: BoxFit.cover,
-            ),
+            )
           ),
         ),
 

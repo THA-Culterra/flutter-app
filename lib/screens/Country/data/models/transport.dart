@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 
 import 'driving_side.dart';
 import 'metro.dart';
+import 'taxi_app.dart';
 
 part 'transport.g.dart';
 @JsonSerializable()
@@ -15,7 +16,7 @@ class Transport {
 
   List<String>  airports ;
   DrivingSide  drivingSide ;
-  List<String>  taxiApps ;
+  List<TaxiApp>  taxiApps ;
   List<Metro>  metroSystems;
 
   // A factory constructor to create a Cuisine object from JSON

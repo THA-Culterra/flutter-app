@@ -18,7 +18,7 @@ class CTCard extends StatelessWidget {
         ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Stack(children: [
-            Image.asset(
+            Image.network(
               width: 120,
               height: 150,
               data.imageUrl,

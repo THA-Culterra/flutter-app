@@ -11,7 +11,9 @@ Transport _$TransportFromJson(Map<String, dynamic> json) => Transport(
       (json['airports'] as List<dynamic>).map((e) => e as String).toList(),
   drivingSide: $enumDecode(_$DrivingSideEnumMap, json['drivingSide']),
   taxiApps:
-      (json['taxiApps'] as List<dynamic>).map((e) => e as String).toList(),
+      (json['taxiApps'] as List<dynamic>)
+          .map((e) => TaxiApp.fromJson(e as Map<String, dynamic>))
+          .toList(),
   metroSystems:
       (json['metroSystems'] as List<dynamic>)
           .map((e) => Metro.fromJson(e as Map<String, dynamic>))

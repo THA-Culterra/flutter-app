@@ -17,8 +17,8 @@ class CountryScreen extends StatelessWidget {
       children: [
         Stack(
           children: [
-            Image.asset(
-              "lib/core/assets/country_placeholder.jpg",
+            Image.network(
+              country.imageUrl,
               width: double.infinity,
               height: 700,
               fit: BoxFit.cover,
