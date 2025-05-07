@@ -20,6 +20,35 @@ class TransportScreen extends StatelessWidget {
             spacing: 16,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text("Driving Side",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16,
+                              decoration: TextDecoration.none,
+                              color: Colors.grey
+                          )
+                      ),
+
+                      Text(
+                          transport.drivingSide.name,
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 20,
+                              decoration: TextDecoration.none,
+                              color: Colors.black
+                          )
+                      )
+                    ],
+                  ),
+                  Spacer(),
+                  Image.asset("lib/core/assets/driving-side_${transport.drivingSide.name}.png", width: 50, height: 45)
+                ],
+              ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

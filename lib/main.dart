@@ -37,7 +37,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Culterra',
       debugShowCheckedModeBanner: false,
-      home: (user != null) ? HomeScreen() : LoginScreen(),
+      home:
+      // (user != null) ?
+      HomeScreen()
+          // : LoginScreen(),
     );
   }
 }
