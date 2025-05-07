@@ -46,7 +46,7 @@ class TransportScreen extends StatelessWidget {
                     ],
                   ),
                   Spacer(),
-                  Image.asset("driving-side_${transport.drivingSide.name}.png", width: 55, height: 45)
+                  Image.asset("lib/core/assets/driving-side_${transport.drivingSide.name}.png", width: 50, height: 45)
                 ],
               ),
               Column(
