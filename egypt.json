@@ -1,0 +1,184 @@
+{
+    "id": "EG",
+    "name": "Egypt",
+    "imageUrl": "assets/egypt.jpg",
+    "description": "Egypt is a transcontinental country linking northeast Africa with the Middle East, known for its ancient civilization and iconic monuments such as the pyramids and the Sphinx.",
+    "capital": "Cairo",
+    "currency": "EGP",
+    "dialCode": "+20",
+    "religion": "islam",
+    "languages": ["Arabic"],
+    "majorCities": ["Cairo", "Alexandria", "Giza"],
+  
+    "athletics": {
+      "athletes": [
+        {
+          "name": "Mohamed Salah",
+          "age": 31,
+          "sportName": "Football"
+        },
+        {
+          "name": "Farida Osman",
+          "age": 29,
+          "sportName": "Swimming"
+        }
+      ],
+
+      "popularSports": [
+        {
+          "name": "Football",
+          "nationalTeamYear": 1921,
+          "teamLogo": "assets/egypt_football.png",
+          "trophies": [
+            {
+              "name": "AFCON",
+              "count": 7
+            }
+          ]
+        }
+      ]
+    },
+  
+    "cinema": {
+      "directors": [
+        {
+          "name": "Youssef Chahine",
+          "age": 82
+        }
+      ],
+      "famousActors": [
+        {
+          "name": "Omar Sharif",
+          "age": 83
+        }
+      ],
+      "topMovies": [
+        {
+          "name": "The Yacoubian Building",
+          "image": "assets/movie_egypt.png"
+        }
+      ],
+      "topTvShows": [
+        {
+          "name": "Grand Hotel",
+          "image": "assets/tvshow_egypt.png"
+        }
+      ]
+    },
+  
+    "cuisine": {
+      "dishes": [
+        {
+          "name": "Koshari",
+          "mealType": "lunch",
+          "description": "A hearty mix of pasta, rice, lentils, fried onions, and tomato sauce.",
+          "imageUrl": "lib/core/assets/Koshari.png"
+        },
+        {
+          "name": "Ful Medames",
+          "mealType": "breakfast",
+          "description": "Stewed fava beans seasoned with oil, lemon juice, and cumin.",
+          "imageUrl": "lib/core/assets/Ful.png"
+        },
+        {
+          "name": "Basbousa",
+          "mealType": "dessert",
+          "description": "A sweet semolina cake soaked in syrup.",
+          "imageUrl": "lib/core/assets/Basbousa.png"
+        }
+      ],
+      "restaurants": [
+        {
+          "name": "Abou El Sid",
+          "city": "Cairo",
+          "latitude": 30.0444,
+          "longitude": 31.2357
+        },
+        {
+          "name": "Tikka Grill",
+          "city": "Alexandria",
+          "latitude": 31.2001,
+          "longitude": 29.9187
+        },
+        {
+          "name": "El Fishawy",
+          "city": "Cairo",
+          "latitude": 30.0478,
+          "longitude": 31.2625
+        }
+      ]
+    },
+  
+    "music": {
+      "genres": [
+        {
+          "name": "Shaabi",
+          "imageUrl": "shaabi.png"
+        },
+        {
+          "name": "Arabic Classical",
+          "imageUrl": "arabic_classical.png"
+        }
+      ],
+      "notableSingers": [
+        {
+          "name": "Amr Diab",
+          "age": 62,
+          "songs": []
+        },
+        {
+          "name": "Umm Kulthum",
+          "age": 77,
+          "songs": []
+        }
+      ],
+      "topSongs": [
+        {
+          "name": "Tamally Maak",
+          "views": 5000
+        },
+        {
+          "name": "Enta Omri",
+          "views": 4000
+        }
+      ]
+    },
+  
+    "transport": {
+      "airports": [
+        "Cairo International Airport",
+        "Borg El Arab Airport"
+      ],
+      "drivingSide": "right",
+      "metroSystems": [
+        {
+          "city": "Cairo",
+          "image": "cairo_metro.jpg"
+        }
+      ],
+      "taxiApps": [
+        "Uber",
+        "Careem"
+      ]
+    },
+  
+    "history": {
+      "keyEvents": {
+        "Independence from Britain": "1922-02-28T00:00:00Z",
+        "Egyptian Revolution": "1952-07-23T00:00:00Z"
+      },
+      "nationalDay": {
+        "Revolution Day": "1952-07-23T00:00:00Z"
+      },
+      "publicHolidays": {
+        "Labor Day": "2025-05-01T00:00:00Z",
+        "New Year's Day": "2025-01-01T00:00:00Z"
+      }
+    },
+  
+    "emergency": {
+      "ambulance": 123,
+      "fire": 180,
+      "police": 122
+    }
+  }
