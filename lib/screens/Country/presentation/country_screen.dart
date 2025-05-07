@@ -23,7 +23,11 @@ class CountryScreen extends StatelessWidget {
               width: double.infinity,
               height: 700,
               fit: BoxFit.cover,
-              placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
+              placeholder: (context, url) => SizedBox(
+                width: 56,
+                height: 56,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
               errorWidget: (context, url, error) => Icon(Icons.error),
             ),
             Positioned.fill(

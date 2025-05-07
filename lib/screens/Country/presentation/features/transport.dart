@@ -120,7 +120,11 @@ class TransportScreen extends StatelessWidget {
             imageUrl: app.imageUrl,
             height: 40,
             fit: BoxFit.cover,
-            placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
+            placeholder: (context, url) => SizedBox(
+              width: 24,
+              height: 24,
+              child: CircularProgressIndicator(strokeWidth: 2),
+            ),
             errorWidget: (context, url, error) => Icon(Icons.error),
           ),
           Expanded(
@@ -163,7 +167,11 @@ class TransportScreen extends StatelessWidget {
               width: 80,
               height: 80,
               fit: BoxFit.cover,
-              placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
+              placeholder: (context, url) => SizedBox(
+                width: 36,
+                height: 36,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
               errorWidget: (context, url, error) => Icon(Icons.error),
             )
           ),

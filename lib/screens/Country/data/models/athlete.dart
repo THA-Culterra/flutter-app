@@ -1,7 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'sport.dart';
-
 import 'person.dart';
 
 part 'athlete.g.dart';

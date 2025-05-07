@@ -23,7 +23,11 @@ class CTCard extends StatelessWidget {
               height: 150,
               imageUrl: data.imageUrl,
               fit: BoxFit.cover,
-              placeholder: (context, url) => CircularProgressIndicator(strokeWidth: 2),
+              placeholder: (context, url) => SizedBox(
+                width: 36,
+                height: 36,
+                child: CircularProgressIndicator(strokeWidth: 2),
+              ),
               errorWidget: (context, url, error) => Icon(Icons.error),// Adjust opacity if needed
             ),
 
