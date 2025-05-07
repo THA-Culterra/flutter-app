@@ -94,7 +94,7 @@ class TransportScreen extends StatelessWidget {
                     children: transport.metroSystems.map<Widget>((metro) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 12.0),
-                        child: metroBuilder(metro.image, metro.city, '${metro.city} Metro'),
+                        child: metroBuilder(context, metro.image, metro.city, '${metro.city} Metro'),
                       );
                     }).toList(),
                   ),
@@ -147,7 +147,7 @@ class TransportScreen extends StatelessWidget {
     );
   }
 
-  Widget metroBuilder(String image, String city, String name) {
+  Widget metroBuilder(BuildContext context, String image, String city, String name) {
     return Row(
       spacing: 16,
       children: [
@@ -164,18 +164,21 @@ class TransportScreen extends StatelessWidget {
           ),
           child: ClipRRect(
             borderRadius: BorderRadius.circular(8),
-            child: CachedNetworkImage(
-              imageUrl: image,
-              width: 80,
-              height: 80,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => SizedBox(
-                width: 36,
-                height: 36,
-                child: CircularProgressIndicator(strokeWidth: 2),
+            child: GestureDetector(
+              onTap: () => openFullScreenImage(context, image),
+              child: CachedNetworkImage(
+                imageUrl: image,
+                width: 80,
+                height: 80,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => SizedBox(
+                  width: 36,
+                  height: 36,
+                  child: CircularProgressIndicator(strokeWidth: 2),
+                ),
+                errorWidget: (context, url, error) => Icon(Icons.error),
               ),
-              errorWidget: (context, url, error) => Icon(Icons.error),
-            )
+            ),
           ),
         ),
 
@@ -209,6 +212,40 @@ class TransportScreen extends StatelessWidget {
           ],
         ),
       ],
+    );
+  }
+
+  void openFullScreenImage(BuildContext context, String imageUrl) {
+    showDialog(
+      context: context,
+      barrierDismissible: true,
+      barrierColor: Colors.black54,
+      builder: (_) {
+        return GestureDetector(
+          onTap: () => Navigator.of(context).pop(),
+          child: Scaffold(
+            backgroundColor: Colors.transparent,
+            body: Center(
+              child: InteractiveViewer(
+                panEnabled: true,
+                minScale: 1.0,
+                maxScale: 4.0,
+                child: CachedNetworkImage(
+                  imageUrl: imageUrl,
+                  fit: BoxFit.contain,
+                  width: MediaQuery.of(context).size.width,
+                  placeholder: (context, url) => SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: CircularProgressIndicator(strokeWidth: 2),
+                  ),
+                  errorWidget: (context, url, error) => Icon(Icons.error, size: 48, color: Colors.white),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }
