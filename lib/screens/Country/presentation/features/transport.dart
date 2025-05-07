@@ -1,6 +1,7 @@
 import 'package:culterra/screens/Widgets/report_suggestion.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_svg/svg.dart';
 
 import '../../data/models/taxi_app.dart';
 import '../../data/models/transport.dart';
@@ -21,6 +22,8 @@ class TransportScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -45,8 +48,7 @@ class TransportScreen extends StatelessWidget {
                       )
                     ],
                   ),
-                  Spacer(),
-                  Image.asset("lib/core/assets/driving-side_${transport.drivingSide.name}.png", width: 50, height: 45)
+                  SvgPicture.asset("lib/core/assets/driving-side_${transport.drivingSide.name}.svg", width: 50, height: 45)
                 ],
               ),
               Column(
