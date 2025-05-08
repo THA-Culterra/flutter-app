@@ -13,7 +13,7 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var user = FirebaseAuth.instance.currentUser!;
+    var user = FirebaseAuth.instance.currentUser;
 
     return ChangeNotifierProvider(
       create: (context) => HomeViewModel(),
@@ -86,7 +86,7 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  AppBar appBar(User user, TextEditingController controller, void Function(String) onChanged) {
+  AppBar appBar(User? user, TextEditingController controller, void Function(String) onChanged) {
     return AppBar(
       backgroundColor: Color(0xFF0E288F),
       elevation: 0,
@@ -95,10 +95,10 @@ class HomeScreen extends StatelessWidget {
           // Profile picture
           CircleAvatar(
             radius: 20,
-            backgroundImage: user.photoURL != null && user.photoURL!.isNotEmpty
+            backgroundImage: user != null && user.photoURL != null && user.photoURL!.isNotEmpty
                 ? NetworkImage(user.photoURL!)
                 : null,
-              child: (user.photoURL == null || user.photoURL!.isEmpty)
+              child: (user == null || user.photoURL == null || user.photoURL!.isEmpty)
                   ? Icon(Icons.person, color: Colors.grey[700])
                   : null,
           ),
