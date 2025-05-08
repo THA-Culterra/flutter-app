@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../../Country/data/models/country.dart';
 import '../../Country/presentation/country_screen.dart';
 import '../../Profile/presentation/profileSheet.dart';
+import '../../Profile/presentation/profileViewModel.dart';
 import '../../Widgets/world_map.dart';
 import 'homeViewModel.dart'; // Import the Profile screen
 
@@ -21,13 +22,9 @@ class HomeScreen extends StatelessWidget {
         builder: (context) {
           final searchController = TextEditingController();
           return Scaffold(
-            appBar: appBar(
-              user,
-              searchController,
-                  (value) {
-                context.read<HomeViewModel>().searchCountriesByName(value);
-              },
-            ),
+            appBar: appBar(context, user, searchController, (value) {
+              context.read<HomeViewModel>().searchCountriesByName(value);
+            }),
             body: Consumer<HomeViewModel>(
               builder: (context, viewModel, _) {
                 return Stack(
@@ -41,7 +38,9 @@ class HomeScreen extends StatelessWidget {
                           pushCountry(context, country);
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("We will add this country soon...")),
+                            SnackBar(
+                              content: Text("We will add this country soon..."),
+                            ),
                           );
                         }
                       },
@@ -64,8 +63,11 @@ class HomeScreen extends StatelessWidget {
                               return ListTile(
                                 title: Text(name),
                                 onTap: () async {
-                                  final country = await viewModel.getCountryById(id);
-                                  context.read<HomeViewModel>().clearSearchResults();
+                                  final country = await viewModel
+                                      .getCountryById(id);
+                                  context
+                                      .read<HomeViewModel>()
+                                      .clearSearchResults();
                                   searchController.clear();
                                   if (country != null) {
                                     pushCountry(context, country);
@@ -86,22 +88,60 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-  AppBar appBar(User? user, TextEditingController controller, void Function(String) onChanged) {
+  AppBar appBar(
+    BuildContext context,
+    User? user,
+    TextEditingController controller,
+    void Function(String) onChanged,
+  ) {
     return AppBar(
       backgroundColor: Color(0xFF0E288F),
       elevation: 0,
       title: Row(
         children: [
           // Profile picture
-          CircleAvatar(
-            radius: 20,
-            backgroundImage: user != null && user.photoURL != null && user.photoURL!.isNotEmpty
-                ? NetworkImage(user.photoURL!)
-                : null,
-              child: (user == null || user.photoURL == null || user.photoURL!.isEmpty)
-                  ? Icon(Icons.person, color: Colors.grey[700])
-                  : null,
-          ),
+          user != null
+              ? GestureDetector(
+                onTap:
+                    () => showModalBottomSheet(
+                      context: context,
+                      isScrollControlled: true,
+                      shape: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.vertical(
+                          top: Radius.circular(16),
+                        ),
+                      ),
+                      builder: (context) => DraggableScrollableSheet(
+                        expand: false, // prevents auto full height unless user scrolls
+                        initialChildSize: 0.8,
+                        minChildSize: 0.4,
+                        maxChildSize: 1.0,
+                        builder: (context, scrollController) {
+                          return ChangeNotifierProvider(
+                            create: (_) => ProfileViewModel()..getUserData(),
+                            child: ClipRRect(
+                              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+                              child: Material(
+                                child: ProfileSheet(scrollController: scrollController),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                child: CircleAvatar(
+                  radius: 20,
+                  backgroundImage:
+                      user.photoURL != null && user.photoURL!.isNotEmpty
+                          ? NetworkImage(user.photoURL!)
+                          : null,
+                  child:
+                      (user.photoURL == null || user.photoURL!.isEmpty)
+                          ? Icon(Icons.person, color: Colors.grey[700])
+                          : null,
+                ),
+              )
+              : const SizedBox.shrink(),
 
           SizedBox(width: 12),
 
@@ -142,9 +182,7 @@ class HomeScreen extends StatelessWidget {
   void pushCountry(BuildContext context, Country country) {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => CountryScreen(country: country),
-      ),
+      MaterialPageRoute(builder: (context) => CountryScreen(country: country)),
     );
   }
 }

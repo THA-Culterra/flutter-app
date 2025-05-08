@@ -1,8 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
+
+import '../../Country/data/models/role.dart';
 
 class LoginViewModel extends ChangeNotifier {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -95,6 +98,10 @@ class LoginViewModel extends ChangeNotifier {
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           await _auth.createUserWithEmailAndPassword(email: email, password: password);
+
+          //TODO: get user nationality replace it here
+          await saveUserData(nationality: "Algeria");
+
         } else {
           rethrow;
         }
@@ -116,9 +123,35 @@ class LoginViewModel extends ChangeNotifier {
           email: credential.signInMethod, // fallback: should be user input
           password: 'defaultPassword',    // not ideal, but Firebase doesn't support password-less create
         );
+
+        //TODO: get user nationality replace it here
+        await saveUserData(nationality: "Algeria");
+
       } else {
         rethrow;
       }
     }
+  }
+
+  Future<void> saveUserData({
+    required String nationality
+  }) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final userData = {
+      'displayName': user.displayName,
+      'email': user.email,
+      'photoURL': user.photoURL,
+      'nationality': nationality,
+      'phone': user.phoneNumber,
+      'role': Role.explorer,
+      'createdAt': FieldValue.serverTimestamp(),
+    };
+
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .set(userData, SetOptions(merge: true)); // merge keeps existing values
   }
 }

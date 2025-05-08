@@ -22,7 +22,7 @@ class HomeViewModel extends ChangeNotifier {
           print('🔥 Error parsing Country: $e');
           print('🔥 Stacktrace: $stacktrace');
           print('🔥 Raw data that caused the error: $data');
-          rethrow; // Or return null depending on your use case
+          rethrow;
         }
       } else {
         return null;
