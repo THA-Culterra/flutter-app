@@ -1,10 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 
 import '../../Widgets/gradient_background.dart';
-import '../../Widgets/world_map.dart';
 import '../domain/provider.dart';
 import 'login_prov_builder.dart';
 import 'login_viewmodel.dart';
@@ -26,13 +24,13 @@ class _LoginScreenState extends State<LoginScreen> {
   void _onProviderPressed(LoginProvider provider, LoginViewModel viewModel) {
     switch (provider) {
       case LoginProvider.google:
-        viewModel.signInWithGoogle();
+        viewModel.signInWithGoogle(context);
         break;
       case LoginProvider.facebook:
-        viewModel.signInWithFacebook();
+        viewModel.signInWithFacebook(context);
         break;
       case LoginProvider.apple:
-        viewModel.signInWithApple();
+        viewModel.signInWithApple(context);
         break;
       case LoginProvider.email:
         setState(() => showEmailFields = true);
@@ -40,23 +38,10 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  void _checkUserAndNavigate(BuildContext context, LoginViewModel viewModel) {
-    User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      // User is signed in, navigate to CountryScreen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => WorldMap()), // Navigate to the CountryScreen
-      );
-    } else {
-      viewModel.setError('Authentication failed');
-    }
-  }
-
   void _onEmailContinuePressed(LoginViewModel viewModel) {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
-    viewModel.signInWithEmail(email, password);
+    viewModel.signInWithEmail(email, password, context);
   }
 
   @override

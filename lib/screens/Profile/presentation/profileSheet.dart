@@ -47,10 +47,17 @@ class ProfileSheet extends StatelessWidget {
                       informationBuilder("Nationality", user.nationality),
                       informationBuilder("Email", user.email ?? "N/A"),
                       informationBuilder("Phone", user.phone ?? "N/A"),
+                      Row(
+                        children: [
+                          Spacer(),
+                          logoutButton(context),
+                          Spacer()
+                        ],
+                      )
+
                     ],
                   );
                 }
-
                 return const SizedBox.shrink();
               },
             ),
@@ -135,6 +142,24 @@ class ProfileSheet extends StatelessWidget {
                 )
               : Container(),
         ],
+      ),
+    );
+  }
+
+  Widget logoutButton(BuildContext context) {
+    return SizedBox(
+      width: 200,
+      height: 40,
+      child: ElevatedButton.icon(
+        onPressed: () async {
+          await context.read<ProfileViewModel>().logout(context);
+        },
+        icon: const Icon(Icons.logout),
+        label: const Text("Logout"),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.red,
+          foregroundColor: Colors.white,
+        ),
       ),
     );
   }

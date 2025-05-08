@@ -1,15 +1,16 @@
-import 'package:culterra/screens/Home/presentation/HomeScreen.dart';
-import 'package:culterra/screens/Login/presentation/login_screen.dart';
-import 'package:culterra/screens/Login/presentation/login_viewmodel.dart';
-import 'package:culterra/screens/Onboarding/presentation/onboarding_viewmodel.dart';
-import 'package:culterra/screens/Profile/presentation/profileSheet.dart';
-import 'package:culterra/screens/Profile/presentation/profileViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'screens/Home/presentation/HomeScreen.dart';
+import 'screens/Login/presentation/login_screen.dart';
+import 'screens/Login/presentation/login_viewmodel.dart';
+import 'screens/Onboarding/presentation/onboarding_screen.dart';
+import 'screens/Onboarding/presentation/onboarding_viewmodel.dart';
+import 'screens/Splash/splash.dart';
+import 'screens/Splash/splashViewModel.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -20,6 +21,7 @@ void main() async {
   runApp(
     MultiProvider(
       providers: [
+        ChangeNotifierProvider(create: (_) => SplashViewModel()),
         ChangeNotifierProvider(create: (_) => OnboardingViewModel()),
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
       ],
@@ -34,15 +36,16 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    User? user = FirebaseAuth.instance.currentUser;
-
     return MaterialApp(
+      routes: {
+        '/onboarding': (context) => OnboardingScreen(),
+        '/login': (context) => LoginScreen(),
+        '/splash': (context) => SplashScreen(),
+        '/home': (context) => HomeScreen(),
+      },
       title: 'Culterra',
       debugShowCheckedModeBanner: false,
-      home:
-      // (user != null) ?
-      HomeScreen()
-          // : LoginScreen(),
+      home: const SplashScreen()
     );
   }
 }

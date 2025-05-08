@@ -29,7 +29,7 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   // Google login/signup
-  Future<void> signInWithGoogle() async {
+  Future<void> signInWithGoogle(BuildContext context) async {
     try {
       _setLoading(true);
       final googleUser = await GoogleSignIn().signIn();
@@ -41,7 +41,7 @@ class LoginViewModel extends ChangeNotifier {
         idToken: googleAuth.idToken,
       );
 
-      await _signInWithCredential(credential);
+      await _signInWithCredential(credential, context);
     } catch (e) {
       setError(e.toString());
     } finally {
@@ -50,7 +50,7 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   // Apple login/signup
-  Future<void> signInWithApple() async {
+  Future<void> signInWithApple(BuildContext context) async {
     try {
       _setLoading(true);
       final appleCredential = await SignInWithApple.getAppleIDCredential(
@@ -62,7 +62,7 @@ class LoginViewModel extends ChangeNotifier {
         accessToken: appleCredential.authorizationCode,
       );
 
-      await _signInWithCredential(oauthCredential);
+      await _signInWithCredential(oauthCredential, context);
     } catch (e) {
       setError(e.toString());
     } finally {
@@ -71,14 +71,14 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   // Facebook login/signup
-  Future<void> signInWithFacebook() async {
+  Future<void> signInWithFacebook(BuildContext context) async {
     try {
       _setLoading(true);
       final result = await FacebookAuth.instance.login();
 
       if (result.status == LoginStatus.success) {
         final credential = FacebookAuthProvider.credential(result.accessToken!.tokenString);
-        await _signInWithCredential(credential);
+        await _signInWithCredential(credential, context);
       } else {
         setError("Facebook login failed: ${result.message}");
       }
@@ -90,7 +90,7 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   // Email login/signup
-  Future<void> signInWithEmail(String email, String password) async {
+  Future<void> signInWithEmail(String email, String password, BuildContext context) async {
     try {
       _setLoading(true);
       try {
@@ -99,13 +99,16 @@ class LoginViewModel extends ChangeNotifier {
         if (e.code == 'user-not-found') {
           await _auth.createUserWithEmailAndPassword(email: email, password: password);
 
-          //TODO: get user nationality replace it here
-          await saveUserData(nationality: "Algeria");
-
+          //TODO: Get user nationality and replace it here
+          await saveUserData(nationality: "DE");
         } else {
           rethrow;
         }
       }
+
+      // Navigate after a successful login/signup
+      if (!context.mounted) return;  // Ensure the widget is still mounted
+      Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
     } catch (e) {
       setError(e.toString());
     } finally {
@@ -114,9 +117,14 @@ class LoginViewModel extends ChangeNotifier {
   }
 
   // Common function to handle credential-based login/signup
-  Future<void> _signInWithCredential(AuthCredential credential) async {
+  Future<void> _signInWithCredential(AuthCredential credential, BuildContext context) async {
     try {
       await _auth.signInWithCredential(credential);
+
+      // Navigate after successful login/signup
+      if (!context.mounted) return;  // Ensure the widget is still mounted
+      Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
+
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         await _auth.createUserWithEmailAndPassword(
@@ -124,8 +132,12 @@ class LoginViewModel extends ChangeNotifier {
           password: 'defaultPassword',    // not ideal, but Firebase doesn't support password-less create
         );
 
-        //TODO: get user nationality replace it here
-        await saveUserData(nationality: "Algeria");
+        //TODO: Get user nationality and replace it here
+        await saveUserData(nationality: "DE");
+
+        // Navigate after successful signup
+        if (!context.mounted) return;  // Ensure the widget is still mounted
+        Navigator.pushReplacementNamed(context, '/home');  // Redirect to the home screen
 
       } else {
         rethrow;
