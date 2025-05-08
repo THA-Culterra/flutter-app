@@ -89,9 +89,14 @@ class ProfileSheet extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  user.displayName ?? "Anonymous",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                Container(
+                  width: 200, // Set a fixed width or use a max width constraint
+                  child: Text(
+                    user.displayName ?? "Anonymous",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    overflow: TextOverflow.ellipsis, // Optionally, you can use ellipsis
+                    softWrap: true,  // Allow text to wrap to the next line if it overflows
+                  ),
                 ),
               ],
             ),

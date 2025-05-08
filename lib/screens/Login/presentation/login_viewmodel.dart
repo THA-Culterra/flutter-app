@@ -95,6 +95,9 @@ class LoginViewModel extends ChangeNotifier {
       _setLoading(true);
       try {
         await _auth.signInWithEmailAndPassword(email: email, password: password);
+
+        Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
+
       } on FirebaseAuthException catch (e) {
         if (e.code == 'user-not-found') {
           await _auth.createUserWithEmailAndPassword(email: email, password: password);
@@ -119,29 +122,29 @@ class LoginViewModel extends ChangeNotifier {
   // Common function to handle credential-based login/signup
   Future<void> _signInWithCredential(AuthCredential credential, BuildContext context) async {
     try {
-      await _auth.signInWithCredential(credential);
+      UserCredential userCredential = await _auth.signInWithCredential(credential);
 
-      // Navigate after successful login/signup
-      if (!context.mounted) return;  // Ensure the widget is still mounted
-      Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
+      final user = userCredential.user;
+      if (user != null) {
+        // Check if the user exists in Firestore by checking the user's UID
+        DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(user.uid).get();
+
+        if (!userDoc.exists) {
+          // User does not exist in Firestore, create a new user
+          await saveUserData(nationality: "DE");  // Replace with actual nationality if needed
+        }
+
+        // Navigate to the home screen after successful login or new user creation
+        if (!context.mounted) return;  // Ensure the widget is still mounted
+        Navigator.of(context).pushNamedAndRemoveUntil('/home', (route) => false);
+        }
 
     } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        await _auth.createUserWithEmailAndPassword(
-          email: credential.signInMethod, // fallback: should be user input
-          password: 'defaultPassword',    // not ideal, but Firebase doesn't support password-less create
-        );
-
-        //TODO: Get user nationality and replace it here
-        await saveUserData(nationality: "DE");
-
-        // Navigate after successful signup
-        if (!context.mounted) return;  // Ensure the widget is still mounted
-        Navigator.pushReplacementNamed(context, '/home');  // Redirect to the home screen
-
-      } else {
-        rethrow;
-      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(e.message ?? "an error occured"),
+        ),
+      );
     }
   }
 
@@ -149,21 +152,28 @@ class LoginViewModel extends ChangeNotifier {
     required String nationality
   }) async {
     final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
+    if (user == null) return; // Return early if there's no logged-in user
 
+    // Prepare the user data to be saved to Firestore
     final userData = {
       'displayName': user.displayName,
       'email': user.email,
       'photoURL': user.photoURL,
       'nationality': nationality,
       'phone': user.phoneNumber,
-      'role': Role.explorer,
-      'createdAt': FieldValue.serverTimestamp(),
+      'role': Role.explorer.name, // Store the role as a string
+      'createdAt': FieldValue.serverTimestamp(), // Store the timestamp for when the user was created
     };
 
-    await FirebaseFirestore.instance
-        .collection('users')
-        .doc(user.uid)
-        .set(userData, SetOptions(merge: true)); // merge keeps existing values
+    try {
+      // Save user data to the Firestore `users` collection using the user UID as the document ID
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(user.uid) // Document ID is the user UID
+          .set(userData, SetOptions(merge: true)); // Merge will keep existing data
+    } catch (e) {
+      // Handle any errors that occur during Firestore write
+      print("Error saving user data to Firestore: $e");
+    }
   }
 }
