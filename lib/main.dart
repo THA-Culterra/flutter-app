@@ -2,6 +2,8 @@ import 'package:culterra/screens/Home/presentation/HomeScreen.dart';
 import 'package:culterra/screens/Login/presentation/login_screen.dart';
 import 'package:culterra/screens/Login/presentation/login_viewmodel.dart';
 import 'package:culterra/screens/Onboarding/presentation/onboarding_viewmodel.dart';
+import 'package:culterra/screens/Profile/presentation/profileSheet.dart';
+import 'package:culterra/screens/Profile/presentation/profileViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
