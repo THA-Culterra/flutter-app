@@ -139,7 +139,7 @@ class TransportScreen extends StatelessWidget {
                 decoration: TextDecoration.none,
               ),
               overflow:
-                  TextOverflow.ellipsis, // optional: handle very long names
+              TextOverflow.ellipsis,
             ),
           ),
         ],
@@ -196,10 +196,10 @@ class TransportScreen extends StatelessWidget {
                 child: Text(
                   city,
                   style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w800,
-                    color: Colors.white,
-                    decoration: TextDecoration.none
+                      fontSize: 16,
+                      fontWeight: FontWeight.w800,
+                      color: Colors.white,
+                      decoration: TextDecoration.none
                   ),
                 ),
               ),
@@ -249,3 +249,4 @@ class TransportScreen extends StatelessWidget {
     );
   }
 }
+
