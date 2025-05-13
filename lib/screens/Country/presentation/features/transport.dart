@@ -21,6 +21,7 @@ class TransportScreen extends StatelessWidget {
             spacing: 16,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Driving Side
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -33,24 +34,24 @@ class TransportScreen extends StatelessWidget {
                               fontWeight: FontWeight.w600,
                               fontSize: 16,
                               decoration: TextDecoration.none,
-                              color: Colors.grey
-                          )
-                      ),
-
-                      Text(
-                          transport.drivingSide.name,
+                              color: Colors.grey)),
+                      Text(transport.drivingSide.name,
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 20,
                               decoration: TextDecoration.none,
-                              color: Colors.black
-                          )
-                      )
+                              color: Colors.black))
                     ],
                   ),
-                  SvgPicture.asset("lib/core/assets/driving-side_${transport.drivingSide.name}.svg", width: 50, height: 45)
+                  SvgPicture.asset(
+                    "lib/core/assets/driving-side_${transport.drivingSide.name}.svg",
+                    width: 50,
+                    height: 45,
+                  )
                 ],
               ),
+
+              // Taxi Apps
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -63,7 +64,6 @@ class TransportScreen extends StatelessWidget {
                       decoration: TextDecoration.none,
                     ),
                   ),
-
                   GridView.count(
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
@@ -71,10 +71,14 @@ class TransportScreen extends StatelessWidget {
                     mainAxisSpacing: 8,
                     crossAxisSpacing: 8,
                     childAspectRatio: 4,
-                    children: transport.taxiApps.map((app) => taxiLabel(app)).toList(),
+                    children: transport.taxiApps
+                        .map((app) => taxiLabel(app))
+                        .toList(),
                   )
                 ],
               ),
+
+              // Metro Systems
               Column(
                 spacing: 8,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,13 +92,84 @@ class TransportScreen extends StatelessWidget {
                       decoration: TextDecoration.none,
                     ),
                   ),
-
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: transport.metroSystems.map<Widget>((metro) {
                       return Padding(
                         padding: const EdgeInsets.only(bottom: 12.0),
-                        child: metroBuilder(context, metro.image, metro.city, '${metro.city} Metro'),
+                        child: metroBuilder(context, metro.image, metro.city,
+                            '${metro.city} Metro'),
+                      );
+                    }).toList(),
+                  ),
+                ],
+              ),
+
+              // ✈️ Major Airports (now using List<String>)
+              Column(
+                spacing: 8,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text(
+                    'Major Airports',
+                    style: TextStyle(
+                      fontSize: 15,
+                      color: Colors.grey,
+                      fontWeight: FontWeight.w600,
+                      decoration: TextDecoration.none,
+                    ),
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: transport.airports.map((airportName) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12.0),
+                        child: Row(
+                          spacing: 16,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    airportName,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                      decoration: TextDecoration.none,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 4),
+                                  Text(
+                                    "City name here",
+                                    style: TextStyle(
+                                      fontSize: 14,
+                                      color: Colors.grey[600],
+                                      decoration: TextDecoration.none,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 12, vertical: 6),
+                              decoration: BoxDecoration(
+                                color: Colors.grey[200],
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                "XXX",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.deepPurple,
+                                  decoration: TextDecoration.none,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       );
                     }).toList(),
                   ),
@@ -104,6 +179,7 @@ class TransportScreen extends StatelessWidget {
           ),
         ),
 
+        // Report Suggestion
         ReportSuggestion()
       ],
     );
@@ -138,8 +214,7 @@ class TransportScreen extends StatelessWidget {
                 color: Colors.black,
                 decoration: TextDecoration.none,
               ),
-              overflow:
-              TextOverflow.ellipsis,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],
@@ -147,7 +222,8 @@ class TransportScreen extends StatelessWidget {
     );
   }
 
-  Widget metroBuilder(BuildContext context, String image, String city, String name) {
+  Widget metroBuilder(
+      BuildContext context, String image, String city, String name) {
     return Row(
       spacing: 16,
       children: [
@@ -181,7 +257,6 @@ class TransportScreen extends StatelessWidget {
             ),
           ),
         ),
-
         Column(
           spacing: 6,
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -196,18 +271,22 @@ class TransportScreen extends StatelessWidget {
                 child: Text(
                   city,
                   style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w800,
-                      color: Colors.white,
-                      decoration: TextDecoration.none
+                    fontSize: 16,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                    decoration: TextDecoration.none,
                   ),
                 ),
               ),
             ),
-
             Text(
               name,
-              style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500, decoration: TextDecoration.none, color: Colors.black),
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                decoration: TextDecoration.none,
+                color: Colors.black,
+              ),
             ),
           ],
         ),
@@ -239,7 +318,8 @@ class TransportScreen extends StatelessWidget {
                     height: 48,
                     child: CircularProgressIndicator(strokeWidth: 2),
                   ),
-                  errorWidget: (context, url, error) => Icon(Icons.error, size: 48, color: Colors.white),
+                  errorWidget: (context, url, error) =>
+                      Icon(Icons.error, size: 48, color: Colors.white),
                 ),
               ),
             ),
@@ -249,4 +329,3 @@ class TransportScreen extends StatelessWidget {
     );
   }
 }
-
