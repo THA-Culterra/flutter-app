@@ -1,4 +1,4 @@
 abstract class TvProgram {
   String get name;
-  String get image;
+  String get imageUrl;
 }
