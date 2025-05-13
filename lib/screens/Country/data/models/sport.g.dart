@@ -14,9 +14,11 @@ Sport _$SportFromJson(Map<String, dynamic> json) => Sport(
           .map((e) => Trophy.fromJson(e as Map<String, dynamic>))
           .toList(),
   teamLogo: json['teamLogo'] as String,
+  imageUrl: json['imageUrl'] as String,
 );
 
 Map<String, dynamic> _$SportToJson(Sport instance) => <String, dynamic>{
+  'imageUrl': instance.imageUrl,
   'name': instance.name,
   'nationalTeamYear': instance.nationalTeamYear,
   'trophies': instance.trophies,
