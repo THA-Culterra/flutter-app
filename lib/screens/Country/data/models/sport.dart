@@ -1,16 +1,22 @@
+import 'package:culterra/screens/Country/domain/entities/CTCardData.dart';
+
 import 'trophy.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'sport.g.dart';
 @JsonSerializable()
-class Sport {
+class Sport implements CTCardData {
   Sport({
     required this.name,
     required this.nationalTeamYear,
     required this.trophies,
     required this.teamLogo,
+    required this.imageUrl
   });
 
+  @override
+  String imageUrl;
+  @override
   String name;
   int nationalTeamYear;
   List<Trophy> trophies;
