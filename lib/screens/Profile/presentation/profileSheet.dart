@@ -1,10 +1,12 @@
 import 'package:country_flags/country_flags.dart';
 import 'package:culterra/screens/Country/data/models/CulterraUser.dart';
+import 'package:culterra/screens/Country/data/models/role.dart';
 import 'package:culterra/screens/Profile/domain/helpers/countryCodeHelper.dart';
 import 'package:culterra/screens/Profile/presentation/profileViewModel.dart';
 import 'package:culterra/screens/Widgets/roleCard.dart';
 import 'package:flutter/Material.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../domain/entities/uiState.dart';
 
@@ -38,23 +40,35 @@ class ProfileSheet extends StatelessWidget {
                     children: [
                       profileSection(user),
                       const SizedBox(height: 16),
-                      RoleCard(role: user.role),
+                      InkWell(
+                        onTap: () async {
+                          if (user.role == Role.explorer) {
+                            const url =
+                                'https://docs.google.com/forms/d/e/1FAIpQLSfNCKom9YO2Z8lhDU6948vo1RzGd7rEl6ea0ussQD0RPHNQag/viewform?usp=header';
+                            if (await canLaunchUrl(Uri.parse(url))) {
+                              await launchUrl(
+                                Uri.parse(url),
+                                mode: LaunchMode.externalApplication,
+                              );
+                            } else {
+                              // Optional: show error if URL can't be launched
+                              debugPrint('Could not launch $url');
+                            }
+                          }
+                        },
+                        child: RoleCard(role: user.role),
+                      ),
                       const SizedBox(height: 16),
                       informationBuilder(
                         "Name",
                         user.displayName ?? "Anonymous",
                       ),
                       informationBuilder("Nationality", user.nationality),
-                      informationBuilder("Email", user.email ?? "N/A"),
-                      informationBuilder("Phone", user.phone ?? "N/A"),
+                      informationBuilder("Email", user.email ?? ""),
+                      informationBuilder("Phone", user.phone ?? ""),
                       Row(
-                        children: [
-                          Spacer(),
-                          logoutButton(context),
-                          Spacer()
-                        ],
-                      )
-
+                        children: [Spacer(), logoutButton(context), Spacer()],
+                      ),
                     ],
                   );
                 }
@@ -94,8 +108,11 @@ class ProfileSheet extends StatelessWidget {
                   child: Text(
                     user.displayName ?? "Anonymous",
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                    overflow: TextOverflow.ellipsis, // Optionally, you can use ellipsis
-                    softWrap: true,  // Allow text to wrap to the next line if it overflows
+                    overflow:
+                        TextOverflow
+                            .ellipsis, // Optionally, you can use ellipsis
+                    softWrap:
+                        true, // Allow text to wrap to the next line if it overflows
                   ),
                 ),
               ],
@@ -140,11 +157,11 @@ class ProfileSheet extends StatelessWidget {
           const Spacer(),
           title == "Nationality"
               ? CountryFlag.fromCountryCode(
-                  shape: const RoundedRectangle(8),
-                  value,
-                  width: 100,
-                  height: 50,
-                )
+                shape: const RoundedRectangle(8),
+                value,
+                width: 100,
+                height: 50,
+              )
               : Container(),
         ],
       ),
