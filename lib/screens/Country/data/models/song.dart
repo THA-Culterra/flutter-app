@@ -5,12 +5,19 @@ part 'song.g.dart';
 class Song {
   Song({
     required this.name,
-    required this.views
+    required this.views,
+    required this.imageUrl,
+    required this.singer,
+    required this.youtubeUrl,
   });
 
   String name;
 
   int views;
+
+  String imageUrl;
+  String singer;
+  String youtubeUrl;
 
   // A factory constructor to create a Cuisine object from JSON
   factory Song.fromJson(Map<String, dynamic> json) => _$SongFromJson(json);
