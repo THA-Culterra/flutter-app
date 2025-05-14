@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 
 import '../../../Widgets/ct_card.dart';
 import '../../../Widgets/report_suggestion.dart';
+import '../../data/models/athlete.dart';
 import '../../data/models/athletics.dart';
+import '../../domain/entities/CTCardData.dart';
 
 class AthleticScreen extends StatelessWidget {
   const AthleticScreen({super.key, required this.athletics});
@@ -18,9 +20,11 @@ class AthleticScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 16,
             children: [
               rowBuilder("Top Sports", athletics.popularSports),
+              rowBuilder("Popular Athletes", athletics.athletes),
             ],
           ),
         ),
@@ -31,7 +35,7 @@ class AthleticScreen extends StatelessWidget {
   }
 
 
-  Widget rowBuilder(String title, List<Sport> popularSports) {
+  Widget rowBuilder(String title, List<CTCardData> list) {
     return Column(
         spacing: 8,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -49,14 +53,13 @@ class AthleticScreen extends StatelessWidget {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
-              itemCount: popularSports.length,
+              itemCount: list.length,
               separatorBuilder: (context, _) => SizedBox(width: 16),
-              itemBuilder: (context, index) => CTCard(data: popularSports[index]),
+              itemBuilder: (context, index) => CTCard(data: list[index]),
             ),
           )
         ]);
   }
-
 }
 
 

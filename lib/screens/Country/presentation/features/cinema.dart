@@ -1,9 +1,11 @@
 import 'package:culterra/screens/Country/data/models/movie.dart';
+import 'package:culterra/screens/Country/domain/entities/CTCardData.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Widgets/ct_card.dart';
 import '../../../Widgets/report_suggestion.dart';
 import '../../data/models/cinema.dart';
+import '../../data/models/tv_show.dart';
 
 class CinemaScreen extends StatelessWidget {
   const CinemaScreen({super.key, required this.cinema});
@@ -18,9 +20,11 @@ class CinemaScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 16,
             children: [
               rowBuilder("Top Movies", cinema.topMovies),
+              rowBuilder("Popular TV Shows", cinema.topTvShows),
             ],
           ),
         ),
@@ -30,7 +34,7 @@ class CinemaScreen extends StatelessWidget {
     );
   }
 
-  Widget rowBuilder(String title, List<Movie> movies) {
+  Widget rowBuilder(String title, List<CTCardData> list) {
     return Column(
         spacing: 8,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -48,12 +52,11 @@ class CinemaScreen extends StatelessWidget {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
-              itemCount: movies.length,
+              itemCount: list.length,
               separatorBuilder: (context, _) => SizedBox(width: 16),
-              itemBuilder: (context, index) => CTCard(data: movies[index]),
+              itemBuilder: (context, index) => CTCard(data: list[index]),
             ),
           )
         ]);
   }
-
  }

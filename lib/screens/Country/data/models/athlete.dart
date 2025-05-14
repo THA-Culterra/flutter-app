@@ -1,3 +1,4 @@
+import 'package:culterra/screens/Country/domain/entities/CTCardData.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'person.dart';
@@ -5,11 +6,12 @@ import 'person.dart';
 part 'athlete.g.dart';
 
 @JsonSerializable()
-class Athlete implements Person {
+class Athlete implements Person, CTCardData {
   Athlete({
     required this.name,
     required this.age,
     required this.sportName,
+    required this.imageUrl,
   });
 
   @override
@@ -19,6 +21,9 @@ class Athlete implements Person {
   int age;
 
   String sportName;
+
+  @override
+  String imageUrl;
 
   // A factory constructor to create a Athlete object from JSON
   factory Athlete.fromJson(Map<String, dynamic> json) => _$AthleteFromJson(json);

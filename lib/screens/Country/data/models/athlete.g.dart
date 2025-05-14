@@ -10,10 +10,12 @@ Athlete _$AthleteFromJson(Map<String, dynamic> json) => Athlete(
   name: json['name'] as String,
   age: (json['age'] as num).toInt(),
   sportName: json['sportName'] as String,
+  imageUrl: json['imageUrl'] as String,
 );
 
 Map<String, dynamic> _$AthleteToJson(Athlete instance) => <String, dynamic>{
   'name': instance.name,
   'age': instance.age,
   'sportName': instance.sportName,
+  'imageUrl': instance.imageUrl,
 };
