@@ -48,6 +48,8 @@ dependencies:
   country_flags: ^3.2.0
   shared_preferences: ^2.5.3
   youtube_player_flutter: ^9.1.1
+  youtube_explode_dart: ^2.4.0
+  just_audio: ^0.10.2
 
 dev_dependencies:
   flutter_test:

@@ -1,4 +1,5 @@
 import 'package:culterra/screens/Country/data/models/movie.dart';
+import 'package:culterra/screens/Country/domain/entities/CTCardData.dart';
 import 'package:flutter/material.dart';
 
 import '../../../Widgets/ct_card.dart';
@@ -19,11 +20,11 @@ class CinemaScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 16,
             children: [
               rowBuilder("Top Movies", cinema.topMovies),
-
-              tvShowRowBuilder("Popular TV Shows", cinema.topTvShows),
+              rowBuilder("Popular TV Shows", cinema.topTvShows),
             ],
           ),
         ),
@@ -33,7 +34,7 @@ class CinemaScreen extends StatelessWidget {
     );
   }
 
-  Widget rowBuilder(String title, List<Movie> movies) {
+  Widget rowBuilder(String title, List<CTCardData> list) {
     return Column(
         spacing: 8,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -51,39 +52,11 @@ class CinemaScreen extends StatelessWidget {
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
-              itemCount: movies.length,
+              itemCount: list.length,
               separatorBuilder: (context, _) => SizedBox(width: 16),
-              itemBuilder: (context, index) => CTCard(data: movies[index]),
+              itemBuilder: (context, index) => CTCard(data: list[index]),
             ),
           )
         ]);
   }
-  Widget tvShowRowBuilder(String title, List<TvShow> tvShows) {
-    return Column(
-      spacing: 8,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(
-            fontSize: 16,
-            color: Colors.grey[800],
-            fontWeight: FontWeight.w700,
-            decoration: TextDecoration.none,
-          ),
-        ),
-        SizedBox(
-          height: 150,
-          child: ListView.separated(
-            scrollDirection: Axis.horizontal,
-            shrinkWrap: true,
-            itemCount: tvShows.length,
-            separatorBuilder: (context, _) => SizedBox(width: 16),
-            itemBuilder: (context, index) => CTCard(data: tvShows[index]),
-          ),
-        ),
-      ],
-    );
-  }
-
  }

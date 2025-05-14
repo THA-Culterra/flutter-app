@@ -1,5 +1,7 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:just_audio/just_audio.dart' as ja;
+import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../Widgets/ct_card.dart';
@@ -7,23 +9,44 @@ import '../../../Widgets/report_suggestion.dart';
 import '../../data/models/music.dart';
 import '../../data/models/song.dart';
 
-class MusicScreen extends StatelessWidget {
+class MusicScreen extends StatefulWidget {
   const MusicScreen({super.key, required this.music});
 
   final Music music;
 
   @override
+  State<MusicScreen> createState() => _MusicScreenState();
+}
+
+class _MusicScreenState extends State<MusicScreen> {
+  final ja.AudioPlayer _player = ja.AudioPlayer();
+  String? _currentlyPlayingId;
+  ja.PlayerState? _playerState;
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Listen to playback state
+    _player.playerStateStream.listen((state) {
+      setState(() {
+        _playerState = state;
+      });
+    });
+  }
+
+    @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 16,
             children: [
               rowBuilder("Top Genres"),
-              rowBuilderSongs("Top Songs", music.topSongs)
+              rowBuilderSongs("Top Songs", widget.music.topSongs),
             ],
           ),
         ),
@@ -52,9 +75,10 @@ class MusicScreen extends StatelessWidget {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
-            itemCount: music.genres.length,
+            itemCount: widget.music.genres.length,
             separatorBuilder: (context, _) => SizedBox(width: 16),
-            itemBuilder: (context, index) => CTCard(data: music.genres[index]),
+            itemBuilder:
+                (context, index) => CTCard(data: widget.music.genres[index]),
           ),
         ),
       ],
@@ -76,39 +100,125 @@ class MusicScreen extends StatelessWidget {
         ),
         Column(
           children:
-              songs.map((song) {
+              widget.music.topSongs.map((song) {
                 final videoId = YoutubePlayer.convertUrlToId(song.youtubeUrl);
-                if (videoId != null) {
-                  return Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: YoutubePlayer(
-                      controller: YoutubePlayerController(
-                        initialVideoId: videoId,
-                        flags: YoutubePlayerFlags(autoPlay: false, mute: false),
-                      ),
-                      showVideoProgressIndicator: true,
-                      progressIndicatorColor: Colors.red,
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(8.0),
+                    child: Stack(
+                      children: [
+                        CachedNetworkImage(
+                          imageUrl: song.imageUrl,
+                          height: 90,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        ),
+                        Container(
+                          height: 90,
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: [Colors.black54, Colors.transparent],
+                              begin: Alignment.bottomCenter,
+                              end: Alignment.topCenter,
+                            ),
+                          ),
+                        ),
+                        Positioned(
+                          left: 8,
+                          top: 8,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                song.name,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  decoration: TextDecoration.none,
+                                  fontSize: 20,
+                                ),
+                              ),
+                              Text(
+                                song.singer,
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.w500,
+                                  color: Colors.white70,
+                                  decoration: TextDecoration.none,
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        Positioned(
+                          right: 8,
+                          bottom: 8,
+                          child: Row(
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  _isPlaying(videoId ?? '')
+                                      ? Icons.pause
+                                      : Icons.play_arrow,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () async {
+                                  if (_isPlaying(videoId ?? '')) {
+                                    await _player.pause();
+                                  } else {
+                                    await _playAudio(song.youtubeUrl, videoId ?? '');
+                                  }
+                                },
+                              ),
+                              Text(
+                                '${song.views} views',
+                                style: const TextStyle(color: Colors.white, decoration: TextDecoration.none, fontSize: 12),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  );
-                } else {
-                  return ListTile(
-                    title: Text(song.name),
-                    trailing: Icon(Icons.link),
-                    onTap: () => _launchURL(song.youtubeUrl),
-                  );
-                }
+                  ),
+                );
               }).toList(),
         ),
       ],
     );
   }
 
-  void _launchURL(String url) async {
-    final uri = Uri.parse(url);
-    if (await canLaunchUrl(uri)) {
-      await launchUrl(uri, mode: LaunchMode.externalApplication);
-    } else {
-      throw 'Could not launch $url';
+  Future<void> _playAudio(String youtubeUrl, String videoId) async {
+    final yt = YoutubeExplode();
+    try {
+      final manifest = await yt.videos.streamsClient.getManifest(videoId);
+      final audioStreamInfo = manifest.audioOnly
+          .where((stream) => stream.codec.mimeType == 'audio/mp4')
+          .withHighestBitrate();
+
+      final url = audioStreamInfo.url.toString();
+      await _player.setUrl(url);
+      await _player.play();
+
+      setState(() {
+        _currentlyPlayingId = videoId;
+      });
+        } catch (e) {
+      print('Playback error: $e');
+    } finally {
+      yt.close();
     }
+  }
+
+    @override
+  void dispose() {
+    _player.dispose();
+    super.dispose();
+  }
+
+  bool _isPlaying(String videoId) {
+    return _currentlyPlayingId == videoId &&
+        _playerState?.playing == true &&
+        _playerState?.processingState != ja.ProcessingState.completed;
   }
 }
