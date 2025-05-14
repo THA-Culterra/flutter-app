@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../../Widgets/ct_card.dart';
 import '../../../Widgets/report_suggestion.dart';
+import '../../data/models/athlete.dart';
 import '../../data/models/athletics.dart';
 
 class AthleticScreen extends StatelessWidget {
@@ -21,6 +22,8 @@ class AthleticScreen extends StatelessWidget {
             spacing: 16,
             children: [
               rowBuilder("Top Sports", athletics.popularSports),
+              const SizedBox(height: 24),
+              athleteRowBuilder("Popular Athletes", athletics.athletes),
             ],
           ),
         ),
@@ -55,6 +58,36 @@ class AthleticScreen extends StatelessWidget {
             ),
           )
         ]);
+  }
+
+  Widget athleteRowBuilder(String title, List<Athlete> athletes) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(title,
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.grey[800],
+                fontWeight: FontWeight.w700,
+                decoration: TextDecoration.none,
+              ),
+            ),
+          ],
+          SizedBox(
+            height: 150,
+            child: ListView.separated(
+              scrollDirection: Axis.horizontal,
+              itemCount: athletes.length,
+              separatorBuilder: (context, _) => const SizedBox(width: 16),
+              itemBuilder: (context, index) => CTCard(data: athletes[index]),
+            ),
+          ),
+        ),
+      ],
+    );
   }
 
 }
