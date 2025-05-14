@@ -8,7 +8,9 @@ part of 'transport.dart';
 
 Transport _$TransportFromJson(Map<String, dynamic> json) => Transport(
   airports:
-      (json['airports'] as List<dynamic>).map((e) => e as String).toList(),
+      (json['airports'] as List<dynamic>)
+          .map((e) => Airport.fromJson(e as Map<String, dynamic>))
+          .toList(),
   drivingSide: $enumDecode(_$DrivingSideEnumMap, json['drivingSide']),
   taxiApps:
       (json['taxiApps'] as List<dynamic>)
