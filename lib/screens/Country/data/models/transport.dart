@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'airport.dart';
 import 'driving_side.dart';
 import 'metro.dart';
 import 'taxi_app.dart';
@@ -14,7 +15,7 @@ class Transport {
     required this.metroSystems,
   });
 
-  List<String>  airports ;
+  List<Airport>  airports;
   DrivingSide  drivingSide ;
   List<TaxiApp>  taxiApps ;
   List<Metro>  metroSystems;

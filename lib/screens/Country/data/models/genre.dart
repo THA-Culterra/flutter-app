@@ -1,3 +1,4 @@
+import 'package:culterra/screens/Country/data/models/song.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import '../../domain/entities/CTCardData.dart';
