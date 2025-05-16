@@ -23,33 +23,10 @@ class DishView extends StatelessWidget {
               // Image at the top
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                child: Stack(
-                  children: [
-                    Image.network(
-                      dish.imageUrl,
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                    ),
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                        height: 58,
-                        decoration: const BoxDecoration(
-                          gradient: LinearGradient(
-                            begin: Alignment.bottomCenter,
-                            end: Alignment.topCenter,
-                            colors: [
-                              Colors.white,        // solid white at the bottom
-                              Colors.white54,      // semi-transparent in the middle
-                              Colors.transparent,  // fully transparent at the top
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                child: Image.network(
+                  dish.imageUrl,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
               ),
       
