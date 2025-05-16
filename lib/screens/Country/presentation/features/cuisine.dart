@@ -5,6 +5,7 @@ import '../../../Widgets/ct_card.dart';
 import '../../../Widgets/labeled_link.dart';
 import '../../data/models/cuisine.dart';
 import '../../data/models/dish.dart';
+import 'Dish/dish_view.dart';
 
 class CuisineScreen extends StatelessWidget {
   const CuisineScreen({super.key, required this.cuisine});
@@ -74,68 +75,7 @@ class CuisineScreen extends StatelessWidget {
         ReportSuggestion()
       ],
     );
-
   }
-
-  // Widget rankedImageWidget({
-  //   required String imagePath,
-  //   required int ranking,
-  // }) {
-  //   return ClipRRect(
-  //       borderRadius: BorderRadius.circular(8),
-  //       child: Stack(
-  //         children: [
-  //           // Background image
-  //           Container(
-  //             height: 90,
-  //             width: double.infinity,
-  //             decoration: BoxDecoration(
-  //               image: DecorationImage(
-  //                 image: AssetImage(imagePath),
-  //                 fit: BoxFit.cover,
-  //               ),
-  //             ),
-  //           ),
-  //           // Gradient overlay
-  //           Container(
-  //             height: 90,
-  //             width: double.infinity,
-  //             decoration: BoxDecoration(
-  //               gradient: LinearGradient(
-  //                 colors: [Colors.black.withOpacity(0.4), Colors.transparent],
-  //                 begin: Alignment.centerLeft,
-  //                 end: Alignment.centerRight,
-  //               ),
-  //             ),
-  //           ),
-  //           // Top-left SVG icon
-  //           Positioned(
-  //             top: 8,
-  //             left: 8,
-  //             child: SvgPicture.asset(
-  //               'lib/core/assets/taste_atlas_logo.svg',
-  //               width: 92,
-  //               height: 34,
-  //             ),
-  //           ),
-  //           // Bottom-right ranking text
-  //           Positioned(
-  //             bottom: 8,
-  //             right: 8,
-  //             child: Text(
-  //               "#$ranking",
-  //               style: TextStyle(
-  //                 fontSize: 48,
-  //                 fontWeight: FontWeight.bold,
-  //                 color: Colors.black,
-  //                 decoration: TextDecoration.none,
-  //               ),
-  //             ),
-  //           ),
-  //         ],
-  //       ),
-  //   );
-  // }
 
   Widget rowBuilder(String title, List<Dish> dishes) {
     return Column(
@@ -157,7 +97,20 @@ class CuisineScreen extends StatelessWidget {
               shrinkWrap: true,
               itemCount: dishes.length,
               separatorBuilder: (context, _) => SizedBox(width: 16),
-              itemBuilder: (context, index) => CTCard(data: dishes[index]),
+              itemBuilder: (context, index) {
+                final dish = dishes[index];
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => DishView(dish: dish),
+                      ),
+                    );
+                  },
+                  child: CTCard(data: dish),
+                );
+              },
             ),
           )
       ]);

@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../../Data/review.dart';
 import '../../domain/entities/CTCardData.dart';
 import 'meal_type.dart';
 
@@ -11,7 +12,8 @@ class Dish implements CTCardData {
   required this.name,
   required this.description,
   required this.mealType,
-  required this.imageUrl
+  required this.imageUrl,
+    required this.reviews
   });
 
   @override
@@ -20,6 +22,8 @@ class Dish implements CTCardData {
   MealType  mealType ;
   @override
   String imageUrl;
+
+  List<Review> reviews;
 
   // A factory constructor to create a Cuisine object from JSON
   factory Dish.fromJson(Map<String, dynamic> json) => _$DishFromJson(json);
