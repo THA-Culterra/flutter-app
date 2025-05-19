@@ -1,12 +1,7 @@
-import 'package:json_annotation/json_annotation.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'person.dart';
 
-part 'actor.g.dart';
-
-@JsonSerializable()
 class Actor implements Person {
-  Actor({required this.name, required this.age});
 
   @override
   final String name;
@@ -14,9 +9,25 @@ class Actor implements Person {
   @override
   final int age;
 
-  // A factory constructor to create a Cuisine object from JSON
-  factory Actor.fromJson(Map<String, dynamic> json) => _$ActorFromJson(json);
+  Actor({
+    required this.name,
+    required this.age,
+  });
 
-  // A method to convert a Cuisine object into JSON
-  Map<String, dynamic> toJson() => _$ActorToJson(this);
+  /// Factory constructor to create an Actor from Firestore
+  factory Actor.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Actor(
+      name: data['name'] ?? '',
+      age: data['age'] ?? 0,
+    );
+  }
+
+  /// Converts an Actor instance to a Firestore-compatible map
+  Map<String, dynamic> toFirestore() {
+    return {
+      'name': name,
+      'age': age,
+    };
+  }
 }

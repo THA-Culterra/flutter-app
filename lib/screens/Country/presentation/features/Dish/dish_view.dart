@@ -1,98 +1,94 @@
 import 'package:culterra/screens/Widgets/report_suggestion.dart';
 import 'package:culterra/screens/Widgets/review_card.dart';
 import 'package:flutter/Material.dart';
+import 'package:provider/provider.dart';
 
+import '../../../../Profile/domain/entities/uiState.dart';
 import '../../../data/models/dish.dart';
+import 'dish_view_model.dart';
 
 class DishView extends StatelessWidget {
-  DishView({super.key, required this.dish});
+  DishView({super.key, required this.dishId});
 
-  final Dish dish;
-
+  final String dishId;
   final TextEditingController commentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: SingleChildScrollView(
-        child: Container(
-          color: Colors.white,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Image at the top
-              ClipRRect(
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                child: Image.network(
-                  dish.imageUrl,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
-                ),
-              ),
-      
-              // Content below image
-              Padding(
-                padding: const EdgeInsets.all(16),
+    return ChangeNotifierProvider(
+      create: (_) => DishViewModel(dishId),
+      child: Consumer<DishViewModel>(
+        builder: (context, viewModel, _) {
+          final state = viewModel.state;
+
+          if (state is UiLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (state is UiError) {
+            return Center(child: Text('Error: ${state.toString()}'));
+          }
+
+          final dish = (state as UiSuccess<Dish>).data;
+
+          return Material(
+            child: SingleChildScrollView(
+              child: Container(
+                color: Colors.white,
                 child: Column(
-                  spacing: 8,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Title and category
-                    Text(
-                        dish.name,
-                        style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            decoration: TextDecoration.none
-                        )
-                    ),
-                    Text(
-                        dish.mealType.name,
-                        style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.grey,
-                            decoration: TextDecoration.none
-                        )
-                    ),
-      
-                    // Description
-                    Text(
-                      dish.description,
-                      style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.black,
-                          decoration: TextDecoration.none
+                    // Dish image
+                    ClipRRect(
+                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                      child: Image.network(
+                        dish.imageUrl,
+                        width: double.infinity,
+                        fit: BoxFit.cover,
                       ),
                     ),
-      
-                    // Expert reviews
-                    const Text(
-                        "Expert reviews",
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16,
-                            color: Colors.black,
-                            decoration: TextDecoration.none
-                        )
+
+                    // Content
+                    Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            dish.name,
+                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                          ),
+                          Text(
+                            dish.mealType.name,
+                            style: const TextStyle(fontSize: 20, color: Colors.grey),
+                          ),
+                          Text(
+                            dish.description,
+                            style: const TextStyle(fontSize: 20),
+                          ),
+                          const SizedBox(height: 16),
+                          const Text("Expert reviews", style: TextStyle(fontSize: 16)),
+
+                          if (dish.hydratedReviews != null)
+                            ReviewCard(
+                              reviews: dish.hydratedReviews!,
+                              controller: commentController,
+                              onPost: () {
+                                viewModel.addReview(commentController.text);
+                                commentController.clear();
+                              },
+                            ),
+                        ],
+                      ),
                     ),
-      
-                    // Review card container
-                    ReviewCard(reviews: dish.reviews, controller: commentController, onPost: () {
-                      print(commentController.text);
-                      commentController.clear();
-                      FocusScope.of(context).unfocus();
-                    }),
+                    ReportSuggestion(),
                   ],
                 ),
               ),
-
-              ReportSuggestion()
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
-    );;
+    );
   }
 }

@@ -1,14 +1,6 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'actor.dart';
-import 'director.dart';
-import 'movie.dart';
-import 'tv_show.dart';
-
-part 'cinema.g.dart';
-
-@JsonSerializable()
-class Cinema{
+class Cinema {
   Cinema({
     required this.topMovies,
     required this.topTvShows,
@@ -16,14 +8,49 @@ class Cinema{
     required this.directors,
   });
 
-  List<Movie>  topMovies ;
-  List<TvShow>  topTvShows ;
-  List<Actor>  famousActors ;
-  List<Director>  directors ;
+  final List<DocumentReference> topMovies;
+  final List<DocumentReference> topTvShows;
+  final List<DocumentReference> famousActors;
+  final List<DocumentReference> directors;
 
-  // A factory constructor to create a Cuisine object from JSON
-  factory Cinema.fromJson(Map<String, dynamic> json) => _$CinemaFromJson(json);
+  /// Create a Cinema object from a Firestore-compatible map
+  factory Cinema.fromMap(Map<String, dynamic> map) {
+    return Cinema(
+      topMovies: (map['topMovies'] as List<dynamic>?)
+          ?.whereType<DocumentReference>()
+          .toList() ??
+          [],
+      topTvShows: (map['topTvShows'] as List<dynamic>?)
+          ?.whereType<DocumentReference>()
+          .toList() ??
+          [],
+      famousActors: (map['famousActors'] as List<dynamic>?)
+          ?.whereType<DocumentReference>()
+          .toList() ??
+          [],
+      directors: (map['directors'] as List<dynamic>?)
+          ?.whereType<DocumentReference>()
+          .toList() ??
+          [],
+    );
+  }
 
-  // A method to convert a Cuisine object into JSON
-  Map<String, dynamic> toJson() => _$CinemaToJson(this);
+  /// Convert Cinema object to a Firestore-compatible map
+  Map<String, dynamic> toMap() {
+    return {
+      'topMovies': topMovies,
+      'topTvShows': topTvShows,
+      'famousActors': famousActors,
+      'directors': directors,
+    };
+  }
+
+  /// Create a Cinema object from Firestore DocumentSnapshot
+  factory Cinema.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Cinema.fromMap(data);
+  }
+
+  /// Alias for toMap
+  Map<String, dynamic> toFirestore() => toMap();
 }

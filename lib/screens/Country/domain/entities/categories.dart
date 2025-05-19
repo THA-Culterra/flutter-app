@@ -1,10 +1,10 @@
-import 'package:culterra/screens/Country/presentation/features/cinema.dart';
+import 'package:culterra/screens/Country/presentation/features/Cinema/cinema_view.dart';
 import 'package:culterra/screens/Country/presentation/features/emergency.dart';
-import 'package:culterra/screens/Country/presentation/features/cuisine.dart';
+import 'package:culterra/screens/Country/presentation/features/Cuisine/cuisine_view.dart';
 import 'package:culterra/screens/Country/presentation/features/history.dart';
 import 'package:culterra/screens/Country/presentation/features/key_info.dart';
-import 'package:culterra/screens/Country/presentation/features/music.dart';
-import 'package:culterra/screens/Country/presentation/features/athletic.dart';
+import 'package:culterra/screens/Country/presentation/features/Music/music_view.dart';
+import 'package:culterra/screens/Country/presentation/features/Athletic/athletic_view.dart';
 import 'package:culterra/screens/Country/presentation/features/transport.dart';
 import 'package:flutter/material.dart';
 

@@ -1,33 +1,81 @@
-import 'package:json_annotation/json_annotation.dart';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../../../Data/review.dart';
 import '../../domain/entities/CTCardData.dart';
 import 'meal_type.dart';
 
-part 'dish.g.dart';
-
-@JsonSerializable()
 class Dish implements CTCardData {
   Dish({
-  required this.name,
-  required this.description,
-  required this.mealType,
-  required this.imageUrl,
-    required this.reviews
+    required this.id,
+    required this.name,
+    required this.description,
+    required this.mealType,
+    required this.imageUrl,
+    required this.reviewRefs,
+    this.hydratedReviews,
   });
 
+  final String id;
   @override
-  String  name ;
-  String  description ;
-  MealType  mealType ;
+  final String name;
+  final String description;
+  final MealType mealType;
   @override
-  String imageUrl;
+  final String imageUrl;
 
-  List<Review> reviews;
+  // Firestore refs
+  final List<DocumentReference> reviewRefs;
 
-  // A factory constructor to create a Cuisine object from JSON
-  factory Dish.fromJson(Map<String, dynamic> json) => _$DishFromJson(json);
+  // Hydrated objects
+  final List<Review>? hydratedReviews;
 
-  // A method to convert a Cuisine object into JSON
-  Map<String, dynamic> toJson() => _$DishToJson(this);
+  /// Used during Firestore loading
+  factory Dish.fromMap(Map<String, dynamic> map) {
+    return Dish(
+      id: map['id'],
+      name: map['name'] as String,
+      description: map['description'] as String,
+      mealType: MealType.values.firstWhere(
+            (e) => e.toString().split('.').last == map['mealType'],
+        orElse: () => MealType.breakfast,
+      ),
+      imageUrl: map['imageUrl'] as String,
+      reviewRefs: (map['reviews'] as List<dynamic>? ?? [])
+          .whereType<DocumentReference>()
+          .toList(),
+    );
+  }
+
+  /// To Firestore
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'description': description,
+      'mealType': mealType.toString().split('.').last,
+      'imageUrl': imageUrl,
+      'reviews': reviewRefs,
+    };
+  }
+
+  Map<String, dynamic> toFirestore() => toMap();
+
+  /// Factory from Firestore
+  factory Dish.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Dish.fromMap({...data, 'id': doc.id});
+  }
+
+  /// hydrated reviews
+  Dish copyWith({
+    List<Review>? hydratedReviews,
+  }) {
+    return Dish(
+      id: id,
+      name: name,
+      description: description,
+      mealType: mealType,
+      imageUrl: imageUrl,
+      reviewRefs: reviewRefs,
+      hydratedReviews: hydratedReviews ?? this.hydratedReviews,
+    );
+  }
 }

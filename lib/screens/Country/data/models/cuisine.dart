@@ -1,22 +1,42 @@
-import 'package:json_annotation/json_annotation.dart';
-import 'dish.dart';
-import 'restaurant.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-part 'cuisine.g.dart';
-
-@JsonSerializable()
 class Cuisine {
+  final List<DocumentReference> dishes;
+  final List<DocumentReference> restaurants;
+
   Cuisine({
     required this.dishes,
     required this.restaurants,
   });
 
-  final List<Dish> dishes;
-  final List<Restaurant> restaurants;
+  /// Construct Cuisine from a Firestore-compatible map
+  factory Cuisine.fromMap(Map<String, dynamic> map) {
+    return Cuisine(
+      dishes: (map['dishes'] as List<dynamic>?)
+          ?.whereType<DocumentReference>()
+          .toList() ??
+          [],
+      restaurants: (map['restaurants'] as List<dynamic>?)
+          ?.whereType<DocumentReference>()
+          .toList() ??
+          [],
+    );
+  }
 
-  // A factory constructor to create a Cuisine object from JSON
-  factory Cuisine.fromJson(Map<String, dynamic> json) => _$CuisineFromJson(json);
+  /// Convert Cuisine to a Firestore-compatible map
+  Map<String, dynamic> toMap() {
+    return {
+      'dishes': dishes,
+      'restaurants': restaurants,
+    };
+  }
 
-  // A method to convert a Cuisine object into JSON
-  Map<String, dynamic> toJson() => _$CuisineToJson(this);
+  /// Construct Cuisine from Firestore DocumentSnapshot
+  factory Cuisine.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Cuisine.fromMap(data);
+  }
+
+  /// Alias for toMap
+  Map<String, dynamic> toFirestore() => toMap();
 }

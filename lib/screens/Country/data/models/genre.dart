@@ -1,27 +1,57 @@
 import 'package:culterra/screens/Country/data/models/song.dart';
-import 'package:json_annotation/json_annotation.dart';
 
+import '../../../Data/review.dart';
 import '../../domain/entities/CTCardData.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-part 'genre.g.dart';
-
-@JsonSerializable()
 class Genre implements CTCardData {
   Genre({
     required this.name,
     required this.imageUrl,
+    required this.topSongs,
+    required this.reviews,
   });
 
   @override
-  String  name ;
-
+  final String name;
   @override
-  String  imageUrl ;
+  final String imageUrl;
+  final List<Song> topSongs;
+  final List<Review> reviews;
 
-  // A factory constructor to create a Cuisine object from JSON
-  factory Genre.fromJson(Map<String, dynamic> json) => _$GenreFromJson(json);
+  static Future<Genre> fromMapWithHydration(Map<String, dynamic> map) async {
+    final songRefs = (map['topSongs'] as List<dynamic>? ?? [])
+        .whereType<DocumentReference>()
+        .toList();
 
-  // A method to convert a Cuisine object into JSON
-  Map<String, dynamic> toJson() => _$GenreToJson(this);
+    final reviewRefs = (map['reviews'] as List<dynamic>? ?? [])
+        .whereType<DocumentReference>()
+        .toList();
 
+    final topSongs = await Future.wait(songRefs.map((ref) async {
+      final doc = await ref.get();
+      return Song.fromFirestore(doc);
+    }));
+
+    final reviews = await Future.wait(reviewRefs.map((ref) async {
+      final doc = await ref.get();
+      return Review.fromFirestore(doc);
+    }));
+
+    return Genre(
+      name: map['name'] ?? '',
+      imageUrl: map['imageUrl'] ?? '',
+      topSongs: topSongs,
+      reviews: reviews,
+    );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'imageUrl': imageUrl,
+      'topSongs': topSongs.map((s) => FirebaseFirestore.instance.doc('songs/${s.id}')).toList(),
+      'reviews': reviews.map((r) => FirebaseFirestore.instance.doc('reviews/${r.id}')).toList(),
+    };
+  }
+}

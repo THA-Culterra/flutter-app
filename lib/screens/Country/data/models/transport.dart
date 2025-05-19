@@ -1,12 +1,9 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'airport.dart';
 import 'driving_side.dart';
 import 'metro.dart';
-import 'taxi_app.dart';
 
-part 'transport.g.dart';
-@JsonSerializable()
 class Transport {
   Transport({
     required this.airports,
@@ -15,14 +12,43 @@ class Transport {
     required this.metroSystems,
   });
 
-  List<Airport>  airports;
-  DrivingSide  drivingSide ;
-  List<TaxiApp>  taxiApps ;
-  List<Metro>  metroSystems;
+  List<Airport> airports;
+  DrivingSide drivingSide;
+  List<DocumentReference> taxiApps;
+  List<Metro> metroSystems;
 
-  // A factory constructor to create a Cuisine object from JSON
-  factory Transport.fromJson(Map<String, dynamic> json) => _$TransportFromJson(json);
+  /// Create Transport from a Firestore-compatible map
+  factory Transport.fromMap(Map<String, dynamic> map) {
+    return Transport(
+      airports: (map['airports'] as List<dynamic>? ?? [])
+          .map((e) => Airport.fromMap(e as Map<String, dynamic>))
+          .toList(),
+      drivingSide: DrivingSide.values.byName(map['drivingSide'] as String? ?? 'right'),
+      taxiApps: (map['taxiApps'] as List<dynamic>? ?? [])
+          .whereType<DocumentReference>()
+          .toList(),
+      metroSystems: (map['metroSystems'] as List<dynamic>? ?? [])
+          .map((e) => Metro.fromMap(e as Map<String, dynamic>))
+          .toList(),
+    );
+  }
 
-  // A method to convert a Cuisine object into JSON
-  Map<String, dynamic> toJson() => _$TransportToJson(this);
+  /// Convert Transport object to Firestore-compatible map
+  Map<String, dynamic> toMap() {
+    return {
+      'airports': airports.map((a) => a.toMap()).toList(),
+      'drivingSide': drivingSide.name,
+      'taxiApps': taxiApps,
+      'metroSystems': metroSystems.map((m) => m.toMap()).toList(),
+    };
+  }
+
+  /// Create Transport from Firestore DocumentSnapshot
+  factory Transport.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Transport.fromMap(data);
+  }
+
+  /// Alias for toMap
+  Map<String, dynamic> toFirestore() => toMap();
 }

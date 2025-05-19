@@ -1,23 +1,42 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'athlete.dart';
-import 'sport.dart';
-
-part 'athletics.g.dart';
-
-@JsonSerializable()
 class Athletics {
   Athletics({
     required this.popularSports,
     required this.athletes,
   });
 
-  List<Sport> popularSports;
-  List<Athlete> athletes;
+  final List<DocumentReference> popularSports;
+  final List<DocumentReference> athletes;
 
-  // A factory constructor to create a Cuisine object from JSON
-  factory Athletics.fromJson(Map<String, dynamic> json) => _$AthleticsFromJson(json);
+  /// Create Athletics object from Firestore DocumentSnapshot
+  factory Athletics.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Athletics.fromMap(data);
+  }
 
-  // A method to convert a Cuisine object into JSON
-  Map<String, dynamic> toJson() => _$AthleticsToJson(this);
+  /// Create Athletics object from Map
+  factory Athletics.fromMap(Map<String, dynamic> map) {
+    return Athletics(
+      popularSports: (map['popularSports'] as List<dynamic>?)
+          ?.whereType<DocumentReference>()
+          .toList() ??
+          [],
+      athletes: (map['athletes'] as List<dynamic>?)
+          ?.whereType<DocumentReference>()
+          .toList() ??
+          [],
+    );
+  }
+
+  /// Convert Athletics object to Map
+  Map<String, dynamic> toMap() {
+    return {
+      'popularSports': popularSports,
+      'athletes': athletes,
+    };
+  }
+
+  /// Alias for toMap
+  Map<String, dynamic> toFirestore() => toMap();
 }

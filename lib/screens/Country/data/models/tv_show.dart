@@ -1,16 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:culterra/screens/Country/domain/entities/CTCardData.dart';
-import 'package:json_annotation/json_annotation.dart';
 
 import 'tv_program.dart';
 
-part 'tv_show.g.dart';
-@JsonSerializable()
 class TvShow implements TvProgram, CTCardData {
-
   TvShow({
+    required this.id,
     required this.name,
-    required this.imageUrl
+    required this.imageUrl,
   });
+
+  final String id;
 
   @override
   final String name;
@@ -18,9 +18,33 @@ class TvShow implements TvProgram, CTCardData {
   @override
   final String imageUrl;
 
-  // A factory constructor to create a Cuisine object from JSON
-  factory TvShow.fromJson(Map<String, dynamic> json) => _$TvShowFromJson(json);
+  /// Create a TvShow from a Firestore-compatible map
+  factory TvShow.fromMap(Map<String, dynamic> map) {
+    return TvShow(
+      id: map['id'] as String? ?? '',
+      name: map['name'] as String? ?? '',
+      imageUrl: map['imageUrl'] as String? ?? '',
+    );
+  }
 
-  // A method to convert a Cuisine object into JSON
-  Map<String, dynamic> toJson() => _$TvShowToJson(this);
+  /// Convert TvShow to Firestore-compatible map
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'imageUrl': imageUrl,
+    };
+  }
+
+  /// Create a TvShow from Firestore DocumentSnapshot
+  factory TvShow.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return TvShow.fromMap({
+      ...data,
+      'id': doc.id,
+    });
+  }
+
+  /// Alias for toMap
+  Map<String, dynamic> toFirestore() => toMap();
 }
