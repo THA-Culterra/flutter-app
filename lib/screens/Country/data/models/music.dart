@@ -16,26 +16,32 @@ class Music {
   final List<Singer> notableSingers;
 
   static Future<Music> fromMapWithHydration(Map<String, dynamic> map) async {
-    final genresRaw = (map['genres'] as List<dynamic>? ?? []);
-    final genres = <Genre>[];
 
-    for (final genreMap in genresRaw.whereType<Map<String, dynamic>>()) {
-      final genre = await Genre.fromMapWithHydration(genreMap);
-      genres.add(genre);
-    }
-
-    final topSongRefs = (map['topSongs'] as List<dynamic>? ?? [])
+    final genresRef = (map['topSongs'] as List<dynamic>? ?? [])
         .whereType<DocumentReference>()
         .toList();
-    final topSongs = await Future.wait(topSongRefs.map((ref) async {
+
+    final genres = await Future.wait(genresRef.map((ref) async {
       final doc = await ref.get();
-      return Song.fromFirestore(doc);
+      return Genre.fromFirestoreWithHydration(doc);
     }));
 
+    // Hydrate topSongs
+    final songRefs = (map['topSongs'] as List<dynamic>? ?? [])
+        .whereType<DocumentReference>()
+        .toList();
+
+    final topSongs = await Future.wait(songRefs.map((ref) async {
+      final doc = await ref.get();
+      return Song.fromFirestoreWithHydration(doc);
+    }));
+
+    // Hydrate notableSingers
     final singerRefs = (map['notableSingers'] as List<dynamic>? ?? [])
         .whereType<DocumentReference>()
         .toList();
-    final singers = await Future.wait(singerRefs.map((ref) async {
+
+    final notableSingers = await Future.wait(singerRefs.map((ref) async {
       final doc = await ref.get();
       return Singer.fromFirestore(doc);
     }));
@@ -43,15 +49,15 @@ class Music {
     return Music(
       genres: genres,
       topSongs: topSongs,
-      notableSingers: singers,
+      notableSingers: notableSingers,
     );
   }
 
   Map<String, dynamic> toMap() {
     return {
-      'genres': genres.map((g) => g.toMap()).toList(),
+      'genres': genres.map((g) => FirebaseFirestore.instance.doc('genres/${g.id}')).toList(),
       'topSongs': topSongs.map((s) => FirebaseFirestore.instance.doc('songs/${s.id}')).toList(),
-      'notableSingers': notableSingers.map((s) => FirebaseFirestore.instance.doc('singers/${s.id}')).toList(),
+      'notableSingers': notableSingers.map((s) => FirebaseFirestore.instance.doc('persons/${s.id}')).toList(),
     };
   }
 }

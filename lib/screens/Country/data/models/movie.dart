@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../../Data/review.dart';
 import '../../domain/entities/CTCardData.dart';
+import 'actor.dart';
 import 'tv_program.dart';
 
 
@@ -14,8 +16,8 @@ class Movie implements TvProgram, CTCardData {
   });
 
   final String id;
-  final List<DocumentReference> topActors;
-  final List<DocumentReference> reviews;
+  final List<Actor> topActors;
+  final List<Review> reviews;
 
   @override
   final String name;
@@ -23,39 +25,30 @@ class Movie implements TvProgram, CTCardData {
   @override
   final String imageUrl;
 
-  /// Create a Movie object from a Firestore-compatible map
-  factory Movie.fromMap(Map<String, dynamic> map, {required String id}) {
+  /// This is for usage after full hydration.
+  static Future<Movie> fromMapWithHydration(DocumentSnapshot doc) async {
+    final data = doc.data() as Map<String, dynamic>;
+    final id = doc.id;
+
+    final actorRefs = (data['topActors'] as List).cast<DocumentReference>();
+
+    final topActors = await Future.wait(actorRefs.map((ref) async {
+      final doc = await ref.get();
+      return Actor.fromFirestore(doc);
+    }));
+
+    // Load reviews from the 'reviews' subcollection of this TvShow document
+    final reviewSnapshot = await doc.reference.collection('reviews').get();
+    final reviews = await Future.wait(
+      reviewSnapshot.docs.map(Review.fromFirestoreWithHydration),
+    );
+
     return Movie(
       id: id,
-      name: map['name'] as String? ?? '',
-      imageUrl: map['imageUrl'] as String? ?? '',
-      topActors: (map['topActors'] as List<dynamic>?)
-          ?.whereType<DocumentReference>()
-          .toList() ??
-          [],
-      reviews: (map['reviews'] as List<dynamic>?)
-          ?.whereType<DocumentReference>()
-          .toList() ??
-          [],
+      name: data['name'] as String? ?? '',
+      imageUrl: data['imageUrl'] as String? ?? '',
+      topActors: topActors,
+      reviews: reviews,
     );
   }
-
-  /// Construct Movie from Firestore DocumentSnapshot
-  factory Movie.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return Movie.fromMap(data, id: doc.id);
-  }
-
-  /// Convert Movie object to Firestore-compatible map
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'imageUrl': imageUrl,
-      'topActors': topActors,
-      'reviews': reviews,
-    };
-  }
-
-  /// Convert Movie to Firestore (alias for toMap)
-  Map<String, dynamic> toFirestore() => toMap();
 }

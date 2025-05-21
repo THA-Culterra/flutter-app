@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'singer.dart';
+
 class Song {
   Song({
     required this.id,
@@ -14,35 +16,34 @@ class Song {
   final String name;
   final int views;
   final String imageUrl;
-  final String singer;
+  final Singer singer;
   final String youtubeUrl;
 
-  /// Create Song from Firestore-compatible map and document ID
-  factory Song.fromMap(Map<String, dynamic> map, {required String id}) {
+  /// Firestore stores the singer as a reference
+  static Future<Song> fromFirestoreWithHydration(DocumentSnapshot doc) async {
+    final data = doc.data() as Map<String, dynamic>;
+    final singerRef = data['singer'] as DocumentReference;
+
+    final singerDoc = await singerRef.get();
+    final singer = Singer.fromFirestore(singerDoc);
+
     return Song(
-      id: id,
-      name: map['name'] as String? ?? '',
-      views: map['views'] as int? ?? 0,
-      imageUrl: map['imageUrl'] as String? ?? '',
-      singer: map['singer'] as String? ?? '',
-      youtubeUrl: map['youtubeUrl'] as String? ?? '',
+      id: doc.id,
+      name: data['name'] as String? ?? '',
+      views: data['views'] as int? ?? 0,
+      imageUrl: data['imageUrl'] as String? ?? '',
+      singer: singer,
+      youtubeUrl: data['youtubeUrl'] as String? ?? '',
     );
   }
 
-  /// Create Song from Firestore DocumentSnapshot
-  factory Song.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return Song.fromMap(data, id: doc.id);
-  }
-
-  /// Convert Song to Firestore-compatible map
+  /// Convert to Firestore-compatible map (store reference instead of object)
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
       'name': name,
       'views': views,
       'imageUrl': imageUrl,
-      'singer': singer,
+      'singer': FirebaseFirestore.instance.collection('singers').doc(singer.id),
       'youtubeUrl': youtubeUrl,
     };
   }

@@ -1,42 +1,61 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'athlete.dart';
+import 'sport.dart';
+
 class Athletics {
   Athletics({
     required this.popularSports,
     required this.athletes,
   });
 
-  final List<DocumentReference> popularSports;
-  final List<DocumentReference> athletes;
+  final List<Sport> popularSports;
+  final List<Athlete> athletes;
 
-  /// Create Athletics object from Firestore DocumentSnapshot
-  factory Athletics.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
-    return Athletics.fromMap(data);
-  }
+  /// Construct Athletics from a Firestore-compatible map
+  static Future<Athletics> fromMapWithHydration(Map<String, dynamic> map) async {
+    // Directly deserialize embedded sports
+    final popularSportsData = (map['popularSports'] as List<dynamic>?)
+        ?.whereType<Map<String, dynamic>>()
+        .toList() ?? [];
 
-  /// Create Athletics object from Map
-  factory Athletics.fromMap(Map<String, dynamic> map) {
+    final popularSports = popularSportsData
+        .map((sportMap) => Sport.fromMap(sportMap))
+        .toList();
+
+    // Hydrate athletes from DocumentReferences
+    final athleteRefs = (map['athletes'] as List<dynamic>?)
+        ?.whereType<DocumentReference>()
+        .toList() ?? [];
+
+    final athletes = await Future.wait(
+      athleteRefs.map((ref) async {
+        final doc = await ref.get();
+        return Athlete.fromFirestore(doc);
+      }),
+    );
+
     return Athletics(
-      popularSports: (map['popularSports'] as List<dynamic>?)
-          ?.whereType<DocumentReference>()
-          .toList() ??
-          [],
-      athletes: (map['athletes'] as List<dynamic>?)
-          ?.whereType<DocumentReference>()
-          .toList() ??
-          [],
+      popularSports: popularSports,
+      athletes: athletes,
     );
   }
 
-  /// Convert Athletics object to Map
+  /// Factory from Firestore DocumentSnapshot that hydrates directly
+  static Future<Athletics> fromFirestore(DocumentSnapshot doc) async {
+    final data = doc.data() as Map<String, dynamic>;
+    return await Athletics.fromMapWithHydration(data);
+  }
+
+  /// Convert to Firestore-compatible map
   Map<String, dynamic> toMap() {
     return {
-      'popularSports': popularSports,
-      'athletes': athletes,
+      'popularSports': popularSports.map((sport) => sport.toMap()).toList(),
+      'athletes': athletes.map((a) => FirebaseFirestore.instance
+          .collection('athletes')
+          .doc(a.id)), // assuming athlete still stored as reference
     };
   }
 
-  /// Alias for toMap
   Map<String, dynamic> toFirestore() => toMap();
 }

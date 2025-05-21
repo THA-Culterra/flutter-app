@@ -16,7 +16,7 @@ class HistoryScreen extends StatelessWidget {
 
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          nationalDayBuilder(history.nationalDay.entries.first),
+          nationalDayBuilder(history.nationalDay),
 
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,7 +60,7 @@ class HistoryScreen extends StatelessWidget {
     );
   }
 
-  Widget nationalDayBuilder(MapEntry<String, DateTime> nationalDayEntry) {
+  Widget nationalDayBuilder(NamedDate nationalDayEntry) {
     return Column(
       children: [
         Column(
@@ -77,7 +77,7 @@ class HistoryScreen extends StatelessWidget {
             ),
             SizedBox(height: 8),
             Text(
-              nationalDayEntry.key, // Name of the National Day (e.g., Independence Day)
+              nationalDayEntry.name, // Name of the National Day (e.g., Independence Day)
               style: TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
@@ -87,7 +87,7 @@ class HistoryScreen extends StatelessWidget {
             ),
             SizedBox(height: 4),
             Text(
-              "${nationalDayEntry.value.day}/${nationalDayEntry.value.month}/${nationalDayEntry.value.year}",
+              "${nationalDayEntry.date.day}/${nationalDayEntry.date.month}/${nationalDayEntry.date.year}",
               style: TextStyle(
                   fontSize: 16,
                   color: Colors.grey,
@@ -101,20 +101,29 @@ class HistoryScreen extends StatelessWidget {
     );
   }
 
-  List<Widget> datesBuilder(Map<String, DateTime> dates) {
-    return dates.entries.map((entry) {
+  List<Widget> datesBuilder(List<NamedDate> dates) {
+    return dates.map((namedDate) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 6),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Expanded(child: Text(entry.key, style: const TextStyle(fontSize: 16, decoration: TextDecoration.none, color: Colors.black,))),
-            Text(
-              '${entry.value.day}/${entry.value.month}/${entry.value.year}',
-              style: const TextStyle(
+            Expanded(
+              child: Text(
+                namedDate.name,
+                style: const TextStyle(
                   fontSize: 16,
-                  color: Colors.grey,
-                  decoration: TextDecoration.none
+                  decoration: TextDecoration.none,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            Text(
+              '${namedDate.date.day}/${namedDate.date.month}/${namedDate.date.year}',
+              style: const TextStyle(
+                fontSize: 16,
+                color: Colors.grey,
+                decoration: TextDecoration.none,
               ),
             ),
           ],

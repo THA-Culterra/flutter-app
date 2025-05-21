@@ -6,12 +6,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Genre implements CTCardData {
   Genre({
+    required this.id,
     required this.name,
     required this.imageUrl,
     required this.topSongs,
     required this.reviews,
   });
 
+  final String id;
   @override
   final String name;
   @override
@@ -19,39 +21,57 @@ class Genre implements CTCardData {
   final List<Song> topSongs;
   final List<Review> reviews;
 
-  static Future<Genre> fromMapWithHydration(Map<String, dynamic> map) async {
-    final songRefs = (map['topSongs'] as List<dynamic>? ?? [])
+  /// From Firestore document (with hydration of topSongs and reviews)
+  static Future<Genre> fromFirestoreWithHydration(DocumentSnapshot doc) async {
+    final data = doc.data() as Map<String, dynamic>;
+
+    // Hydrate topSongs from references
+    final topSongRefs = (data['topSongs'] as List<dynamic>? ?? [])
         .whereType<DocumentReference>()
         .toList();
 
-    final reviewRefs = (map['reviews'] as List<dynamic>? ?? [])
-        .whereType<DocumentReference>()
-        .toList();
+    final topSongs = await Future.wait(
+      topSongRefs.map((ref) async {
+        final songDoc = await ref.get();
+        return Song.fromFirestoreWithHydration(songDoc);
+      }),
+    );
 
-    final topSongs = await Future.wait(songRefs.map((ref) async {
-      final doc = await ref.get();
-      return Song.fromFirestore(doc);
-    }));
-
-    final reviews = await Future.wait(reviewRefs.map((ref) async {
-      final doc = await ref.get();
-      return Review.fromFirestore(doc);
-    }));
+    // Hydrate reviews from subcollection
+    final reviewSnapshots = await doc.reference.collection('reviews').get();
+    final reviews = await Future.wait(
+      reviewSnapshots.docs.map((d) => Review.fromFirestoreWithHydration(d)),
+    );
 
     return Genre(
-      name: map['name'] ?? '',
-      imageUrl: map['imageUrl'] ?? '',
+      id: doc.id,
+      name: data['name'] ?? '',
+      imageUrl: data['imageUrl'] ?? '',
       topSongs: topSongs,
       reviews: reviews,
     );
   }
 
+  /// From Firestore document without hydration
+  factory Genre.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Genre(
+      id: doc.id,
+      name: data['name'] ?? '',
+      imageUrl: data['imageUrl'] ?? '',
+      topSongs: [], // No hydration
+      reviews: [],  // No hydration
+    );
+  }
+
+  /// To Firestore (stores references to topSongs only, not reviews)
   Map<String, dynamic> toMap() {
     return {
       'name': name,
       'imageUrl': imageUrl,
       'topSongs': topSongs.map((s) => FirebaseFirestore.instance.doc('songs/${s.id}')).toList(),
-      'reviews': reviews.map((r) => FirebaseFirestore.instance.doc('reviews/${r.id}')).toList(),
     };
   }
+
+  Map<String, dynamic> toFirestore() => toMap();
 }

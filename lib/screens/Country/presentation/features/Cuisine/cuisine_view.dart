@@ -9,66 +9,43 @@ import '../../../data/models/cuisine.dart';
 import '../../../data/models/dish.dart';
 import '../../../data/models/restaurant.dart';
 import '../Dish/dish_view.dart';
-import 'cuisine_view_model.dart';
 
 class CuisineScreen extends StatelessWidget {
   const CuisineScreen({super.key, required this.cuisine});
+
   final Cuisine cuisine;
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => CuisineViewModel(cuisine: cuisine),
-      child: const CuisineContent(),
-    );
-  }
-}
-
-class CuisineContent extends StatelessWidget {
-  const CuisineContent({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    final viewModel = context.watch<CuisineViewModel>();
-    final state = viewModel.uiState;
-
-    if (state is UiLoading) {
-      return const Center(child: CircularProgressIndicator());
-    }
-
-    if (state is UiError) {
-      return Center(child: Text('Error: ${state.toString()}'));
-    }
-
-    final (dishes, restaurants) = (state as UiSuccess<(List<Dish>, List<Restaurant>)>).data;
-
     return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          spacing: 16,
-          children: [
-            rowBuilder("Top Dishes", dishes),
-            restaurantSection(restaurants),
-            const ReportSuggestion()
-          ],
-        ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          rowBuilder("Top Dishes", cuisine.dishes),
+          const SizedBox(height: 24),
+          restaurantSection(cuisine.restaurants),
+          const SizedBox(height: 24),
+          const ReportSuggestion(),
+        ],
       ),
     );
   }
 
   Widget rowBuilder(String title, List<Dish> dishes) {
     return Column(
-      spacing: 8,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title,
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.black87,
-              fontWeight: FontWeight.w700,
-              decoration: TextDecoration.none,
-            )),
+        Text(
+          title,
+          style: const TextStyle(
+            fontSize: 16,
+            color: Colors.black87,
+            fontWeight: FontWeight.w700,
+            decoration: TextDecoration.none,
+          ),
+        ),
+        const SizedBox(height: 8),
         SizedBox(
           height: 150,
           child: ListView.separated(
@@ -81,35 +58,36 @@ class CuisineContent extends StatelessWidget {
                 onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (_) => DishView(dishId: dish.id),
+                    builder: (_) => DishView(dish: dish),
                   ),
                 ),
                 child: CTCard(data: dish),
               );
             },
           ),
-        )
+        ),
       ],
     );
   }
 
   Widget restaurantSection(List<Restaurant> restaurants) {
     return Column(
-      spacing: 8,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text("Iconic Traditional Restaurants",
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.black87,
-              fontWeight: FontWeight.w700,
-              decoration: TextDecoration.none,
-            )),
+        const Text(
+          "Iconic Traditional Restaurants",
+          style: TextStyle(
+            fontSize: 16,
+            color: Colors.black87,
+            fontWeight: FontWeight.w700,
+            decoration: TextDecoration.none,
+          ),
+        ),
+        const SizedBox(height: 8),
         Column(
-          spacing: 16,
           children: restaurants.map((restaurant) {
             return LabeledLink(
-              link: '',
+              link: '', // Fill in your link here if you have one
               primLabel: restaurant.name,
               secLabel: restaurant.city,
               icon: 'pin',

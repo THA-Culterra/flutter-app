@@ -8,7 +8,6 @@ class Athlete implements Person, CTCardData {
     required this.id,
     required this.name,
     required this.age,
-    required this.sportName,
     required this.imageUrl,
   });
 
@@ -20,10 +19,8 @@ class Athlete implements Person, CTCardData {
   @override
   final int age;
 
-  final String sportName;
-
   @override
-  final String imageUrl;
+  String imageUrl;
 
   /// Create an Athlete object from Firestore document
   factory Athlete.fromFirestore(DocumentSnapshot doc) {
@@ -32,7 +29,6 @@ class Athlete implements Person, CTCardData {
       id: doc.id,
       name: data['name'] ?? '',
       age: data['age'] ?? 0,
-      sportName: data['sportName'] ?? '',
       imageUrl: data['imageUrl'] ?? '',
     );
   }
@@ -43,7 +39,6 @@ class Athlete implements Person, CTCardData {
       'id': id,
       'name': name,
       'age': age,
-      'sportName': sportName,
       'imageUrl': imageUrl,
     };
   }

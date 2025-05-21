@@ -10,8 +10,7 @@ class Dish implements CTCardData {
     required this.description,
     required this.mealType,
     required this.imageUrl,
-    required this.reviewRefs,
-    this.hydratedReviews,
+    this.reviews,
   });
 
   final String id;
@@ -22,13 +21,10 @@ class Dish implements CTCardData {
   @override
   final String imageUrl;
 
-  // Firestore refs
-  final List<DocumentReference> reviewRefs;
+  // Hydrated reviews from subcollection
+  final List<Review>? reviews;
 
-  // Hydrated objects
-  final List<Review>? hydratedReviews;
-
-  /// Used during Firestore loading
+  /// Basic constructor from Firestore map (no hydration)
   factory Dish.fromMap(Map<String, dynamic> map) {
     return Dish(
       id: map['id'],
@@ -39,43 +35,59 @@ class Dish implements CTCardData {
         orElse: () => MealType.breakfast,
       ),
       imageUrl: map['imageUrl'] as String,
-      reviewRefs: (map['reviews'] as List<dynamic>? ?? [])
-          .whereType<DocumentReference>()
-          .toList(),
     );
   }
 
-  /// To Firestore
+  /// Firestore serialization (without subcollections)
   Map<String, dynamic> toMap() {
     return {
       'name': name,
       'description': description,
       'mealType': mealType.toString().split('.').last,
       'imageUrl': imageUrl,
-      'reviews': reviewRefs,
     };
   }
 
   Map<String, dynamic> toFirestore() => toMap();
 
-  /// Factory from Firestore
+  /// Construct from Firestore snapshot (no hydration)
   factory Dish.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return Dish.fromMap({...data, 'id': doc.id});
   }
 
-  /// hydrated reviews
-  Dish copyWith({
-    List<Review>? hydratedReviews,
-  }) {
+  /// Hydration: loads reviews from subcollection `dishes/{dishId}/reviews`
+  static Future<Dish> fromFirestoreWithHydration(DocumentSnapshot doc) async {
+    final data = doc.data() as Map<String, dynamic>;
+    final id = doc.id;
+
+    final reviewSnapshots = await doc.reference.collection('reviews').get();
+    final hydratedReviews = await Future.wait(
+      reviewSnapshots.docs.map(Review.fromFirestoreWithHydration),
+    );
+
+    return Dish(
+      id: id,
+      name: data['name'] ?? '',
+      description: data['description'] ?? '',
+      mealType: MealType.values.firstWhere(
+            (e) => e.toString().split('.').last == data['mealType'],
+        orElse: () => MealType.breakfast,
+      ),
+      imageUrl: data['imageUrl'] ?? '',
+      reviews: hydratedReviews,
+    );
+  }
+
+  /// Copy with updated reviews
+  Dish copyWith({List<Review>? reviews}) {
     return Dish(
       id: id,
       name: name,
       description: description,
       mealType: mealType,
       imageUrl: imageUrl,
-      reviewRefs: reviewRefs,
-      hydratedReviews: hydratedReviews ?? this.hydratedReviews,
+      reviews: reviews ?? this.reviews,
     );
   }
 }

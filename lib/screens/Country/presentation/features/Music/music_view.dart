@@ -140,7 +140,7 @@ class _MusicScreenState extends State<MusicScreen> {
                                 ),
                               ),
                               Text(
-                                song.singer,
+                                song.singer.name,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   color: Colors.white70,

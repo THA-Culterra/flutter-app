@@ -49,13 +49,60 @@ class Country {
   Emergency emergency;
 
   /// Construct Country from Firestore DocumentSnapshot
-  factory Country.fromFirestore(DocumentSnapshot doc) {
+  static Future<Country> fromFirestore(DocumentSnapshot doc) async {
     final data = doc.data() as Map<String, dynamic>;
-    return Country.fromMap(data..['id'] = doc.id);
+    data['id'] = doc.id;
+    return await Country.fromMapWithHydration(data);
   }
 
   /// Construct Country from a plain map
-  factory Country.fromMap(Map<String, dynamic> map) {
+  static Future<Country> fromMapWithHydration(Map<String, dynamic> map) async {
+    late Music music;
+    late Cuisine cuisine;
+    late Athletics athletics;
+    late Cinema cinema;
+    late Transport transport;
+
+    try {
+      print("Hydrating music, raw data: ${map['music']}");
+      music = await Music.fromMapWithHydration(map['music'] ?? {});
+    } catch (e, stack) {
+      print("Error hydrating music: $e\n$stack");
+      rethrow;
+    }
+
+    try {
+      print("Hydrating cuisine, raw data: ${map['cuisine']}");
+      cuisine = await Cuisine.fromMapWithHydration(map['cuisine'] ?? {});
+    } catch (e, stack) {
+      print("Error hydrating cuisine: $e\n$stack");
+      rethrow;
+    }
+
+    try {
+      print("Hydrating athletics, raw data: ${map['athletics']}");
+      athletics = await Athletics.fromMapWithHydration(map['athletics'] ?? {});
+    } catch (e, stack) {
+      print("Error hydrating athletics: $e\n$stack");
+      rethrow;
+    }
+
+    try {
+      print("Hydrating cinema, raw data: ${map['cinema']}");
+      cinema = await Cinema.fromMapWithHydration(map['cinema'] ?? {});
+    } catch (e, stack) {
+      print("Error hydrating cinema: $e\n$stack");
+      rethrow;
+    }
+
+    try {
+      print("Hydrating transport, raw data: ${map['transport']}");
+      transport = await Transport.fromMapWithHydration(map['transport'] ?? {});
+    } catch (e, stack) {
+      print("Error hydrating transport: $e\n$stack");
+      rethrow;
+    }
+
     return Country(
       id: map['id'] as String,
       name: map['name'] ?? '',
@@ -67,38 +114,13 @@ class Country {
       currency: map['currency'] ?? '',
       religion: Religion.fromMap(map['religion'] ?? {}),
       dialCode: map['dialCode'] ?? '',
-      cuisine: Cuisine.fromMap(map['cuisine'] ?? {}),
-      music: Music.fromMap(map['music'] ?? {}),
-      cinema: Cinema.fromMap(map['cinema'] ?? {}),
+      cuisine: cuisine,
+      music: music,
+      cinema: cinema,
       history: History.fromMap(map['history'] ?? {}),
-      athletics: Athletics.fromMap(map['athletics'] ?? {}),
-      transport: Transport.fromMap(map['transport'] ?? {}),
+      athletics: athletics,
+      transport: transport,
       emergency: Emergency.fromMap(map['emergency'] ?? {}),
     );
   }
-
-  /// Convert Country to Firestore-compatible map
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'imageUrl': imageUrl,
-      'description': description,
-      'capital': capital,
-      'majorCities': majorCities,
-      'languages': languages,
-      'currency': currency,
-      'religion': religion.toMap(),
-      'dialCode': dialCode,
-      'cuisine': cuisine.toMap(),
-      'music': music.toMap(),
-      'cinema': cinema.toMap(),
-      'history': history.toMap(),
-      'athletics': athletics.toMap(),
-      'transport': transport.toMap(),
-      'emergency': emergency.toMap(),
-    };
-  }
-
-  /// Alias for toMap
-  Map<String, dynamic> toFirestore() => toMap();
 }

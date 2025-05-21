@@ -1,93 +1,73 @@
 import 'package:culterra/screens/Widgets/report_suggestion.dart';
 import 'package:culterra/screens/Widgets/review_card.dart';
 import 'package:flutter/Material.dart';
-import 'package:provider/provider.dart';
 
-import '../../../../Profile/domain/entities/uiState.dart';
 import '../../../data/models/dish.dart';
-import 'dish_view_model.dart';
 
 class DishView extends StatelessWidget {
-  DishView({super.key, required this.dishId});
+  DishView({super.key, required this.dish});
 
-  final String dishId;
+  final Dish dish;
   final TextEditingController commentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => DishViewModel(dishId),
-      child: Consumer<DishViewModel>(
-        builder: (context, viewModel, _) {
-          final state = viewModel.state;
+    return Material(
+      child: SingleChildScrollView(
+        child: Container(
+          color: Colors.white,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Dish image
+              ClipRRect(
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
+                child: Image.network(
+                  dish.imageUrl,
+                  width: double.infinity,
+                  fit: BoxFit.cover,
+                ),
+              ),
 
-          if (state is UiLoading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          if (state is UiError) {
-            return Center(child: Text('Error: ${state.toString()}'));
-          }
-
-          final dish = (state as UiSuccess<Dish>).data;
-
-          return Material(
-            child: SingleChildScrollView(
-              child: Container(
-                color: Colors.white,
+              // Content
+              Padding(
+                padding: const EdgeInsets.all(16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Dish image
-                    ClipRRect(
-                      borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-                      child: Image.network(
-                        dish.imageUrl,
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      ),
+                    Text(
+                      dish.name,
+                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
-
-                    // Content
-                    Padding(
-                      padding: const EdgeInsets.all(16),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            dish.name,
-                            style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            dish.mealType.name,
-                            style: const TextStyle(fontSize: 20, color: Colors.grey),
-                          ),
-                          Text(
-                            dish.description,
-                            style: const TextStyle(fontSize: 20),
-                          ),
-                          const SizedBox(height: 16),
-                          const Text("Expert reviews", style: TextStyle(fontSize: 16)),
-
-                          if (dish.hydratedReviews != null)
-                            ReviewCard(
-                              reviews: dish.hydratedReviews!,
-                              controller: commentController,
-                              onPost: () {
-                                viewModel.addReview(commentController.text);
-                                commentController.clear();
-                              },
-                            ),
-                        ],
-                      ),
+                    Text(
+                      dish.mealType.name,
+                      style: const TextStyle(fontSize: 20, color: Colors.grey),
                     ),
-                    ReportSuggestion(),
+                    Text(
+                      dish.description,
+                      style: const TextStyle(fontSize: 20),
+                    ),
+                    const SizedBox(height: 16),
+                    const Text("Expert reviews", style: TextStyle(fontSize: 16)),
+
+                    if (dish.reviews != null && dish.reviews!.isNotEmpty)
+                      ReviewCard(
+                        reviews: dish.reviews!,
+                        controller: commentController,
+                        onPost: () {
+                          // If you're keeping posting logic, this should be connected to a ViewModel or callback
+                        },
+                      )
+                    else
+                      const Text("No reviews yet."),
                   ],
                 ),
               ),
-            ),
-          );
-        },
+
+              ReportSuggestion(),
+            ],
+          ),
+        ),
       ),
     );
   }

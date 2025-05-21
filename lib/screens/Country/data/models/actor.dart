@@ -3,6 +3,7 @@ import 'person.dart';
 
 class Actor implements Person {
 
+  final String id;
   @override
   final String name;
 
@@ -10,6 +11,7 @@ class Actor implements Person {
   final int age;
 
   Actor({
+    required this.id,
     required this.name,
     required this.age,
   });
@@ -18,6 +20,7 @@ class Actor implements Person {
   factory Actor.fromFirestore(DocumentSnapshot doc) {
     final data = doc.data() as Map<String, dynamic>;
     return Actor(
+      id: doc.id,
       name: data['name'] ?? '',
       age: data['age'] ?? 0,
     );
@@ -26,6 +29,7 @@ class Actor implements Person {
   /// Converts an Actor instance to a Firestore-compatible map
   Map<String, dynamic> toFirestore() {
     return {
+      'id': id,
       'name': name,
       'age': age,
     };

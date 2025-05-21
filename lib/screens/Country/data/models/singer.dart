@@ -7,7 +7,6 @@ class Singer implements Person {
     required this.id,
     required this.name,
     required this.age,
-    required this.songs,
   });
 
   final String id;
@@ -18,18 +17,12 @@ class Singer implements Person {
   @override
   final int age;
 
-  final List<DocumentReference> songs;
-
   /// Create Singer from Firestore map + id
   factory Singer.fromMap(Map<String, dynamic> map, {required String id}) {
     return Singer(
       id: id,
       name: map['name'] as String? ?? '',
       age: map['age'] as int? ?? 0,
-      songs: (map['songs'] as List<dynamic>?)
-          ?.whereType<DocumentReference>()
-          .toList() ??
-          [],
     );
   }
 
@@ -45,7 +38,6 @@ class Singer implements Person {
       'id': id,
       'name': name,
       'age': age,
-      'songs': songs,
     };
   }
 
