@@ -1,12 +1,15 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'person.dart';
 
-part 'director.g.dart';
-
-@JsonSerializable()
 class Director implements Person {
-  Director({required this.name, required this.age});
+  Director({
+    required this.id,
+    required this.name,
+    required this.age,
+  });
+
+  final String id;
 
   @override
   final String name;
@@ -14,9 +17,22 @@ class Director implements Person {
   @override
   final int age;
 
-  // A factory constructor to create a Cuisine object from JSON
-  factory Director.fromJson(Map<String, dynamic> json) => _$DirectorFromJson(json);
+  /// Create a Director object from Firestore document
+  factory Director.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Director(
+      id: doc.id,
+      name: data['name'] as String,
+      age: data['age'] as int,
+    );
+  }
 
-  // A method to convert a Cuisine object into JSON
-  Map<String, dynamic> toJson() => _$DirectorToJson(this);
+  /// Convert Director to Firestore-friendly map
+  Map<String, dynamic> toFirestore() {
+    return {
+      'id': id,
+      'name': name,
+      'age': age,
+    };
+  }
 }

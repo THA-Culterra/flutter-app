@@ -1,19 +1,32 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-part 'metro.g.dart';
-@JsonSerializable()
-class Metro{
+class Metro {
   Metro({
     required this.city,
     required this.image,
   });
 
-  String  city ;
-  String  image ;
+  String city;
+  String image;
 
-  // A factory constructor to create a Cuisine object from JSON
-  factory Metro.fromJson(Map<String, dynamic> json) => _$MetroFromJson(json);
+  factory Metro.fromMap(Map<String, dynamic> map) {
+    return Metro(
+      city: map['city'] as String? ?? '',
+      image: map['image'] as String? ?? '',
+    );
+  }
 
-  // A method to convert a Cuisine object into JSON
-  Map<String, dynamic> toJson() => _$MetroToJson(this);
+  Map<String, dynamic> toMap() {
+    return {
+      'city': city,
+      'image': image,
+    };
+  }
+
+  factory Metro.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Metro.fromMap(data);
+  }
+
+  Map<String, dynamic> toFirestore() => toMap();
 }

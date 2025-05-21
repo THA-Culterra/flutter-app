@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:culterra/screens/Widgets/report_suggestion.dart';
 import 'package:culterra/screens/Widgets/review_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/Material.dart';
 
 import '../../../data/models/dish.dart';
@@ -8,7 +10,6 @@ class DishView extends StatelessWidget {
   DishView({super.key, required this.dish});
 
   final Dish dish;
-
   final TextEditingController commentController = TextEditingController();
 
   @override
@@ -20,7 +21,7 @@ class DishView extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image at the top
+              // Dish image
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                 child: Image.network(
@@ -29,70 +30,67 @@ class DishView extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-      
-              // Content below image
+
+              // Content
               Padding(
                 padding: const EdgeInsets.all(16),
                 child: Column(
-                  spacing: 8,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Title and category
                     Text(
-                        dish.name,
-                        style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            decoration: TextDecoration.none
-                        )
+                      dish.name,
+                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     Text(
-                        dish.mealType.name,
-                        style: const TextStyle(
-                            fontSize: 20,
-                            color: Colors.grey,
-                            decoration: TextDecoration.none
-                        )
+                      dish.mealType.name,
+                      style: const TextStyle(fontSize: 20, color: Colors.grey),
                     ),
-      
-                    // Description
                     Text(
                       dish.description,
-                      style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.normal,
-                          color: Colors.black,
-                          decoration: TextDecoration.none
-                      ),
+                      style: const TextStyle(fontSize: 20),
                     ),
-      
-                    // Expert reviews
-                    const Text(
-                        "Expert reviews",
-                        style: TextStyle(
-                            fontWeight: FontWeight.normal,
-                            fontSize: 16,
-                            color: Colors.black,
-                            decoration: TextDecoration.none
-                        )
-                    ),
-      
-                    // Review card container
-                    ReviewCard(reviews: dish.reviews, controller: commentController, onPost: () {
-                      print(commentController.text);
-                      commentController.clear();
-                      FocusScope.of(context).unfocus();
-                    }),
+                    const SizedBox(height: 16),
+                    const Text("Expert reviews", style: TextStyle(fontSize: 16)),
+
+                    if (dish.reviews != null && dish.reviews!.isNotEmpty)
+                      ReviewCard(
+                        reviews: dish.reviews!,
+                        controller: commentController,
+                        onPost: postReview,
+                      )
+                    else
+                      const Text("No reviews yet."),
                   ],
                 ),
               ),
 
-              ReportSuggestion()
+              ReportSuggestion(),
             ],
           ),
         ),
       ),
-    );;
+    );
+  }
+
+  Future<void> postReview() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final reviewText = commentController.text.trim();
+    if (reviewText.isEmpty) return;
+
+    final reviewData = {
+      'author': FirebaseFirestore.instance.collection('users').doc(user.uid),
+      'text': reviewText,
+      'timestamp': FieldValue.serverTimestamp(),
+    };
+
+    await FirebaseFirestore.instance
+        .collection('dishes')
+        .doc(dish.id)
+        .collection('reviews')
+        .add(reviewData);
+
+    commentController.clear();
   }
 }

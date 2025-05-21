@@ -12,23 +12,22 @@ class HomeViewModel extends ChangeNotifier {
   // This function fetches country details by ID
   Future<Country?> getCountryById(String id) async {
     try {
-      var countryDoc = await _firestore.collection('countries').doc(id.toUpperCase()).get();
-      final data = countryDoc.data();
-      if (data != null) {
+      final countryDoc = await _firestore.collection('countries').doc(id.toUpperCase()).get();
+      if (countryDoc.exists && countryDoc.data() != null) {
         try {
-          final country = Country.fromJson(data);
+          final country = Country.fromFirestore(countryDoc);
           return country;
         } catch (e, stacktrace) {
           print('🔥 Error parsing Country: $e');
           print('🔥 Stacktrace: $stacktrace');
-          print('🔥 Raw data that caused the error: $data');
+          print('🔥 Raw data that caused the error: ${countryDoc.data()}');
           rethrow;
         }
       } else {
         return null;
       }
     } catch (e) {
-      print("Error fetching country data: $e");
+      print("❌ Error fetching country data: $e");
       return null;
     }
   }

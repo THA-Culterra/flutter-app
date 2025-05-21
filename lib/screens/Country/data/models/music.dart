@@ -1,27 +1,63 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:culterra/screens/Country/data/models/singer.dart';
+import 'package:culterra/screens/Country/data/models/song.dart';
 
 import 'genre.dart';
-import 'song.dart';
-import 'singer.dart';
 
-part 'music.g.dart';
-@JsonSerializable()
 class Music {
   Music({
     required this.genres,
     required this.topSongs,
-    required this.notableSingers
+    required this.notableSingers,
   });
 
-  List<Genre> genres;
+  final List<Genre> genres;
+  final List<Song> topSongs;
+  final List<Singer> notableSingers;
 
-  List<Song> topSongs;
+  static Future<Music> fromMapWithHydration(Map<String, dynamic> map) async {
 
-  List<Singer> notableSingers;
+    final genresRef = (map['topSongs'] as List<dynamic>? ?? [])
+        .whereType<DocumentReference>()
+        .toList();
 
-  // A factory constructor to create a Cuisine object from JSON
-  factory Music.fromJson(Map<String, dynamic> json) => _$MusicFromJson(json);
+    final genres = await Future.wait(genresRef.map((ref) async {
+      final doc = await ref.get();
+      return Genre.fromFirestoreWithHydration(doc);
+    }));
 
-  // A method to convert a Cuisine object into JSON
-  Map<String, dynamic> toJson() => _$MusicToJson(this);
+    // Hydrate topSongs
+    final songRefs = (map['topSongs'] as List<dynamic>? ?? [])
+        .whereType<DocumentReference>()
+        .toList();
+
+    final topSongs = await Future.wait(songRefs.map((ref) async {
+      final doc = await ref.get();
+      return Song.fromFirestoreWithHydration(doc);
+    }));
+
+    // Hydrate notableSingers
+    final singerRefs = (map['notableSingers'] as List<dynamic>? ?? [])
+        .whereType<DocumentReference>()
+        .toList();
+
+    final notableSingers = await Future.wait(singerRefs.map((ref) async {
+      final doc = await ref.get();
+      return Singer.fromFirestore(doc);
+    }));
+
+    return Music(
+      genres: genres,
+      topSongs: topSongs,
+      notableSingers: notableSingers,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'genres': genres.map((g) => FirebaseFirestore.instance.doc('genres/${g.id}')).toList(),
+      'topSongs': topSongs.map((s) => FirebaseFirestore.instance.doc('songs/${s.id}')).toList(),
+      'notableSingers': notableSingers.map((s) => FirebaseFirestore.instance.doc('persons/${s.id}')).toList(),
+    };
+  }
 }

@@ -1,13 +1,23 @@
-import 'package:culterra/screens/Country/domain/entities/CTCardData.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../../Data/review.dart';
+import '../../domain/entities/CTCardData.dart';
+import 'actor.dart';
 import 'tv_program.dart';
 
-part 'movie.g.dart';
-@JsonSerializable()
-class Movie implements TvProgram, CTCardData {
 
-  Movie({required this.name, required this.imageUrl});
+class Movie implements TvProgram, CTCardData {
+  Movie({
+    required this.id,
+    required this.topActors,
+    required this.reviews,
+    required this.name,
+    required this.imageUrl,
+  });
+
+  final String id;
+  final List<Actor> topActors;
+  final List<Review> reviews;
 
   @override
   final String name;
@@ -15,11 +25,30 @@ class Movie implements TvProgram, CTCardData {
   @override
   final String imageUrl;
 
-  // A factory constructor to create a Cuisine object from JSON
-  factory Movie.fromJson(Map<String, dynamic> json) => _$MovieFromJson(json);
+  /// This is for usage after full hydration.
+  static Future<Movie> fromMapWithHydration(DocumentSnapshot doc) async {
+    final data = doc.data() as Map<String, dynamic>;
+    final id = doc.id;
 
-  // A method to convert a Cuisine object into JSON
-  Map<String, dynamic> toJson() => _$MovieToJson(this);
+    final actorRefs = (data['topActors'] as List).cast<DocumentReference>();
 
+    final topActors = await Future.wait(actorRefs.map((ref) async {
+      final doc = await ref.get();
+      return Actor.fromFirestore(doc);
+    }));
 
+    // Load reviews from the 'reviews' subcollection of this TvShow document
+    final reviewSnapshot = await doc.reference.collection('reviews').get();
+    final reviews = await Future.wait(
+      reviewSnapshot.docs.map(Review.fromFirestoreWithHydration),
+    );
+
+    return Movie(
+      id: id,
+      name: data['name'] as String? ?? '',
+      imageUrl: data['imageUrl'] as String? ?? '',
+      topActors: topActors,
+      reviews: reviews,
+    );
+  }
 }

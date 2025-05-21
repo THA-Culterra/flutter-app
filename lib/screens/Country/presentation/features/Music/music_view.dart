@@ -4,10 +4,10 @@ import 'package:just_audio/just_audio.dart' as ja;
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
-import '../../../Widgets/ct_card.dart';
-import '../../../Widgets/report_suggestion.dart';
-import '../../data/models/music.dart';
-import '../../data/models/song.dart';
+import '../../../../Widgets/ct_card.dart';
+import '../../../../Widgets/report_suggestion.dart';
+import '../../../data/models/music.dart';
+import '../../../data/models/song.dart';
 
 class MusicScreen extends StatefulWidget {
   const MusicScreen({super.key, required this.music});
@@ -140,7 +140,7 @@ class _MusicScreenState extends State<MusicScreen> {
                                 ),
                               ),
                               Text(
-                                song.singer,
+                                song.singer.name,
                                 style: const TextStyle(
                                   fontWeight: FontWeight.w500,
                                   color: Colors.white70,

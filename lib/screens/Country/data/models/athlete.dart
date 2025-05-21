@@ -1,33 +1,45 @@
-import 'package:culterra/screens/Country/domain/entities/CTCardData.dart';
-import 'package:json_annotation/json_annotation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../../domain/entities/CTCardData.dart';
 import 'person.dart';
 
-part 'athlete.g.dart';
-
-@JsonSerializable()
 class Athlete implements Person, CTCardData {
   Athlete({
+    required this.id,
     required this.name,
     required this.age,
-    required this.sportName,
     required this.imageUrl,
   });
 
-  @override
-  String name;
+  final String id;
 
   @override
-  int age;
+  final String name;
 
-  String sportName;
+  @override
+  final int age;
 
   @override
   String imageUrl;
 
-  // A factory constructor to create a Athlete object from JSON
-  factory Athlete.fromJson(Map<String, dynamic> json) => _$AthleteFromJson(json);
+  /// Create an Athlete object from Firestore document
+  factory Athlete.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Athlete(
+      id: doc.id,
+      name: data['name'] ?? '',
+      age: data['age'] ?? 0,
+      imageUrl: data['imageUrl'] ?? '',
+    );
+  }
 
-  // A method to convert a Athlete object into JSON
-  Map<String, dynamic> toJson() => _$AthleteToJson(this);
+  /// Convert Athlete to Firestore-compatible map
+  Map<String, dynamic> toFirestore() {
+    return {
+      'id': id,
+      'name': name,
+      'age': age,
+      'imageUrl': imageUrl,
+    };
+  }
 }

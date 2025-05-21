@@ -1,16 +1,15 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'person.dart';
-import 'song.dart';
 
-part 'singer.g.dart';
-@JsonSerializable()
 class Singer implements Person {
   Singer({
+    required this.id,
     required this.name,
     required this.age,
-    required this.songs
   });
+
+  final String id;
 
   @override
   final String name;
@@ -18,11 +17,30 @@ class Singer implements Person {
   @override
   final int age;
 
-  List<Song> songs;
+  /// Create Singer from Firestore map + id
+  factory Singer.fromMap(Map<String, dynamic> map, {required String id}) {
+    return Singer(
+      id: id,
+      name: map['name'] as String? ?? '',
+      age: map['age'] as int? ?? 0,
+    );
+  }
 
-  // A factory constructor to create a Cuisine object from JSON
-  factory Singer.fromJson(Map<String, dynamic> json) => _$SingerFromJson(json);
+  /// Create Singer from Firestore DocumentSnapshot
+  factory Singer.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Singer.fromMap(data, id: doc.id);
+  }
 
-  // A method to convert a Cuisine object into JSON
-  Map<String, dynamic> toJson() => _$SingerToJson(this);
+  /// Convert Singer to Firestore-compatible map
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'name': name,
+      'age': age,
+    };
+  }
+
+  /// Convert Singer to Firestore (alias for toMap)
+  Map<String, dynamic> toFirestore() => toMap();
 }

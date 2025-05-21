@@ -2,9 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:culterra/screens/Country/data/models/role.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-part 'CulterraUser.g.dart';
-
-@JsonSerializable()
 class CulterraUser {
   final String uid;
   final String? email;
@@ -39,10 +36,4 @@ class CulterraUser {
       ),
     );
   }
-
-  // A factory constructor to create a Cuisine object from JSON
-  factory CulterraUser.fromJson(Map<String, dynamic> json) => _$CulterraUserFromJson(json);
-
-  // A method to convert a Cuisine object into JSON
-  Map<String, dynamic> toJson() => _$CulterraUserToJson(this);
 }

@@ -1,23 +1,36 @@
-import 'package:json_annotation/json_annotation.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-part 'emergency.g.dart';
-
-@JsonSerializable()
-class Emergency{
+class Emergency {
   Emergency({
     required this.police,
     required this.ambulance,
     required this.fire,
   });
 
-  int  police ;
-  int  ambulance ;
-  int  fire ;
+  final int police;
+  final int ambulance;
+  final int fire;
 
-  // A factory constructor to create a Cuisine object from JSON
-  factory Emergency.fromJson(Map<String, dynamic> json) => _$EmergencyFromJson(json);
+  factory Emergency.fromMap(Map<String, dynamic> map) {
+    return Emergency(
+      police: map['police'] as int,
+      ambulance: map['ambulance'] as int,
+      fire: map['fire'] as int,
+    );
+  }
 
-  // A method to convert a Cuisine object into JSON
-  Map<String, dynamic> toJson() => _$EmergencyToJson(this);
+  Map<String, dynamic> toMap() {
+    return {
+      'police': police,
+      'ambulance': ambulance,
+      'fire': fire,
+    };
+  }
 
+  factory Emergency.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Emergency.fromMap(data);
+  }
+
+  Map<String, dynamic> toFirestore() => toMap();
 }

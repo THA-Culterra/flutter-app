@@ -1,30 +1,64 @@
-import 'package:culterra/screens/Country/domain/entities/CTCardData.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'trophy.dart';
-import 'package:json_annotation/json_annotation.dart';
+import '../../domain/entities/CTCardData.dart';
 
-part 'sport.g.dart';
-@JsonSerializable()
 class Sport implements CTCardData {
   Sport({
     required this.name,
     required this.nationalTeamYear,
     required this.trophies,
     required this.teamLogo,
-    required this.imageUrl
+    required this.imageUrl,
   });
 
   @override
   String imageUrl;
+
   @override
   String name;
+
   int nationalTeamYear;
-  List<Trophy> trophies;
-  String teamLogo; // URL or asset path
 
-// A factory constructor to create a Cuisine object from JSON
-  factory Sport.fromJson(Map<String, dynamic> json) => _$SportFromJson(json);
+  List<(String, int)> trophies;
 
-  // A method to convert a Cuisine object into JSON
-  Map<String, dynamic> toJson() => _$SportToJson(this);
+  String teamLogo;
+
+  /// Create a Sport object from Firestore-compatible map
+  factory Sport.fromMap(Map<String, dynamic> map) {
+    return Sport(
+      name: map['name'] as String? ?? '',
+      imageUrl: map['imageUrl'] as String? ?? '',
+      nationalTeamYear: map['nationalTeamYear'] as int? ?? 0,
+      teamLogo: map['teamLogo'] as String? ?? '',
+      trophies: (map['trophies'] as List<dynamic>? ?? [])
+          .whereType<Map<String, dynamic>>()
+          .map((item) => (
+      item['title'] as String? ?? '',
+      item['year'] as int? ?? 0,
+      ))
+          .toList(),
+    );
+  }
+
+  /// Create a Sport object from a Firestore DocumentSnapshot
+  factory Sport.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+    return Sport.fromMap(data);
+  }
+
+  /// Convert Sport object to Firestore-compatible map
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'imageUrl': imageUrl,
+      'nationalTeamYear': nationalTeamYear,
+      'teamLogo': teamLogo,
+      'trophies': trophies
+          .map((trophy) => {'title': trophy.$1, 'year': trophy.$2})
+          .toList(),
+    };
+  }
+
+  /// Alias for toMap
+  Map<String, dynamic> toFirestore() => toMap();
 }
