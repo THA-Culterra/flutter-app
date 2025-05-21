@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:culterra/screens/Widgets/report_suggestion.dart';
 import 'package:culterra/screens/Widgets/review_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/Material.dart';
 
 import '../../../data/models/dish.dart';
@@ -54,9 +56,7 @@ class DishView extends StatelessWidget {
                       ReviewCard(
                         reviews: dish.reviews!,
                         controller: commentController,
-                        onPost: () {
-                          // If you're keeping posting logic, this should be connected to a ViewModel or callback
-                        },
+                        onPost: postReview,
                       )
                     else
                       const Text("No reviews yet."),
@@ -70,5 +70,27 @@ class DishView extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> postReview() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final reviewText = commentController.text.trim();
+    if (reviewText.isEmpty) return;
+
+    final reviewData = {
+      'author': FirebaseFirestore.instance.collection('users').doc(user.uid),
+      'text': reviewText,
+      'timestamp': FieldValue.serverTimestamp(),
+    };
+
+    await FirebaseFirestore.instance
+        .collection('dishes')
+        .doc(dish.id)
+        .collection('reviews')
+        .add(reviewData);
+
+    commentController.clear();
   }
 }
