@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import '../../../../Widgets/ct_card.dart';
 import '../../../../Widgets/report_suggestion.dart';
 import '../../../data/models/cinema.dart';
+import '../../../data/models/tv_program.dart';
+import '../TvProgram/tv_program_view.dart';
 
 class CinemaScreen extends StatelessWidget {
   const CinemaScreen({super.key, required this.cinema});
@@ -48,7 +50,22 @@ class CinemaScreen extends StatelessWidget {
             shrinkWrap: true,
             itemCount: list.length,
             separatorBuilder: (context, _) => const SizedBox(width: 16),
-            itemBuilder: (context, index) => CTCard(data: list[index]),
+              itemBuilder: (context, index) {
+                final data = list[index];
+
+                return GestureDetector(
+                  onTap: () {
+                    if (data is TvProgram) {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => TvProgramView(tvProgram: data as TvProgram),
+                        ),
+                      );
+                    }
+                  },
+                  child: CTCard(data: data),
+                );
+              }
           ),
         ),
       ],
