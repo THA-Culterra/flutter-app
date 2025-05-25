@@ -7,6 +7,8 @@ class Restaurant {
     required this.id,
     required this.name,
     required this.city,
+    required this.imageUrl,
+    required this.description,
     required this.latitude,
     required this.longitude,
     required this.reviews,
@@ -15,9 +17,11 @@ class Restaurant {
   final String id;
   final String name;
   final String city;
+  final String imageUrl;
+  final String description;
   final double latitude;
   final double longitude;
-  final List<Review> reviews;
+  final List<Review>? reviews;
 
   /// Create Restaurant from Firestore-compatible map + document ID
   factory Restaurant.fromMap(Map<String, dynamic> map, {required String id}) {
@@ -27,7 +31,9 @@ class Restaurant {
       city: map['city'] as String? ?? '',
       latitude: (map['latitude'] as num?)?.toDouble() ?? 0.0,
       longitude: (map['longitude'] as num?)?.toDouble() ?? 0.0,
-      reviews: [], // only filled during hydration
+      reviews: [],
+      imageUrl: map['imageUrl'] as String ?? '',
+      description: map['description']
     );
   }
 
@@ -36,6 +42,8 @@ class Restaurant {
     return {
       'name': name,
       'city': city,
+      'imageUrl': imageUrl,
+      'description': description,
       'latitude': latitude,
       'longitude': longitude,
     };
@@ -58,6 +66,8 @@ class Restaurant {
       id: baseRestaurant.id,
       name: baseRestaurant.name,
       city: baseRestaurant.city,
+      imageUrl: baseRestaurant.imageUrl,
+      description: baseRestaurant.description,
       latitude: baseRestaurant.latitude,
       longitude: baseRestaurant.longitude,
       reviews: reviews,

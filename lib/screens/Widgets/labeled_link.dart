@@ -29,9 +29,9 @@ class LabeledLink extends StatelessWidget {
                   height: 90,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage(
-                        imagePath,
-                      ), // Pass image path as a parameter
+                      image: NetworkImage(
+                        imagePath, // imagePath now should be a URL string
+                      ),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.horizontal(
