@@ -1,8 +1,7 @@
+import 'package:culterra/screens/Country/presentation/features/Restaurant/restaurant_view.dart';
 import 'package:culterra/screens/Widgets/report_suggestion.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../../../../Profile/domain/entities/uiState.dart';
 import '../../../../Widgets/ct_card.dart';
 import '../../../../Widgets/labeled_link.dart';
 import '../../../data/models/cuisine.dart';
@@ -24,7 +23,7 @@ class CuisineScreen extends StatelessWidget {
         children: [
           rowBuilder("Top Dishes", cuisine.dishes),
           const SizedBox(height: 24),
-          restaurantSection(cuisine.restaurants),
+          restaurantSection(context, cuisine.restaurants),
           const SizedBox(height: 24),
           const ReportSuggestion(),
         ],
@@ -70,7 +69,7 @@ class CuisineScreen extends StatelessWidget {
     );
   }
 
-  Widget restaurantSection(List<Restaurant> restaurants) {
+  Widget restaurantSection(BuildContext context, List<Restaurant> restaurants) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -86,12 +85,20 @@ class CuisineScreen extends StatelessWidget {
         const SizedBox(height: 8),
         Column(
           children: restaurants.map((restaurant) {
-            return LabeledLink(
-              link: '', // Fill in your link here if you have one
-              primLabel: restaurant.name,
-              secLabel: restaurant.city,
-              icon: 'pin',
-              imagePath: 'lib/core/assets/restau_placeholder.png',
+            return GestureDetector(
+              onTap: () => Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => RestaurantView(restaurant: restaurant),
+                ),
+              ),
+              child: LabeledLink(
+                link: '', // Add your link here if needed
+                primLabel: restaurant.name,
+                secLabel: restaurant.city,
+                icon: 'pin',
+                imagePath: restaurant.imageUrl,
+              ),
             );
           }).toList(),
         ),
