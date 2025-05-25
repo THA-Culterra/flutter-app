@@ -86,7 +86,7 @@ class RestaurantView extends StatelessWidget {
                     ),
                     Text(
                       restaurant.description,
-                      style: const TextStyle(fontSize: 20),
+                      style: const TextStyle(fontSize: 16),
                     ),
                     const SizedBox(height: 16),
                     const Text(
