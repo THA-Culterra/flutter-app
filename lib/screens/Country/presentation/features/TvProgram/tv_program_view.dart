@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:culterra/screens/Widgets/ct_card.dart';
 import 'package:culterra/screens/Widgets/report_suggestion.dart';
 import 'package:culterra/screens/Widgets/review_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,11 +7,13 @@ import 'package:flutter/material.dart';
 
 import 'package:culterra/screens/Country/data/models/tv_show.dart';
 
+import '../../../data/models/tv_program.dart';
+
 
 class TvProgramView extends StatelessWidget {
-  TvProgramView({super.key, required this.tvShow});
+  TvProgramView({super.key, required this.tvProgram});
 
-  final TvShow tvShow;
+  final TvProgram tvProgram;
   final TextEditingController commentController = TextEditingController();
 
   @override
@@ -26,7 +29,7 @@ class TvProgramView extends StatelessWidget {
               ClipRRect(
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
                 child: Image.network(
-                  tvShow.imageUrl,
+                  tvProgram.imageUrl,
                   width: double.infinity,
                   fit: BoxFit.cover,
                 ),
@@ -39,7 +42,7 @@ class TvProgramView extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      tvShow.name,
+                      tvProgram.name,
                       style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 8),
@@ -49,13 +52,9 @@ class TvProgramView extends StatelessWidget {
                       style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                     ),
                     const SizedBox(height: 8),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: tvShow.topActors.map((actor) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 6.0),
-                          child: Text(actor.name, style: const TextStyle(fontSize: 16)),
-                        );
+                    Row(
+                      children: tvProgram.topActors.map((actor) {
+                        return CTCard(data: actor);
                       }).toList(),
                     ),
                     const SizedBox(height: 16),
@@ -66,9 +65,9 @@ class TvProgramView extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
 
-                    if (tvShow.reviews.isNotEmpty)
+                    if (tvProgram.reviews.isNotEmpty)
                       ReviewCard(
-                        reviews: tvShow.reviews,
+                        reviews: tvProgram.reviews,
                         controller: commentController,
                         onPost: postReview,
                       )
@@ -100,8 +99,8 @@ class TvProgramView extends StatelessWidget {
     };
 
     await FirebaseFirestore.instance
-        .collection('tvShows')
-        .doc(tvShow.id)
+        .collection('tv_programs')
+        .doc(tvProgram.id)
         .collection('reviews')
         .add(reviewData);
 
