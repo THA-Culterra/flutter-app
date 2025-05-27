@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:culterra/screens/Country/presentation/features/Genre/genre_view.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart' as ja;
 import 'package:youtube_explode_dart/youtube_explode_dart.dart';
@@ -77,8 +78,18 @@ class _MusicScreenState extends State<MusicScreen> {
             shrinkWrap: true,
             itemCount: widget.music.genres.length,
             separatorBuilder: (context, _) => SizedBox(width: 16),
-            itemBuilder:
-                (context, index) => CTCard(data: widget.music.genres[index]),
+            itemBuilder: (context, index) {
+              final genre = widget.music.genres[index];
+              return GestureDetector(
+                onTap: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => GenreView(genre: genre),
+                  ),
+                ),
+                child: CTCard(data: genre),
+              );
+            },
           ),
         ),
       ],
