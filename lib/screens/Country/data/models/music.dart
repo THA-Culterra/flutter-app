@@ -17,7 +17,7 @@ class Music {
 
   static Future<Music> fromMapWithHydration(Map<String, dynamic> map) async {
 
-    final genresRef = (map['topSongs'] as List<dynamic>? ?? [])
+    final genresRef = (map['genres'] as List<dynamic>? ?? [])
         .whereType<DocumentReference>()
         .toList();
 

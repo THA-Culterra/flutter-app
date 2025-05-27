@@ -7,6 +7,7 @@ import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 import '../../../../Widgets/ct_card.dart';
 import '../../../../Widgets/report_suggestion.dart';
+import '../../../data/models/genre.dart';
 import '../../../data/models/music.dart';
 import '../../../data/models/song.dart';
 
@@ -46,7 +47,7 @@ class _MusicScreenState extends State<MusicScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 16,
             children: [
-              rowBuilder("Top Genres"),
+              rowBuilder("Top Genres", widget.music.genres),
               rowBuilderSongs("Top Songs", widget.music.topSongs),
             ],
           ),
@@ -57,7 +58,7 @@ class _MusicScreenState extends State<MusicScreen> {
     );
   }
 
-  Widget rowBuilder(String title) {
+  Widget rowBuilder(String title, List<Genre> genres) {
     return Column(
       spacing: 8,
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -76,10 +77,10 @@ class _MusicScreenState extends State<MusicScreen> {
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             shrinkWrap: true,
-            itemCount: widget.music.genres.length,
+            itemCount: genres.length,
             separatorBuilder: (context, _) => SizedBox(width: 16),
             itemBuilder: (context, index) {
-              final genre = widget.music.genres[index];
+              final genre = genres[index];
               return GestureDetector(
                 onTap: () => Navigator.push(
                   context,

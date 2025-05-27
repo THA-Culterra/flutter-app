@@ -20,10 +20,10 @@ class AthleticScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16),
           child: Column(
+            spacing: 16,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               rowBuilder("Top Sports", sports),
-              const SizedBox(height: 16),
               rowBuilder("Popular Athletes", athletes),
             ],
           ),
@@ -35,6 +35,7 @@ class AthleticScreen extends StatelessWidget {
 
   Widget rowBuilder(String title, List<CTCardData> list) {
     return Column(
+      spacing: 12,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(

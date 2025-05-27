@@ -69,7 +69,6 @@ class _GenreViewState extends State<GenreView> {
                       style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
                     ),
 
-                    const SizedBox(height: 16),
                     const Text("Expert reviews", style: TextStyle(fontSize: 16)),
 
                     if (widget.genre.reviews.isNotEmpty)
