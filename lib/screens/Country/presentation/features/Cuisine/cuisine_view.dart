@@ -84,6 +84,7 @@ class CuisineScreen extends StatelessWidget {
         ),
         const SizedBox(height: 8),
         Column(
+          spacing: 8,
           children: restaurants.map((restaurant) {
             return GestureDetector(
               onTap: () => Navigator.push(

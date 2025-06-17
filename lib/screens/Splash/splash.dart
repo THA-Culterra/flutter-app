@@ -35,7 +35,9 @@ class SplashScreen extends StatelessWidget {
             child: Image.asset(
               'lib/core/assets/World.png',
               fit: BoxFit.cover,
-              opacity: const AlwaysStoppedAnimation(0.8), // Adjust opacity if needed
+              opacity: const AlwaysStoppedAnimation(
+                0.8,
+              ), // Adjust opacity if needed
             ),
           ),
 
@@ -46,18 +48,18 @@ class SplashScreen extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: Center(
-                  child: SvgPicture.asset(
-                    'lib/core/assets/Logo.svg',
+                  child: Image.asset(
+                    'lib/core/assets/Logo.png',
+                    width: 154,
+                    height: 236,
                   ),
                 ),
               ), // Logo in the middle
               Expanded(
                 child: Center(
-                  child: SvgPicture.asset(
-                    'lib/core/assets/THA_Splash.svg',
-                  ),
+                  child: SvgPicture.asset('lib/core/assets/THA_Splash.svg'),
                 ),
-              ) // Text at the bottom
+              ), // Text at the bottom
             ],
           ),
         ],

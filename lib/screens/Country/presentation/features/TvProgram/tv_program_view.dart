@@ -65,9 +65,9 @@ class TvProgramView extends StatelessWidget {
                     ),
                     const SizedBox(height: 8),
 
-                    if (tvProgram.reviews.isNotEmpty)
+                    if (tvProgram.reviews != null && tvProgram.reviews!.isNotEmpty)
                       ReviewCard(
-                        reviews: tvProgram.reviews,
+                        reviews: tvProgram.reviews!,
                         controller: commentController,
                         onPost: postReview,
                       )

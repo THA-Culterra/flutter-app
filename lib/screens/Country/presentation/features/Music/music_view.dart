@@ -111,93 +111,118 @@ class _MusicScreenState extends State<MusicScreen> {
           ),
         ),
         Column(
-          children:
-              widget.music.topSongs.map((song) {
-                final videoId = YoutubePlayer.convertUrlToId(song.youtubeUrl);
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(8.0),
-                    child: Stack(
-                      children: [
-                        CachedNetworkImage(
-                          imageUrl: song.imageUrl,
-                          height: 90,
-                          width: double.infinity,
-                          fit: BoxFit.cover,
+          children: songs.map((song) {
+            final videoId = YoutubePlayer.convertUrlToId(song.youtubeUrl);
+            return Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(8.0),
+                child: Stack(
+                  children: [
+                    // Song Image
+                    CachedNetworkImage(
+                      imageUrl: song.imageUrl,
+                      height: 90,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
+
+                    // Gradient overlay
+                    Container(
+                      height: 90,
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Colors.black54,
+                            Colors.transparent,
+                          ],
                         ),
-                        Container(
-                          height: 90,
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: [Colors.black54, Colors.transparent],
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.topCenter,
+                      ),
+                    ),
+
+                    // Song title and singer
+                    Positioned(
+                      left: 8,
+                      top: 8,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            song.name,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              decoration: TextDecoration.none,
+                              fontSize: 20,
                             ),
                           ),
-                        ),
-                        Positioned(
-                          left: 8,
-                          top: 8,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                song.name,
-                                style: const TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  decoration: TextDecoration.none,
-                                  fontSize: 20,
-                                ),
-                              ),
-                              Text(
-                                song.singer.name,
-                                style: const TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.white70,
-                                  decoration: TextDecoration.none,
-                                  fontSize: 14,
-                                ),
-                              ),
-                            ],
+                          Text(
+                            song.singer.name,
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w500,
+                              color: Colors.white70,
+                              decoration: TextDecoration.none,
+                              fontSize: 14,
+                            ),
                           ),
-                        ),
-                        Positioned(
-                          right: 8,
-                          bottom: 8,
-                          child: Row(
-                            children: [
-                              IconButton(
-                                icon: Icon(
-                                  _isPlaying(videoId ?? '')
-                                      ? Icons.pause
-                                      : Icons.play_arrow,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () async {
-                                  if (_isPlaying(videoId ?? '')) {
-                                    await _player.pause();
-                                  } else {
-                                    await _playAudio(song.youtubeUrl, videoId ?? '');
-                                  }
-                                },
-                              ),
-                              Text(
-                                '${song.views} views',
-                                style: const TextStyle(color: Colors.white, decoration: TextDecoration.none, fontSize: 12),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              }).toList(),
+
+                    // Play/pause button and views
+                    Positioned(
+                      right: 8,
+                      bottom: 8,
+                      child: Row(
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              _isPlaying(videoId ?? '')
+                                  ? Icons.pause
+                                  : Icons.play_arrow,
+                              color: Colors.white,
+                            ),
+                            onPressed: () async {
+                              if (_isPlaying(videoId ?? '')) {
+                                await _player.pause();
+                              } else {
+                                await _playAudio(song.youtubeUrl, videoId ?? '');
+                              }
+                            },
+                          ),
+                          Text(
+                            '${_formatViews(song.views)} views',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              decoration: TextDecoration.none,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          }).toList(),
         ),
       ],
     );
+  }
+
+  String _formatViews(int views) {
+    if (views >= 1_000_000_000) {
+      return '${(views / 1_000_000_000).toStringAsFixed(1)}B';
+    } else if (views >= 1_000_000) {
+      return '${(views / 1_000_000).toStringAsFixed(1)}M';
+    } else if (views >= 1_000) {
+      return '${(views / 1_000).toStringAsFixed(1)}K';
+    } else {
+      return views.toString();
+    }
   }
 
   Future<void> _playAudio(String youtubeUrl, String videoId) async {

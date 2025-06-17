@@ -19,7 +19,7 @@ class Genre implements CTCardData {
   @override
   final String imageUrl;
   final List<Song> topSongs;
-  final List<Review> reviews;
+  final List<Review>? reviews;
 
   /// From Firestore document (with hydration of topSongs and reviews)
   static Future<Genre> fromFirestoreWithHydration(DocumentSnapshot doc) async {

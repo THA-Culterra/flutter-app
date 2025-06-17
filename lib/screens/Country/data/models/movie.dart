@@ -10,14 +10,14 @@ class Movie implements TvProgram, CTCardData {
   Movie({
     required this.id,
     required this.topActors,
-    required this.reviews,
+    this.reviews,
     required this.name,
     required this.imageUrl,
   });
 
   final String id;
   final List<Actor> topActors;
-  final List<Review> reviews;
+  final List<Review>? reviews;
 
   @override
   final String name;
@@ -27,21 +27,37 @@ class Movie implements TvProgram, CTCardData {
 
   /// This is for usage after full hydration.
   static Future<Movie> fromMapWithHydration(DocumentSnapshot doc) async {
-    final data = doc.data() as Map<String, dynamic>;
+    final raw = doc.data();
+    if (raw == null) {
+      throw Exception("Movie document ${doc.id} is null");
+    }
+
+    final data = raw as Map<String, dynamic>;
     final id = doc.id;
 
-    final actorRefs = (data['topActors'] as List).cast<DocumentReference>();
-
+    // Safely hydrate top actors
+    final actorRefs = (data['topActors'] as List?)?.cast<DocumentReference>() ?? [];
     final topActors = await Future.wait(actorRefs.map((ref) async {
       final doc = await ref.get();
       return Actor.fromFirestore(doc);
     }));
 
-    // Load reviews from the 'reviews' subcollection of this TvShow document
-    final reviewSnapshot = await doc.reference.collection('reviews').get();
-    final reviews = await Future.wait(
-      reviewSnapshot.docs.map(Review.fromFirestoreWithHydration),
-    );
+    // Safely hydrate reviews
+    List<Review>? reviews;
+    try {
+      final reviewSnapshot = await doc.reference.collection('reviews').get();
+
+      if (reviewSnapshot.docs.isNotEmpty) {
+        reviews = await Future.wait(
+          reviewSnapshot.docs.map(Review.fromFirestoreWithHydration),
+        );
+      } else {
+        reviews = null;
+      }
+    } catch (e, stack) {
+      print("Warning: Failed to load reviews for movie ${doc.id}: $e");
+      reviews = null;
+    }
 
     return Movie(
       id: id,

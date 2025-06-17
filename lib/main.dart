@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
       },
       title: 'Culterra',
       debugShowCheckedModeBanner: false,
-      home: const SplashScreen()
+      home: const HomeScreen()
     );
   }
 }

@@ -71,9 +71,9 @@ class _GenreViewState extends State<GenreView> {
 
                     const Text("Expert reviews", style: TextStyle(fontSize: 16)),
 
-                    if (widget.genre.reviews.isNotEmpty)
+                    if (widget.genre.reviews != null && widget.genre.reviews!.isNotEmpty)
                       ReviewCard(
-                        reviews: widget.genre.reviews,
+                        reviews: widget.genre.reviews!,
                         controller: commentController,
                         onPost: postReview,
                       )

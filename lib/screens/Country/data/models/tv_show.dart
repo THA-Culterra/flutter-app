@@ -23,7 +23,7 @@ class TvShow implements TvProgram, CTCardData {
   final String imageUrl;
 
   final List<Actor> topActors;
-  final List<Review> reviews;
+  final List<Review>? reviews;
 
   /// Hydrated factory that loads Actor and Review objects
   static Future<TvShow> fromMapWithHydration(DocumentSnapshot doc) async {

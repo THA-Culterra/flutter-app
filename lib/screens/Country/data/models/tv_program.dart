@@ -9,5 +9,5 @@ abstract class TvProgram {
 
 
   List<Actor> get topActors;
-  List<Review> get reviews;
+  List<Review>? get reviews;
 }

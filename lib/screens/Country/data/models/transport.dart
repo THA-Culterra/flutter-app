@@ -19,7 +19,7 @@ class Transport {
   final DrivingSide drivingSide;
   final List<TaxiApp> taxiApps;
   final List<Metro> metroSystems;
-  final List<Review> reviews;
+  final List<Review>? reviews;
 
   /// Basic deserialization from Firestore-compatible map
   factory Transport.fromMap(Map<String, dynamic> map) {
