@@ -1,4 +1,4 @@
-# Culterra - The Intercultural Explorer
+# Culterra - Integrity of culture
 
 **An interactive mobile app for culturally thriving users and travel enthusiasts, offering authentic, locally-sourced insights to explore, learn about, and travel to cultures worldwide.**
 
