@@ -16,7 +16,7 @@
     - **Cinema**: Popular films, TV shows, and celebrated actors & directors.
     - **History**: National holidays, significant historical events, and more.
     - **Sports** Popular sports and Athletes.
-    - **Transport**: Local transport systems, driving side, taxi apps, etc.
+    - **Transport**: Local transport systems, driving side, taxi apps, metro systems.
     - **Emergency Contacts**: Essential numbers like police, ambulance, and fire department.
 
 ## Unique Value Proposition
